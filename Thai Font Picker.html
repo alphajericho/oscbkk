@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thai Font Picker — OSCBKK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Kanit:wght@400;700;900&family=Mitr:wght@500;700&family=Bai+Jamjuree:wght@500;700&family=Chakra+Petch:wght@500;700&family=Prompt:wght@600;800&family=K2D:wght@600;800&family=Krub:wght@600;700&family=Sriracha&family=Charm:wght@500;700&family=Athiti:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b0814;
+    --ink: #f4eedd;
+    --ink-dim: #9a92b5;
+    --line: rgba(244,238,221,0.14);
+    --accent: #ff3d8b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 60px 48px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .head {
+    max-width: 1200px; margin: 0 auto 56px;
+  }
+  .head h1 {
+    font-family: "Archivo Black", sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    margin: 0 0 8px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .head .sub {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .head p {
+    color: var(--ink-dim);
+    max-width: 60ch;
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex; flex-direction: column; gap: 18px;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); transform: translateY(-2px); }
+  .card__head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .card__head .name {
+    font-family: "Archivo Black", sans-serif;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .card__head .meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    text-align: right;
+  }
+  .sample-big {
+    font-size: 34px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .sample-mid {
+    font-size: 20px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .sample-small {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 14px;
+    align-items: baseline;
+  }
+  .row .k {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .accent { color: var(--accent); }
+
+  /* Font helpers */
+  .kanit { font-family: "Kanit", sans-serif; }
+  .mitr { font-family: "Mitr", sans-serif; }
+  .baijam { font-family: "Bai Jamjuree", sans-serif; }
+  .chakra { font-family: "Chakra Petch", sans-serif; }
+  .prompt { font-family: "Prompt", sans-serif; }
+  .k2d { font-family: "K2D", sans-serif; }
+  .krub { font-family: "Krub", sans-serif; }
+  .athiti { font-family: "Athiti", sans-serif; }
+  .charm { font-family: "Charm", serif; }
+  .sriracha { font-family: "Sriracha", cursive; }
+
+  .pick-cta {
+    margin-top: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .pick-cta .accent { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div class="sub">OSCBKK · Type Study · Thai</div>
+  <h1>Pick a Thai Font</h1>
+  <p>Same phrases, ten options, all rendered live. Each card shows a section title (big bold), a body line, and a small caption — so you can judge how the font handles every size we use on the page. Tell me a number / name to apply across the site.</p>
+</div>
+
+<div class="grid">
+
+  <!-- 1 Kanit -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">01 · Kanit <span class="accent">(current)</span></div>
+      <div class="meta">Geometric · 400/700/900<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big kanit" style="font-weight:900">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid kanit" style="font-weight:500">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small kanit" style="font-weight:400">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 2 Mitr -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">02 · Mitr</div>
+      <div class="meta">Condensed · 500/700<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big mitr" style="font-weight:700">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid mitr" style="font-weight:500">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small mitr" style="font-weight:500">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 3 Bai Jamjuree -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">03 · Bai Jamjuree</div>
+      <div class="meta">Modern · 500/700<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big baijam" style="font-weight:700">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid baijam" style="font-weight:500">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small baijam" style="font-weight:500">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 4 Chakra Petch -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">04 · Chakra Petch</div>
+      <div class="meta">Futuristic · 500/700<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big chakra" style="font-weight:700">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid chakra" style="font-weight:500">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small chakra" style="font-weight:500">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 5 Prompt -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">05 · Prompt</div>
+      <div class="meta">Rounded geo · 600/800<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big prompt" style="font-weight:800">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid prompt" style="font-weight:600">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small prompt" style="font-weight:600">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 6 K2D -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">06 · K2D</div>
+      <div class="meta">Wide neutral · 600/800<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big k2d" style="font-weight:800">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid k2d" style="font-weight:600">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small k2d" style="font-weight:600">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 7 Krub -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">07 · Krub</div>
+      <div class="meta">Humanist · 600/700<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big krub" style="font-weight:700">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid krub" style="font-weight:600">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small krub" style="font-weight:600">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 8 Athiti -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">08 · Athiti</div>
+      <div class="meta">Humanist · 600/700<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big athiti" style="font-weight:700">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid athiti" style="font-weight:600">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small athiti" style="font-weight:600">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 9 Charm -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">09 · Charm</div>
+      <div class="meta">Display serif · 500/700<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big charm" style="font-weight:700">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid charm" style="font-weight:500">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small charm" style="font-weight:500">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+  <!-- 10 Sriracha -->
+  <div class="card">
+    <div class="card__head">
+      <div class="name">10 · Sriracha</div>
+      <div class="meta">Handwriting display<br/>Cadson Demak</div>
+    </div>
+    <div class="row"><div class="k">Title</div><div class="sample-big sriracha">เพลงเก่า ค่ำคืนใหม่</div></div>
+    <div class="row"><div class="k">Body</div><div class="sample-mid sriracha">คืนวันเสาร์ที่จะพาคุณย้อนกลับไปฟังเพลงดี ๆ จากยุค 90s–2000s</div></div>
+    <div class="row"><div class="k">Caption</div><div class="sample-small sriracha">วันเสาร์ที่ 20 มิถุนายน · เอซ ไนต์คลับ สุขุมวิท 11</div></div>
+  </div>
+
+</div>
+
+<div class="head" style="margin-top: 64px; margin-bottom: 0;">
+  <div class="pick-cta">↳ Tell me a <span class="accent">number</span> or <span class="accent">name</span> and I'll wire it across the whole site.</div>
+</div>
+
+</body>
+</html>
