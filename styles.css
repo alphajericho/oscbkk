@@ -1599,12 +1599,20 @@ body::before {
   text-transform: uppercase;
   color: var(--accent);
 }
-.poster-section__dl--soon {
-  opacity: 0.55;
-  cursor: not-allowed;
+.poster-section__dl--share {
+  background: rgba(11, 8, 20, 0.5);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  width: 100%;
+  text-align: left;
 }
-.poster-section__dl--soon:hover { transform: none; }
-.poster-section__dl--soon .poster-section__dl-cta { color: var(--ink-dim); }
+.poster-section__dl--share:hover {
+  border-color: var(--accent);
+  background: rgba(11, 8, 20, 0.8);
+}
+.poster-section__dl--share .poster-section__dl-cta { color: var(--accent); }
 
 .poster-section__share { display: flex; flex-direction: column; gap: 10px; }
 .poster-section__share-k {

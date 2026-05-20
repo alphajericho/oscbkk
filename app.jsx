@@ -573,25 +573,59 @@ function Poster() {
 
           <div className="poster-section__downloads">
             <div className="poster-section__dlrow">
-              <span className="poster-section__dl-k">Poster</span>
-              <a className="poster-section__dl" href="assets/poster.png" download="OSCBKK-Vol01-Poster.png">
-                <span className="poster-section__dl-fmt">PNG · Portrait</span>
+              <span className="poster-section__dl-k">IG Post · 1:1</span>
+              <a className="poster-section__dl" href="assets/social-1x1.png" download="OSCBKK-Vol01-IG-Post.png">
+                <span className="poster-section__dl-fmt">1080 × 1080 · Square</span>
                 <span className="poster-section__dl-cta">Download ↓</span>
               </a>
             </div>
             <div className="poster-section__dlrow">
-              <span className="poster-section__dl-k">IG Post</span>
-              <a className="poster-section__dl poster-section__dl--soon" href="#" onClick={(e) => e.preventDefault()} aria-disabled="true">
-                <span className="poster-section__dl-fmt">1080 × 1350 · 4:5</span>
-                <span className="poster-section__dl-cta">Coming soon</span>
+              <span className="poster-section__dl-k">IG Reel / Story · 9:16</span>
+              <a className="poster-section__dl" href="assets/social-9x16.png" download="OSCBKK-Vol01-IG-Story.png">
+                <span className="poster-section__dl-fmt">1080 × 1920 · Portrait</span>
+                <span className="poster-section__dl-cta">Download ↓</span>
               </a>
             </div>
             <div className="poster-section__dlrow">
-              <span className="poster-section__dl-k">IG Reel / Story</span>
-              <a className="poster-section__dl poster-section__dl--soon" href="#" onClick={(e) => e.preventDefault()} aria-disabled="true">
-                <span className="poster-section__dl-fmt">1080 × 1920 · 9:16</span>
-                <span className="poster-section__dl-cta">Coming soon</span>
-              </a>
+              <span className="poster-section__dl-k">Native share</span>
+              <button className="poster-section__dl poster-section__dl--share" onClick={async (e) => {
+                const btn = e.currentTarget;
+                const cta = btn.querySelector('.poster-section__dl-cta');
+                try {
+                  // Try file share first (mobile)
+                  if (navigator.canShare && navigator.share) {
+                    const res = await fetch('assets/social-1x1.png');
+                    const blob = await res.blob();
+                    const file = new File([blob], 'OSCBKK-Vol01.png', { type: 'image/png' });
+                    if (navigator.canShare({ files: [file] })) {
+                      await navigator.share({
+                        title: 'Old School & Chill BKK · Vol. 01',
+                        text: 'Saturday 20 June · Aces Nightclub, Sukhumvit Soi 11 · oscbkk.com',
+                        files: [file],
+                      });
+                      return;
+                    }
+                  }
+                  // Fallback: share URL only
+                  if (navigator.share) {
+                    await navigator.share({
+                      title: 'Old School & Chill BKK · Vol. 01',
+                      text: 'Saturday 20 June · Aces Nightclub, Sukhumvit Soi 11',
+                      url: 'https://oscbkk.com/',
+                    });
+                    return;
+                  }
+                  // No share API — copy link
+                  await navigator.clipboard?.writeText('https://oscbkk.com/');
+                  cta.textContent = 'Link copied ✓';
+                  setTimeout(() => { cta.textContent = 'Share →'; }, 1600);
+                } catch (err) {
+                  // User cancelled — no-op
+                }
+              }}>
+                <span className="poster-section__dl-fmt">Image &amp; link to any app</span>
+                <span className="poster-section__dl-cta">Share →</span>
+              </button>
             </div>
           </div>
 
