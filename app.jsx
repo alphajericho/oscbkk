@@ -167,6 +167,25 @@ function Nav() {
         <a href="#lounges">Lounges</a>
         <a href="#rules">House Rules</a>
       </div>
+      <div className="nav__socials" aria-label="Follow us">
+        <a className="nav__social" href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+          </svg>
+        </a>
+        <a className="nav__social" href="https://facebook.com/oldschoolchillbkk" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.6-1.5H16.5V4.3a22 22 0 0 0-2.4-.1c-2.4 0-4 1.4-4 4v2.3H7.5v3h2.6V21h3.4z" />
+          </svg>
+        </a>
+        <a className="nav__social" href="https://tiktok.com/@oldschoolchillbkk" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M16.5 3h-2.6v12.1c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5c.3 0 .5 0 .8.1V10c-.3 0-.5-.1-.8-.1-2.8 0-5.1 2.3-5.1 5.1S8.6 20.1 11.4 20.1s5.1-2.3 5.1-5.1V9.4c1 .7 2.2 1.1 3.5 1.1V7.9c-1.9 0-3.5-1.6-3.5-3.5V3z" />
+          </svg>
+        </a>
+      </div>
       <a className="nav__cta" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
     </nav>
   );
@@ -585,47 +604,6 @@ function Poster() {
                 <span className="poster-section__dl-fmt">1080 × 1920 · Portrait</span>
                 <span className="poster-section__dl-cta">Download ↓</span>
               </a>
-            </div>
-            <div className="poster-section__dlrow">
-              <span className="poster-section__dl-k">Native share</span>
-              <button className="poster-section__dl poster-section__dl--share" onClick={async (e) => {
-                const btn = e.currentTarget;
-                const cta = btn.querySelector('.poster-section__dl-cta');
-                try {
-                  // Try file share first (mobile)
-                  if (navigator.canShare && navigator.share) {
-                    const res = await fetch('assets/social-1x1.png');
-                    const blob = await res.blob();
-                    const file = new File([blob], 'OSCBKK-Vol01.png', { type: 'image/png' });
-                    if (navigator.canShare({ files: [file] })) {
-                      await navigator.share({
-                        title: 'Old School & Chill BKK · Vol. 01',
-                        text: 'Saturday 20 June · Aces Nightclub, Sukhumvit Soi 11 · oscbkk.com',
-                        files: [file],
-                      });
-                      return;
-                    }
-                  }
-                  // Fallback: share URL only
-                  if (navigator.share) {
-                    await navigator.share({
-                      title: 'Old School & Chill BKK · Vol. 01',
-                      text: 'Saturday 20 June · Aces Nightclub, Sukhumvit Soi 11',
-                      url: 'https://oscbkk.com/',
-                    });
-                    return;
-                  }
-                  // No share API — copy link
-                  await navigator.clipboard?.writeText('https://oscbkk.com/');
-                  cta.textContent = 'Link copied ✓';
-                  setTimeout(() => { cta.textContent = 'Share →'; }, 1600);
-                } catch (err) {
-                  // User cancelled — no-op
-                }
-              }}>
-                <span className="poster-section__dl-fmt">Image &amp; link to any app</span>
-                <span className="poster-section__dl-cta">Share →</span>
-              </button>
             </div>
           </div>
 
@@ -1052,9 +1030,9 @@ function Foot() {
         <div className="foot__col">
           <h4>Find Us</h4>
           <ul>
-            <li><a href="#">Instagram ↗</a></li>
-            <li><a href="#">Facebook ↗</a></li>
-            <li><a href="#">TikTok ↗</a></li>
+            <li><a href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener">Instagram ↗</a></li>
+            <li><a href="https://facebook.com/oldschoolchillbkk" target="_blank" rel="noopener">Facebook ↗</a></li>
+            <li><a href="https://tiktok.com/@oldschoolchillbkk" target="_blank" rel="noopener">TikTok ↗</a></li>
             <li className="foot__col-soon"><span>LINE Official</span><span className="foot__soon">Soon</span></li>
             <li className="foot__col-soon"><span>Spotify Mixtapes</span><span className="foot__soon">Soon</span></li>
           </ul>

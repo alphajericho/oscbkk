@@ -2067,3 +2067,27 @@ body::before {
   .press-modal__foot { padding: 14px 20px; flex-direction: column-reverse; gap: 8px; }
   .press-modal__btn { width: 100%; }
 }
+
+
+/* ====== NAV SOCIAL ICONS ====== */
+.nav__socials {
+  display: flex; align-items: center; gap: 4px;
+  margin-left: 14px;
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+}
+.nav__social {
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  color: var(--ink-dim);
+  transition: color .15s, background .15s, transform .15s;
+}
+.nav__social:hover {
+  color: var(--accent);
+  background: rgba(255, 61, 139, 0.08);
+  transform: translateY(-1px);
+}
+@media (max-width: 760px) {
+  .nav__socials { margin-left: 0; padding-left: 0; border-left: 0; }
+}
