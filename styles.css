@@ -140,7 +140,12 @@ body::before {
 }
 
 @media (max-width: 760px) {
-  .hero__image { aspect-ratio: 4 / 5; object-position: center 30%; }
+  .hero__image {
+    max-height: none;
+    aspect-ratio: auto;
+    object-fit: contain;
+    background: #050309;
+  }
 }
 
 .hero__stack, .hero__logo, .hero__photo, .hero__photo-wrap, .hero__photo-fade, .hero__scrim, .hero__topbar { display: none; }
@@ -2090,4 +2095,89 @@ body::before {
 }
 @media (max-width: 760px) {
   .nav__socials { margin-left: 0; padding-left: 0; border-left: 0; }
+}
+
+
+/* ====== TICKET: SOLD OUT ====== */
+.ticket--soldout {
+  opacity: 0.78;
+}
+.ticket--soldout .ticket__price .amt,
+.ticket--soldout .ticket__name {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.ticket--soldout .ticket__perks { opacity: 0.55; }
+
+.ticket__cta--disabled {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 999px;
+  background: rgba(244, 238, 221, 0.06);
+  border: 1px dashed var(--ink-dim);
+  color: var(--ink-dim);
+  font-family: "Archivo Black", sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 12px;
+  cursor: not-allowed;
+}
+
+/* diagonal corner ribbon */
+.ticket__soldout-ribbon {
+  position: absolute;
+  top: 16px; right: -52px;
+  transform: rotate(38deg);
+  background: var(--accent);
+  color: #0b0814;
+  font-family: "Archivo Black", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 6px 60px;
+  z-index: 2;
+  box-shadow:
+    0 4px 16px rgba(0,0,0,0.4),
+    0 0 22px color-mix(in srgb, var(--accent) 45%, transparent);
+  pointer-events: none;
+}
+.ticket__soldout-ribbon::before,
+.ticket__soldout-ribbon::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  border: 4px solid transparent;
+  border-top-color: color-mix(in srgb, var(--accent) 55%, #000);
+}
+.ticket__soldout-ribbon::before { left: 0; border-right-color: color-mix(in srgb, var(--accent) 55%, #000); }
+.ticket__soldout-ribbon::after { right: 0; border-left-color: color-mix(in srgb, var(--accent) 55%, #000); }
+
+
+/* ====== MOBILE: button nowrap + sizing ====== */
+.lineup__btn,
+.custom-cta__btn,
+.poster-section__btn,
+.poster-section__share-btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 540px) {
+  .hero__cta { gap: 10px; padding: 18px var(--pad-x) 28px; }
+  .hero__btn { font-size: 12px; padding: 12px 20px; }
+
+  .lineup__actions { gap: 8px; }
+  .lineup__btn { font-size: 11px; padding: 11px 18px; }
+
+  .custom-cta__actions { gap: 8px; }
+  .custom-cta__btn { font-size: 12px; padding: 14px 18px; }
+
+  .ticket__soldout-ribbon {
+    top: 14px; right: -56px;
+    font-size: 10px;
+    padding: 5px 60px;
+  }
+
+  .poster-section__share-row { gap: 6px; }
 }

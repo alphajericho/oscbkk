@@ -648,6 +648,7 @@ function Tickets() {
       bar: "TIER 01 / LIMITED",
       price: "500",
       light: true,
+      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -682,7 +683,12 @@ function Tickets() {
 
         <div className="tickets">
           {tiers.map((tk, i) => (
-            <article key={i} className={`ticket ${tk.featured ? "ticket--featured" : ""} ${tk.light ? "ticket--light" : ""}`}>
+            <article key={i} className={`ticket ${tk.featured ? "ticket--featured" : ""} ${tk.light ? "ticket--light" : ""} ${tk.soldOut ? "ticket--soldout" : ""}`}>
+              {tk.soldOut && (
+                <div className="ticket__soldout-ribbon" aria-hidden="true">
+                  <span>Sold Out</span>
+                </div>
+              )}
               <div className="ticket__top">
                 <div className="ticket__name">
                   {tk.name}
@@ -699,7 +705,11 @@ function Tickets() {
               <ul className="ticket__perks">
                 {tk.perks.map((p, j) => <li key={j}>{p}</li>)}
               </ul>
-              <a className="ticket__cta" href={MEGATIX_URLS[tk.key] || MEGATIX_URL} target="_blank" rel="noopener">Reserve</a>
+              {tk.soldOut ? (
+                <span className="ticket__cta ticket__cta--disabled" aria-disabled="true">Sold Out · บัตรหมดแล้ว</span>
+              ) : (
+                <a className="ticket__cta" href={MEGATIX_URLS[tk.key] || MEGATIX_URL} target="_blank" rel="noopener">Reserve</a>
+              )}
             </article>
           ))}
         </div>
