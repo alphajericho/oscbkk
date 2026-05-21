@@ -22,7 +22,7 @@ Edit this file freely — it's loaded as context at the start of every new chat 
 - **Ticketing (Megatix):** https://megatix.in.th/events/oscbkk
   - Early Bird tier: `?aid=EARLYBIRD` · GA tier: `?aid=GA`
   - New Jack lounge: `?aid=NEWJACK` · So So Def lounge: `?aid=SOSODEF` (the two base lounge tiers sold direct via Megatix; rest are enquiry-only)
-- **Meta Pixel ID:** `406472183038561`
+- **Meta Pixel ID:** `1342318294454589`
 - **Email:** info@oscbkk.com
 - **Socials:** IG / FB / TikTok all `@oldschoolchillbkk` · Messenger `m.me/oldschoolchillbkk`
 - **LINE:** pending — handle TBD (marked "Soon" everywhere)
@@ -100,7 +100,7 @@ Beyond the minimum, standard menu pricing.
 - Neon glow via `text-shadow` + `color-mix(in srgb, var(--accent) X%, transparent)`
 - SVG grain overlay on body (mix-blend overlay)
 - Dashed borders for soft dividers, solid `--line` for section breaks
-- Tweaks: accent color · density (compact/standard/spacious) · hero variant · motion (off/subtle/heavy)
+- Tweaks: accent color · density (compact/standard/spacious) · motion (off/subtle/heavy)
 
 ---
 
@@ -120,7 +120,6 @@ Beyond the minimum, standard menu pricing.
 - [ ] **LINE Official** — handle TBD, "Soon" pills in: Messenger bubble, Lounges contact grid, Footer
 - [ ] **Spotify mixtape playlist** — "Coming Soon" in cassette caption + footer; needs a URL
 - [ ] **Footer "View on map" link** — currently `href="#"`, needs Google Maps URL for Aces / Ambassador Hotel Soi 11
-- [ ] **Hero `variant` prop** — `neon`/`poster`/`minimal` wired in JSX but only image variant renders. Decide: build the other two or remove the tweak.
 - [ ] **Legacy CSS cleanup** — `.tables`, `.receipt`, `.lounge`, `.venue__ph` etc. all `display:none`. Safe to delete on a quiet pass.
 - [ ] **Press release** — updated May 2026 with new copy (El Rafa, Danny Bazzi credit, audience bullet list, quote callout). Last paragraph completion ("ideal backdrop for a premium R&B and Hip Hop experience") was written by Claude to close the user's truncated paste — confirm or rewrite.
 - [ ] **Real set times** — lineup roster says "Set times drop closer to the date"

@@ -20,7 +20,6 @@ const MEGATIX_URLS = {
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "accent": "#ff3d8b",
   "density": "standard",
-  "hero": "neon",
   "motion": "subtle"
 }/*EDITMODE-END*/;
 
@@ -38,13 +37,12 @@ function App() {
     document.documentElement.style.setProperty("--accent", t.accent);
     document.documentElement.dataset.density = t.density;
     document.documentElement.dataset.motion = t.motion;
-    document.documentElement.dataset.hero = t.hero;
-  }, [t.accent, t.density, t.motion, t.hero]);
+  }, [t.accent, t.density, t.motion]);
 
   return (
     <>
       <Nav />
-      <Hero variant={t.hero} />
+      <Hero />
       <Marquee />
       <TheNight />
       <Lineup motion={t.motion} />
@@ -77,19 +75,6 @@ function App() {
               { value: "spacious", label: "Spacious" },
             ]}
             onChange={v => setTweak("density", v)}
-          />
-        </TweakSection>
-
-        <TweakSection title="Hero treatment">
-          <TweakRadio
-            label="Style"
-            value={t.hero}
-            options={[
-              { value: "neon", label: "Neon" },
-              { value: "poster", label: "Poster" },
-              { value: "minimal", label: "Minimal" },
-            ]}
-            onChange={v => setTweak("hero", v)}
           />
         </TweakSection>
 
@@ -196,9 +181,9 @@ function Nav() {
 }
 
 /* ===================== HERO ===================== */
-function Hero({ variant }) {
+function Hero() {
   return (
-    <header className="hero" data-variant={variant}>
+    <header className="hero">
       <img className="hero__image" src="assets/hero.png" alt="Old School & Chill Bangkok — the crew, Sukhumvit at night" />
 
       <div className="hero__bottom">

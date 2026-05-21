@@ -2107,16 +2107,7 @@ body::before {
   letter-spacing: -0.005em;
   color: var(--ink);
 }
-.press-modal__expect li:last-child {
-  font-family: "Helvetica Neue", sans-serif;
-  font-weight: 400;
-  text-transform: none;
-  font-size: 13px;
-  color: var(--ink-dim);
-  margin-top: 4px;
-  letter-spacing: 0;
-  line-height: 1.45;
-}
+
 
 .press-modal__rule {
   border: 0; border-top: 1px solid var(--line);
