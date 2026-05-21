@@ -10,6 +10,10 @@ const MEGATIX_URLS = {
   ga:    "https://megatix.in.th/events/oscbkk?aid=GA",
   door:  MEGATIX_URL,
   table: MEGATIX_URL,
+  // Lounge packages — pre-paid via Megatix as a "minimum spend reservation".
+  // The amount paid here goes onto the customer's tab on the night.
+  newjack:  "https://megatix.in.th/events/oscbkk?aid=NEWJACK",
+  sosodef:  "https://megatix.in.th/events/oscbkk?aid=SOSODEF",
 };
 // ────────────────────────────────────────────────────────────
 
@@ -381,59 +385,99 @@ function PressModal({ onClose }) {
   );
 }
 
-/* Press release body — full version provided.
-   This is the placeholder copy until the final press release lands. */
+/* Press release body — updated copy (May 2026).
+   Title/tagline reflect the formal release; full press contact in press__details. */
 function PressBody() {
   return (
     <>
+      <p className="press-modal__tagline">A new home for '90s &amp; 2000s R&amp;B + Hip Hop culture in Bangkok.</p>
+
       <p className="press-modal__lede">
         Bangkok is about to get something it has been missing for a very long time.
       </p>
+
       <p>
-        Old School &amp; Chill is a new nightlife concept built around one thing above
-        all else: <strong>the music</strong>.
+        Old School &amp; Chill is a brand new nightlife concept built around one thing
+        above all else: <strong>the music</strong>.
       </p>
+
       <p>
-        Curated exclusively around '90s and 2000s R&amp;B and Hip Hop, this is not
-        another commercial nightclub chasing trends, bottle parades or influencer
-        culture. It is a music and culture-driven night created for the people who
-        lived this era, loved this music and still feel something when those records
-        come on. It is also for those who discovered the era later and never had the
-        chance to experience the magic of hearing artists like Aaliyah, TLC, Montell
-        Jordan, 112 and Blackstreet properly, on a real dance floor, in a real
-        nightclub environment.
+        Not just any music — this event is focused exclusively on curated '90s and 2000s
+        R&amp;B and Hip Hop. Old School &amp; Chill is not another commercial nightclub
+        event chasing trends, bottle parades or influencer culture. It is a music and
+        culture-driven experience designed for people who genuinely lived this era, loved
+        this music and still connect to it emotionally today.
       </p>
+
       <p>
-        The concept comes from <strong>DJ Jordan Adam</strong>, a specialist in classic
-        R&amp;B and Hip Hop culture with long-standing ties to some of the biggest
-        names in the genre internationally. After decades immersed in the scene as
-        both a promoter and music curator throughout Australia, the vision has
-        always been to build a genuine community around nostalgic music culture, not
-        simply another nightclub event.
+        The concept was created by <strong>DJ Jordan Adam (Danny Bazzi)</strong>, a
+        specialist in classic R&amp;B and Hip Hop culture and nightlife with long-standing
+        ties to some of the biggest names in R&amp;B and Hip Hop internationally. With
+        decades immersed in the genre as both a promoter and music curator in Australia,
+        the vision behind Old School &amp; Chill has always been to build a genuine
+        community around nostalgic music culture rather than simply create another
+        nightclub event.
       </p>
+
       <p>
-        Joining him is a familiar voice from the culture itself, one of Australia's
-        finest hosts and long-time ambassadors of R&amp;B and Hip Hop nightlife
-        culture, the incomparable <strong>MC Rafa</strong>.
+        He brings with him one of Australia's finest hosts and mic controllers, another
+        familiar face in Australian nightlife and R&amp;B and Hip Hop folklore: the
+        incomparable <strong>El Rafa</strong>.
       </p>
+
       <p>
-        The soundtrack for the night comes courtesy of an experienced lineup of
-        DJs who do not simply know the music, they live it.
-        DJs <strong>K9, Young G, Travellin' Matt, Junior and Jordan Adam</strong> are
-        all on a mission to make you feel like you just stepped onto a dance floor in 1997 again.
+        With the focus on the music comes a carefully selected group of experienced
+        DJs — <strong>K9, Young G, Travellin' Matt, Junior and Jordan Adam</strong> — music
+        commanders who not only know their stuff, they live it, breathe it, and will play
+        records you thought you would never hear in a Bangkok club.
+      </p>
+
+      <p>
+        Before the first event has even launched, the response online has already confirmed
+        what many people have been quietly waiting for: a mature, stylish and authentic
+        nightlife experience centred around timeless R&amp;B and Hip Hop records. Within
+        weeks of launching its social platforms, Old School &amp; Chill attracted thousands
+        of followers and significant engagement from locals, expats and tourists alike — many
+        asking the same question:
+      </p>
+
+      <p className="press-modal__quote">"When is this finally happening?"</p>
+
+      <p>
+        Unlike generic nightlife concepts, Old School &amp; Chill is designed to feel
+        intentional. The music is curated carefully. The atmosphere matters. The crowd
+        matters. The culture matters.
+      </p>
+
+      <p>
+        This is not intended to be a venue for kids chasing social media moments or a place
+        built around pretentious VIP culture. While all music lovers are welcome, the core
+        audience is a more mature demographic looking for:
       </p>
 
       <div className="press-modal__expect">
-        <span className="press-modal__expect-k">Expect</span>
+        <span className="press-modal__expect-k">For</span>
         <ul>
-          <li>Timeless records</li>
-          <li>Deep cuts</li>
-          <li>Club anthems</li>
-          <li>Singalongs</li>
-          <li>Slow grinds</li>
-          <li>And songs you never thought you would hear played properly in a Bangkok nightclub</li>
+          <li>Real music</li>
+          <li>Real nostalgia</li>
+          <li>Genuine atmosphere</li>
+          <li>Dancing</li>
+          <li>Connection</li>
+          <li>Hospitality</li>
+          <li>Energy</li>
+          <li>Community</li>
         </ul>
       </div>
+
+      <p>
+        It is a place where the soundtrack matters just as much as the environment itself.
+      </p>
+
+      <p>
+        The event launches at <strong>Aces</strong> on Sukhumvit Soi 11 — a visually
+        striking venue in the heart of Bangkok's lower Sukhumvit nightlife, and the ideal
+        backdrop for a premium R&amp;B and Hip Hop experience.
+      </p>
 
       <hr className="press-modal__rule" />
 
@@ -460,7 +504,11 @@ function PressBody() {
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Host</span>
-          <span className="press-modal__detail-v">MC Rafa (AUS)</span>
+          <span className="press-modal__detail-v">El Rafa (AUS)</span>
+        </div>
+        <div className="press-modal__detail">
+          <span className="press-modal__detail-k">Curator</span>
+          <span className="press-modal__detail-v">DJ Jordan Adam (Danny Bazzi)</span>
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Tickets</span>
@@ -474,8 +522,8 @@ function PressBody() {
 
       <p className="press-modal__note">
         <em>Note to editors:</em> high-res images, logos and the official poster
-        available on request. Interview opportunities with DJ Jordan Adam and MC Rafa
-        available in the lead-up to the event.
+        available on request. Interview opportunities with DJ Jordan Adam (Danny Bazzi)
+        and El Rafa available in the lead-up to the event.
       </p>
     </>
   );
@@ -541,7 +589,7 @@ function Lineup({ motion }) {
                 </li>
                 <li className="lineup__roster-item lineup__roster-item--mc">
                   <span className="lineup__roster-n">MC</span>
-                  <span className="lineup__roster-name">Hosted by MC Rafa</span>
+                  <span className="lineup__roster-name">Hosted by El Rafa</span>
                   <span className="lineup__roster-flag" title="Australia" aria-label="Australia">🇦🇺</span>
                 </li>
               </ul>
@@ -718,94 +766,111 @@ function Tickets() {
   );
 }
 
-/* ===================== LOUNGES (drinks packages) ===================== */
+/* ===================== LOUNGES (minimum-spend packages) ===================== */
 function Lounges() {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [termsOpen, setTermsOpen] = React.useState(false);
+
   const packages = [
     {
-      key: "sosodef",
-      label: "So So Def",
-      sofa: "Base Sofa",
-      pax: "2 — 4 pax",
+      key: "newjack", label: "New Jack", type: "table",
+      sofa: "Reserved Standing Table",
+      pax: "Up to 4 pax",
+      price: "4,000",
+      tier: "Table",
+      accent: "#ff3d8b",
+      megatix: MEGATIX_URLS.newjack,
+      inclusions: [
+        "Event entry for up to 4 guests",
+        "฿4,000 bar credit · spend on the menu",
+        "Reserved standing table",
+        "Dedicated server",
+      ],
+    },
+    {
+      key: "sosodef", label: "So So Def", type: "lounge",
+      sofa: "Base Lounge",
+      pax: "Up to 4 pax",
       price: "8,000",
-      tier: "Standard",
-      bottles: ["JW Black Label", "Chandon Brut"],
-      shots: "4 welcome shots",
-      mixers: "Standard mixers",
-      host: "Dedicated server",
-      extras: [],
+      tier: "Lounge",
       accent: "#ff3d8b",
+      megatix: MEGATIX_URLS.sosodef,
+      inclusions: [
+        "Event entry for up to 4 guests",
+        "฿8,000 bar credit · spend on the menu",
+        "Reserved lounge",
+        "VIP Priority Admission",
+        "Dedicated server",
+      ],
     },
     {
-      key: "deathrow",
-      label: "Death Row",
-      sofa: "Standard Sofa",
-      pax: "6 — 8 pax",
+      key: "deathrow", label: "Death Row", type: "lounge",
+      sofa: "Standard Lounge",
+      pax: "Up to 6 pax",
       price: "14,000",
-      tier: "Standard",
-      bottles: ["Chivas Regal 12Y", "Grey Goose", "Chandon Rosé"],
-      shots: "6 welcome shots",
-      mixers: "Standard mixers",
-      host: "Dedicated server",
-      extras: [],
+      tier: "Lounge",
       accent: "#ff3d8b",
+      inclusions: [
+        "Event entry for up to 6 guests",
+        "Reserved lounge",
+        "VIP Priority Admission",
+        "Dedicated server",
+        "Thug Passion welcome shots",
+      ],
     },
     {
-      key: "ruffryders",
-      label: "Ruff Ryders",
-      sofa: "Prime Sofa",
-      pax: "8 — 10 pax",
-      price: "20,000",
+      key: "badboy", label: "Bad Boy", type: "lounge",
+      sofa: "Prime Lounge",
+      pax: "Up to 8 pax",
+      price: "18,000",
       tier: "Premium",
-      bottles: ["JW Gold Label", "Belvedere", "Don Julio Blanco", "Chandon Rosé"],
-      shots: "8 welcome shots",
-      mixers: "Premium mixers",
-      host: "Dedicated host",
-      extras: ["Bar bites included"],
       accent: "#f3b53b",
+      inclusions: [
+        "Event entry for up to 8 guests",
+        "Reserved lounge",
+        "VIP Priority Admission",
+        "Dedicated server",
+        "Thug Passion welcome shots",
+      ],
     },
     {
-      key: "badboy",
-      label: "Bad Boy",
-      sofa: "VVIP Sofa",
-      pax: "10 — 15 pax",
-      price: "40,000",
+      key: "rocafella", label: "Roc-A-Fella", type: "lounge",
+      sofa: "VVIP Lounge",
+      pax: "Up to 10 pax",
+      price: "30,000",
       tier: "VVIP",
-      bottles: ["Macallan 12Y", "Grey Goose", "Don Julio Reposado", "Moët & Chandon Brut"],
-      shots: "10 welcome shots",
-      mixers: "Premium mixers",
-      host: "Personal host",
-      extras: ["Bar bites included", "Fast-track / VIP entry"],
-      accent: "#f3b53b",
-      featured: true,
-    },
-    {
-      key: "rocafella",
-      label: "Roc-A-Fella",
-      sofa: "Any VVIP Sofa",
-      pax: "10 — 15 pax",
-      price: "65,000",
-      tier: "Luxury",
-      bottles: ["Don Julio 1942", "Armand de Brignac"],
-      shots: "10 welcome shots",
-      mixers: "Luxury mixers",
-      host: "Personal host",
-      extras: ["Bar bites included", "Fast-track / VIP entry"],
       accent: "#4cc3ff",
+      featured: true,
+      inclusions: [
+        "Event entry for up to 10 guests",
+        "Reserved lounge",
+        "Escorted VIP Priority Admission",
+        "All-night priority entry",
+        "Dedicated host",
+        "Thug Passion welcome shots",
+        "Private photo session · pics emailed direct",
+        "Bar bites",
+      ],
     },
     {
-      key: "defjam",
-      label: "Def Jam",
-      sofa: "VVIP Sofa",
-      pax: "10 — 15 pax",
-      price: "150,000",
+      key: "defjam", label: "Def Jam", type: "lounge",
+      sofa: "Ultra VVIP Lounge",
+      pax: "Up to 18 pax",
+      price: "40,000",
       tier: "Ultra",
-      bottles: ["Don Julio 1942", "Dom Pérignon", "Armand de Brignac", "Macallan 18Y"],
-      shots: "15 welcome shots",
-      mixers: "Luxury mixers",
-      host: "Dedicated team",
-      extras: ["Bar bites included", "Personalised LED banner"],
       accent: "#4cc3ff",
       featured: true,
+      inclusions: [
+        "Event entry for up to 18 guests",
+        "Reserved lounge",
+        "Escorted VIP Priority Admission",
+        "All-night priority entry",
+        "Dedicated host",
+        "Thug Passion welcome shots",
+        "Private photo session · pics emailed direct",
+        "Personalised LED banner",
+        "Bar bites",
+      ],
     },
   ];
 
@@ -816,77 +881,89 @@ function Lounges() {
           <div className="num">04</div>
           <div className="titles">
             <div className="title">The <em>Lounges</em></div>
-            <div className="thai">เลานจ์ & แพ็กเกจเครื่องดื่ม · 2–15 คน</div>
+            <div className="thai">โต๊ะ & เลานจ์ · จองล่วงหน้า · ยอดใช้จ่ายขั้นต่ำ</div>
           </div>
         </div>
 
         <div className="lounges__intro">
+          <p className="lounges__intro-lede">Reserve your spot. <em>Customise</em> the night.</p>
           <p>
-            Our lounge packages — named after the labels that built the sound.
-            Pick by group size, sofa type, and how hard you plan on going.
-            All packages include reserved entry, your own bottles, mixers, and a server who'll actually find you.
+            Every package below is a <strong>minimum spend</strong> — what goes on your tab once you arrive.
+            Order anything from the Aces menu: bottles, cocktails, champagne, bar bites. Your server keeps
+            a running tab and lets you know when you've reached the minimum. Beyond that, standard menu pricing.
           </p>
           <p className="thai">
-            เลือกแพ็กเกจตามจำนวนคน · ตั้งแต่ 2 ถึง 15 ท่าน · จองล่วงหน้าผ่านทีมงาน
+            ทุกแพ็กเกจคือยอดใช้จ่ายขั้นต่ำ · สั่งอะไรก็ได้จากเมนู Aces · เซิร์ฟเวอร์จะแจ้งเมื่อถึงยอด
           </p>
+          <div className="lounges__intro-actions">
+            <button className="lounges__pill" onClick={() => setMenuOpen(true)}>View the menu ↗</button>
+            <button className="lounges__pill" onClick={() => setTermsOpen(true)}>Terms &amp; conditions ↗</button>
+          </div>
         </div>
 
         <div className="packages">
           {packages.map(p => (
-            <article key={p.key} className={`package ${p.featured ? "package--featured" : ""}`} style={{"--pkg-accent": p.accent}}>
+            <article key={p.key} className={`package ${p.featured ? "package--featured" : ""} ${p.type === "table" ? "package--table" : ""}`} style={{"--pkg-accent": p.accent}}>
               <div className="package__head">
                 <div className="package__label-row">
                   <span className="package__label">{p.label}</span>
                   <span className="package__tier">{p.tier}</span>
                 </div>
                 <div className="package__sofa">{p.sofa}</div>
-                <div className="package__pax">{p.pax} · VIP Admission</div>
+                <div className="package__pax">{p.pax}</div>
               </div>
 
               <div className="package__price">
-                <span className="package__price-amt">฿{p.price}</span>
-                <span className="package__price-cur">THB</span>
+                <span className="package__price-k">{p.megatix ? "All-In Price" : "Minimum Spend"}</span>
+                <div className="package__price-row">
+                  <span className="package__price-amt">฿{p.price}</span>
+                  <span className="package__price-cur">THB</span>
+                </div>
+                {p.megatix && (
+                  <span className="package__price-perk">No separate tickets · group entry included</span>
+                )}
               </div>
 
-              <div className="package__bottles">
-                {p.bottles.map((b, i) => (
-                  <span key={i} className="package__bottle">{b}</span>
-                ))}
-              </div>
-
-              <ul className="package__inc">
-                <li><span className="package__inc-k">Shots</span><span className="package__inc-v">{p.shots}</span></li>
-                <li><span className="package__inc-k">Mixers</span><span className="package__inc-v">{p.mixers}</span></li>
-                <li><span className="package__inc-k">Service</span><span className="package__inc-v">{p.host}</span></li>
-                {p.extras.map((e, i) => (
-                  <li key={i} className="package__inc--extra"><span className="package__inc-k">+</span><span className="package__inc-v">{e}</span></li>
-                ))}
+              <ul className="package__list">
+                {p.inclusions.map((inc, i) => <li key={i}>{inc}</li>)}
               </ul>
 
-              <a className="package__cta" href="#lounges-contact">Enquire</a>
+              {p.megatix ? (
+                <div className="package__ctas">
+                  <a className="package__cta package__cta--buy" href={p.megatix} target="_blank" rel="noopener">Reserve on Megatix ↗</a>
+                  <a className="package__cta-alt" href="#lounges-contact">Or enquire first ↗</a>
+                </div>
+              ) : (
+                <a className="package__cta" href="#lounges-contact">Enquire</a>
+              )}
             </article>
           ))}
         </div>
 
         <div className="packages__note">
-          <span className="packages__note-k">All packages include</span>
-          <span className="packages__note-v">Reserved seating · VIP entry · Dedicated service</span>
+          <span className="packages__note-k">All packages</span>
+          <span className="packages__note-v">Customisable · spend anything on the Aces menu</span>
+          <span className="packages__note-x">
+            <button className="lounges__pill lounges__pill--inline" onClick={() => setMenuOpen(true)}>Menu</button>
+            <button className="lounges__pill lounges__pill--inline" onClick={() => setTermsOpen(true)}>T&amp;Cs</button>
+          </span>
         </div>
 
         <div className="custom-cta">
           <div className="custom-cta__copy">
-            <span className="custom-cta__kicker">Custom · Birthdays · Brand activations</span>
+            <span className="custom-cta__kicker">Private parties · Birthdays · Brand activations</span>
             <h3 className="custom-cta__title">
               Want something <em>custom?</em>
             </h3>
             <p className="custom-cta__body">
-              Bigger group, milestone birthday, brand takeover, corporate night?
-              We build packages around the night — anything from a private lounge
-              with bespoke pours, to a full venue buyout with branding, photographer,
-              and red carpet. Talk to us — we'll build something none of the templates cover.
+              Private party, milestone birthday, brand takeover, corporate night?
+              Bigger group than 18, a different format, or want the whole place to yourself?
+              We build packages around the night — anything from a reserved lounge with
+              bespoke pours, to a full venue buyout with branding, photographer, and red carpet.
+              Tell us what you have in mind.
             </p>
             <p className="custom-cta__thai">
-              จัดงานวันเกิด · จัดงานบริษัท · จัดงานพิเศษ · ติดต่อทีมงาน
+              จัดงานส่วนตัว · วันเกิด · งานบริษัท · เหมาร้าน · ติดต่อทีมงาน
             </p>
           </div>
           <div className="custom-cta__actions">
@@ -921,7 +998,147 @@ function Lounges() {
           </div>
         </div>
       </div>
+
+      {menuOpen && <MenuModal onClose={() => setMenuOpen(false)} />}
+      {termsOpen && <TermsModal onClose={() => setTermsOpen(false)} />}
     </section>
+  );
+}
+
+/* Reusable modal shell (Menu / Terms) */
+function Modal({ kicker, title, sub, onClose, children, footer }) {
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+  return (
+    <div className="modal" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="modal__sheet" onClick={(e) => e.stopPropagation()}>
+        <header className="modal__head">
+          <div>
+            {kicker && <div className="modal__kicker">{kicker}</div>}
+            <h2 className="modal__title">{title}</h2>
+            {sub && <div className="modal__sub">{sub}</div>}
+          </div>
+          <button className="modal__x" onClick={onClose} aria-label="Close">×</button>
+        </header>
+        <div className="modal__body">{children}</div>
+        {footer && <footer className="modal__foot">{footer}</footer>}
+      </div>
+    </div>
+  );
+}
+
+function MenuModal({ onClose }) {
+  return (
+    <Modal
+      kicker="Drinks &amp; Food · Aces Nightclub"
+      title={<>The <em>Menu</em></>}
+      sub="Anything on the menu counts toward your minimum spend"
+      onClose={onClose}
+      footer={<>
+        <button className="modal__btn modal__btn--ghost" onClick={onClose}>Close</button>
+        <a className="modal__btn modal__btn--primary" href="https://acesnightclub.com/menu/" target="_blank" rel="noopener">View full menu ↗</a>
+      </>}
+    >
+      <p className="modal__lede">
+        Order anything on the Aces menu — bottles, cocktails, champagne, beer, bar bites — and
+        your server keeps a running tab as you go. Once you've reached your minimum spend,
+        they'll let you know. Beyond that, standard menu pricing applies.
+      </p>
+      <p className="modal__thai">
+        สั่งได้ทุกอย่างจากเมนูของ Aces · เซิร์ฟเวอร์จะแจ้งเมื่อยอดถึงขั้นต่ำ
+      </p>
+
+      <div className="modal__menucats">
+        <div className="modal__menucat">
+          <span className="modal__menucat-k">Spirits</span>
+          <span className="modal__menucat-v">Whisky · Tequila · Vodka · Cognac · Gin · Rum</span>
+        </div>
+        <div className="modal__menucat">
+          <span className="modal__menucat-k">Champagne &amp; Sparkling</span>
+          <span className="modal__menucat-v">Moët · Chandon · Dom Pérignon · Armand de Brignac</span>
+        </div>
+        <div className="modal__menucat">
+          <span className="modal__menucat-k">Cocktails</span>
+          <span className="modal__menucat-v">House cocktails · including the OSC Thug Passion</span>
+        </div>
+        <div className="modal__menucat">
+          <span className="modal__menucat-k">Beer &amp; More</span>
+          <span className="modal__menucat-v">Beer · ciders · seltzers · soft drinks</span>
+        </div>
+        <div className="modal__menucat">
+          <span className="modal__menucat-k">Bar Bites</span>
+          <span className="modal__menucat-v">Wings · sliders · satay · fries · snacks</span>
+        </div>
+      </div>
+
+      <p className="modal__note">
+        <em>Pricing &amp; availability set by Aces Nightclub.</em> Full menu, current pricing
+        and any seasonal specials live on the venue site — tap below to view it in full.
+      </p>
+    </Modal>
+  );
+}
+
+function TermsModal({ onClose }) {
+  return (
+    <Modal
+      kicker="Lounge &amp; Table Reservations"
+      title={<>Terms &amp; <em>Conditions</em></>}
+      sub="Old School &amp; Chill · Vol. 01 · 20 June 2026"
+      onClose={onClose}
+      footer={<>
+        <a className="modal__btn modal__btn--ghost" href="mailto:info@oscbkk.com?subject=Lounge%20Booking%20%E2%80%94%20Question">Question? Email us</a>
+        <button className="modal__btn modal__btn--primary" onClick={onClose}>Got it</button>
+      </>}
+    >
+      <h3 className="modal__h">Reservations &amp; Payment</h3>
+      <ul className="modal__ul">
+        <li>Reservations are confirmed upon receipt of the full minimum spend, paid in advance via bank transfer or QR.</li>
+        <li>Your minimum spend covers anything from the Aces drinks &amp; food menu — bottles, cocktails, champagne, beer, bar bites.</li>
+        <li>Your server keeps a running tab on the night and will let you know once you've reached your minimum. Beyond that, standard menu pricing applies.</li>
+      </ul>
+
+      <h3 className="modal__h">Service Charge &amp; Tax</h3>
+      <ul className="modal__ul">
+        <li>10% service charge and 7% VAT apply to all consumption, as standard for the venue.</li>
+      </ul>
+
+      <h3 className="modal__h">Cancellations &amp; Changes</h3>
+      <ul className="modal__ul">
+        <li>Full refund or credit transfer up to <strong>14 days</strong> before the event.</li>
+        <li><strong>50% refund</strong> or full credit transfer between 7 and 14 days before.</li>
+        <li>No refunds within 7 days of the event. Credit transfer to a future Old School &amp; Chill event possible, subject to availability.</li>
+        <li>Applies to all pre-paid reservations, including those purchased via Megatix and enquiry-confirmed packages.</li>
+      </ul>
+
+      <h3 className="modal__h">Arrival</h3>
+      <ul className="modal__ul">
+        <li>Lounges and tables held for 30 minutes past your reservation time, after which the spot may be released.</li>
+        <li>Running late? Drop us a message — we'll do our best to hold it for you.</li>
+      </ul>
+
+      <h3 className="modal__h">Entry &amp; Conduct</h3>
+      <ul className="modal__ul">
+        <li>All guests must be 20+ with valid ID — Thai ID card or passport.</li>
+        <li>House dress code applies (see "House Rules" on the main page).</li>
+        <li>Door staff and venue management reserve the right to refuse entry.</li>
+        <li>No outside food, drinks or unauthorised promotional materials.</li>
+        <li>No drugs, no weapons, no exceptions.</li>
+      </ul>
+
+      <p className="modal__note">
+        By making a reservation you agree to these terms. Questions before booking?
+        Message us at <a href="mailto:info@oscbkk.com">info@oscbkk.com</a> or via the chat
+        bubble in the corner of this page.
+      </p>
+    </Modal>
   );
 }
 

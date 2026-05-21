@@ -13,14 +13,15 @@ Edit this file freely — it's loaded as context at the start of every new chat 
 - **Genre:** Strictly pre-2010 — '90s & '00s R&B and Hip Hop
 - **Age:** 20+ (ID at door)
 - **DJs:** K9 🇹🇭 · Young G 🇵🇭 · Travellin' Matt 🇹🇭🇺🇸 · Jordan Adam 🇦🇺 · Junior 🇹🇭
-- **Host:** MC Rafa 🇦🇺
-- **Curator / music director:** DJ Jordan Adam
+- **Host:** El Rafa 🇦🇺
+- **Curator / music director:** DJ Jordan Adam (real name Danny Bazzi — used in press release)
 
 ## Important IDs / URLs
 
 - **Domain:** https://oscbkk.com
 - **Ticketing (Megatix):** https://megatix.in.th/events/oscbkk
   - Early Bird tier: `?aid=EARLYBIRD` · GA tier: `?aid=GA`
+  - New Jack lounge: `?aid=NEWJACK` · So So Def lounge: `?aid=SOSODEF` (the two base lounge tiers sold direct via Megatix; rest are enquiry-only)
 - **Meta Pixel ID:** `406472183038561`
 - **Email:** info@oscbkk.com
 - **Socials:** IG / FB / TikTok all `@oldschoolchillbkk` · Messenger `m.me/oldschoolchillbkk`
@@ -33,16 +34,22 @@ Edit this file freely — it's loaded as context at the start of every new chat 
 | Early Bird | ฿500 | Pre-sale only, 2 drinks included |
 | General Admission | ฿600 | Pre-sale only, 2 drinks included |
 
-## Lounge packages (named after labels)
+## Lounge packages (minimum-spend model)
 
-| Package | Sofa / Pax | Price (฿) | Tier |
-|---|---|---|---|
-| So So Def | Base / 2–4 | 8,000 | Standard |
-| Death Row | Standard / 6–8 | 14,000 | Standard |
-| Ruff Ryders | Prime / 8–10 | 20,000 | Premium |
-| Bad Boy | VVIP / 10–15 | 40,000 | VVIP ⭐ |
-| Roc-A-Fella | Any VVIP / 10–15 | 65,000 | Luxury |
-| Def Jam | VVIP / 10–15 | 150,000 | Ultra ⭐ |
+All packages are a **minimum spend** — order anything from the Aces menu, server tracks the tab.
+Beyond the minimum, standard menu pricing.
+
+| Package | Pax | Min Spend (฿) | Type | Notes |
+|---|---|---|---|---|
+| New Jack | up to 4 | 4,000 | Table | Standing table, ฿4,000 bar credit, dedicated server |
+| So So Def | up to 4 | 8,000 | Lounge | ฿8,000 bar credit, VIP Priority Admission |
+| Death Row | up to 6 | 14,000 | Lounge | + Thug Passion welcome shots |
+| Bad Boy | up to 8 | 18,000 | Premium | + Thug Passion welcome shots |
+| Roc-A-Fella ⭐ | up to 10 | 30,000 | VVIP | Escorted entry · host · photo session · bar bites |
+| Def Jam ⭐ | up to 18 | 40,000 | Ultra | All of above + Personalised LED banner |
+
+**Menu lives at:** https://acesnightclub.com/menu/ (linked from the Menu modal in the Lounges section)
+**T&Cs:** drafted in `<TermsModal>` in `app.jsx` — review before going live (cancellation windows, service charge, etc.)
 
 ---
 
@@ -103,7 +110,8 @@ Edit this file freely — it's loaded as context at the start of every new chat 
 - **Pacifico** stays for script flourishes — paired with Archivo Black, not replaced.
 - **No emoji** except country flags in the lineup roster.
 - **All copy is bilingual** — every section has Thai under English. Default for new sections too.
-- **Lounge packages are named after labels** (So So Def → Def Jam). Don't rename to generic "Silver/Gold/Platinum".
+- **Lounge packages are named after labels** (New Jack, So So Def, Death Row, Bad Boy, Roc-A-Fella, Def Jam). Don't rename to generic "Silver/Gold/Platinum".
+- **Packages are minimum-spend, not all-inclusive.** Don't list bottles/shots/mixers as included unless explicitly in the inclusions array. The server tracks the tab on the night.
 - **Venue photos are filtered** (saturate 0.45, hue-rotate -12deg) to cool down Aces' heavy red lighting. Keep the filter.
 - **Megatix is the only ticketing platform.** All CTAs route there.
 
@@ -114,8 +122,9 @@ Edit this file freely — it's loaded as context at the start of every new chat 
 - [ ] **Footer "View on map" link** — currently `href="#"`, needs Google Maps URL for Aces / Ambassador Hotel Soi 11
 - [ ] **Hero `variant` prop** — `neon`/`poster`/`minimal` wired in JSX but only image variant renders. Decide: build the other two or remove the tweak.
 - [ ] **Legacy CSS cleanup** — `.tables`, `.receipt`, `.lounge`, `.venue__ph` etc. all `display:none`. Safe to delete on a quiet pass.
-- [ ] **Press release** — current copy in `<PressBody>` is the draft. Replace when final lands.
+- [ ] **Press release** — updated May 2026 with new copy (El Rafa, Danny Bazzi credit, audience bullet list, quote callout). Last paragraph completion ("ideal backdrop for a premium R&B and Hip Hop experience") was written by Claude to close the user's truncated paste — confirm or rewrite.
 - [ ] **Real set times** — lineup roster says "Set times drop closer to the date"
+- [ ] **T&Cs review** — `<TermsModal>` has draft terms (cancellation windows, service charge %, etc.) — confirm with venue/legal before going live.
 
 ## Don'ts
 
@@ -134,11 +143,12 @@ The live site is on **Vercel**, fed from a **GitHub repo** that the user maintai
 
 **To ship changes:**
 1. At end of session, tell the user exactly which files changed.
-2. User downloads / copies those files into their local repo folder, replacing the originals.
-3. User commits + pushes via GitHub Desktop.
-4. Vercel picks up the push and auto-deploys to oscbkk.com.
+2. **Always bundle the updated files as a single ZIP** for download — the user prefers one zip over individual file cards.
+3. User downloads / extracts the zip into their local repo folder, replacing the originals.
+4. User commits + pushes via GitHub Desktop.
+5. Vercel picks up the push and auto-deploys to oscbkk.com.
 
-When listing changed files, be explicit (path + one-line reason) so the user knows exactly what to drop in. Don't assume they know git terminology.
+When listing changed files, be explicit (path + one-line reason) so the user knows exactly what's in the zip. Don't assume they know git terminology.
 
 ## Workflow for handing off to a new chat
 
