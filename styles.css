@@ -400,7 +400,7 @@ body::before {
 }
 @media (max-width: 880px) {
   .lineup { grid-template-columns: 1fr; }
-  .cassette { max-width: 460px; }
+  .mixtape { max-width: 520px; }
 }
 
 .lineup__tease {
@@ -549,7 +549,7 @@ body::before {
 }
 .lineup__btn--ghost:hover { background: var(--ink); color: #0b0814; }
 
-.cassette__caption {
+.mixtape__caption {
   margin: 12px 0 0;
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
@@ -605,97 +605,52 @@ body::before {
 }
 .lineup__roster-item--mc .lineup__roster-n { color: var(--accent-2); }
 
-.cassette {
+.mixtape {
   position: relative;
-  aspect-ratio: 8 / 5;
   background:
-    linear-gradient(160deg, color-mix(in srgb, var(--accent) 22%, #15102e) 0%, #0c0820 100%);
+    linear-gradient(160deg, color-mix(in srgb, var(--accent) 18%, #15102e) 0%, #0c0820 100%);
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 22px;
+  padding: 18px;
   display: flex; flex-direction: column;
   overflow: hidden;
 }
-.cassette__label {
-  background: var(--ink);
-  color: #0b0814;
-  padding: 14px 18px;
-  border-radius: 6px;
-  position: relative;
+.mixtape__header {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px;
+  padding: 6px 8px 14px;
+  border-bottom: 1px dashed color-mix(in srgb, var(--ink-dim) 50%, transparent);
+  margin-bottom: 14px;
 }
-.cassette__label::before, .cassette__label::after {
-  content: "";
-  position: absolute;
-  width: 8px; height: 8px;
-  background: #0b0814;
-  border-radius: 50%;
-  top: 8px;
-}
-.cassette__label::before { left: 8px; }
-.cassette__label::after { right: 8px; }
-.cassette__label .side {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.3em;
+.mixtape__kicker {
+  font-family: "Archivo Black", sans-serif;
   text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--ink);
 }
-.cassette__label .title {
-  font-family: "Pacifico", cursive;
-  font-size: 32px;
-  line-height: 1.15;
-  color: var(--accent);
-  margin-top: 4px;
-}
-.cassette__label .runtime {
+.mixtape__meta {
   font-family: "JetBrains Mono", monospace;
   font-size: 10px;
-  letter-spacing: 0.2em;
-  color: #555;
-  margin-top: 6px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
 }
-.cassette__reels {
-  display: flex; justify-content: space-around; align-items: center;
-  flex: 1; padding-top: 18px;
-}
-.reel {
-  width: 90px; height: 90px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #1a1330 0%, #0a0716 70%);
-  border: 2px solid var(--ink-dim);
+.mixtape__embed {
   position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
 }
-.reel::before {
-  content: "";
-  position: absolute; inset: 14px;
-  border-radius: 50%;
-  background: #15102e;
-  border: 1px dashed var(--ink-dim);
-}
-.reel::after {
-  content: "";
-  position: absolute; left: 50%; top: 50%;
-  width: 12px; height: 12px; margin: -6px 0 0 -6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px #0b0814, 0 0 12px var(--accent);
-}
-[data-motion="off"] .reel { animation: none !important; }
-.reel.spin { animation: spin 6s linear infinite; }
-.reel.spin.rev { animation-direction: reverse; }
-[data-motion="heavy"] .reel.spin { animation-duration: 3s; }
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-.cassette__strip {
-  height: 6px; background: var(--ink-dim);
-  border-radius: 3px;
-  align-self: stretch;
-  margin-top: 14px;
+.mixtape__embed iframe {
+  display: block;
+  width: 100%;
+  border: 0;
 }
 
 @media (max-width: 880px) {
   .lineup { grid-template-columns: 1fr; }
-  .cassette { max-width: 460px; }
+  .mixtape { max-width: 520px; }
 }
 
 /* ====== TICKETS ====== */

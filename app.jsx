@@ -586,18 +586,24 @@ function Lineup({ motion }) {
             </div>
           </div>
 
-          <div className="cassette" aria-label="Mixtape placeholder — Spotify playlist coming soon">
-            <div className="cassette__label">
-              <div className="side">SIDE A · 60 MIN · DOLBY</div>
-              <div className="title">Old School &amp; Chill</div>
-              <div className="runtime">MIXTAPE · COMING SOON</div>
+          <div className="mixtape" aria-label="Old School &amp; Chill — Spotify playlist">
+            <div className="mixtape__header">
+              <span className="mixtape__kicker">▶ The Mixtape</span>
+              <span className="mixtape__meta">Side A · '90s &amp; '00s</span>
             </div>
-            <div className="cassette__reels">
-              <div className={`reel ${motion !== "off" ? "spin" : ""}`} />
-              <div className={`reel ${motion !== "off" ? "spin rev" : ""}`} />
+            <div className="mixtape__embed">
+              <iframe
+                title="Old School &amp; Chill — Spotify playlist"
+                src="https://open.spotify.com/embed/playlist/7hv2tt8L8e32X6FyRGLZwd?utm_source=generator"
+                width="100%"
+                height="352"
+                frameBorder="0"
+                allowFullScreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              ></iframe>
             </div>
-            <div className="cassette__strip" />
-            <p className="cassette__caption">▶ Spotify playlist drops with the lineup</p>
+            <p className="mixtape__caption">A taste of what's coming. Press play.</p>
           </div>
         </div>
       </div>
@@ -1246,7 +1252,7 @@ function Foot() {
             <li><a href="https://facebook.com/oldschoolchillbkk" target="_blank" rel="noopener">Facebook ↗</a></li>
             <li><a href="https://tiktok.com/@oldschoolchillbkk" target="_blank" rel="noopener">TikTok ↗</a></li>
             <li className="foot__col-soon"><span>LINE Official</span><span className="foot__soon">Soon</span></li>
-            <li className="foot__col-soon"><span>Spotify Mixtapes</span><span className="foot__soon">Soon</span></li>
+            <li><a href="https://open.spotify.com/user/31qnnw4ys3tpcc7eltq3dhosqcsq" target="_blank" rel="noopener">Follow on Spotify ↗</a></li>
           </ul>
         </div>
         <div className="foot__col">

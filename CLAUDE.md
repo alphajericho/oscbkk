@@ -118,8 +118,6 @@ Beyond the minimum, standard menu pricing.
 ## Open threads / TODO
 
 - [ ] **LINE Official** — handle TBD, "Soon" pills in: Messenger bubble, Lounges contact grid, Footer
-- [ ] **Spotify mixtape playlist** — "Coming Soon" in cassette caption + footer; needs a URL
-- [ ] **Footer "View on map" link** — currently `href="#"`, needs Google Maps URL for Aces / Ambassador Hotel Soi 11
 - [ ] **Legacy CSS cleanup** — `.tables`, `.receipt`, `.lounge`, `.venue__ph` etc. all `display:none`. Safe to delete on a quiet pass.
 - [ ] **Press release** — updated May 2026 with new copy (El Rafa, Danny Bazzi credit, audience bullet list, quote callout). Last paragraph completion ("ideal backdrop for a premium R&B and Hip Hop experience") was written by Claude to close the user's truncated paste — confirm or rewrite.
 - [ ] **Real set times** — lineup roster says "Set times drop closer to the date"
