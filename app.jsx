@@ -15,6 +15,24 @@ const MEGATIX_URLS = {
   newjack:  "https://megatix.in.th/events/oscbkk?aid=NEWJACK",
   sosodef:  "https://megatix.in.th/events/oscbkk?aid=SOSODEF",
 };
+
+// ─── DIRECT MESSAGING ──────────────────────────────────────
+// Every CTA that says "message us" routes through one of these.
+// Update here = updates everywhere (nav, floating bubble, lounges,
+// dedicated Contact section, footer).
+const CONTACT = {
+  line:      "https://line.me/R/ti/p/@oldschoolchillbkk",
+  whatsapp:  "https://wa.me/61488846198",
+  messenger: "https://m.me/oldschoolchillbkk",
+  instagram: "https://instagram.com/oldschoolchillbkk",
+  email:     "mailto:info@oscbkk.com",
+  // Display strings
+  whatsappDisplay: "+61 488 846 198",
+  lineDisplay:     "@oldschoolchillbkk",
+  igDisplay:       "@oldschoolchillbkk",
+  fbDisplay:       "@oldschoolchillbkk",
+};
+// ────────────────────────────────────────────────────────────
 // ────────────────────────────────────────────────────────────
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -51,9 +69,10 @@ function App() {
       <Lounges />
       <VenuePhotos />
       <Rules />
+      <Contact />
       <Foot />
 
-      <MessengerBubble />
+      <ChatFloats />
 
       <TweaksPanel title="Tweaks">
         <TweakSection title="Accent color">
@@ -95,48 +114,59 @@ function App() {
   );
 }
 
-/* ===================== NAV ===================== */
-function MessengerBubble() {
-  const [open, setOpen] = React.useState(false);
+/* ===================== FLOATING CHAT ===================== */
+// Three stacked circular buttons, bottom-left. One tap = straight to chat.
+// LINE / WhatsApp / Instagram — no popup, no Messenger.
+const ChatIcon = {
+  line: (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+    </svg>
+  ),
+  whatsapp: (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  ),
+  messenger: (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.301 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111S18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/>
+    </svg>
+  ),
+  instagram: (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    </svg>
+  ),
+  email: (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M3 6.5h18v11H3z"/>
+      <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M3.5 7l8.5 6.5L20.5 7"/>
+    </svg>
+  ),
+};
+
+function ChatFloats() {
+  const floats = [
+    { k: "LINE",     icon: ChatIcon.line,     href: CONTACT.line,     cls: "chat-float--line"     },
+    { k: "WhatsApp", icon: ChatIcon.whatsapp, href: CONTACT.whatsapp, cls: "chat-float--whatsapp" },
+    { k: "Email",    icon: ChatIcon.email,    href: CONTACT.email,    cls: "chat-float--email"    },
+  ];
   return (
-    <div className={`msg-bubble ${open ? "msg-bubble--open" : ""}`}>
-      {open && (
-        <div className="msg-bubble__card" role="dialog" aria-label="Message us">
-          <div className="msg-bubble__head">
-            <div>
-              <div className="msg-bubble__title">Message us</div>
-              <div className="msg-bubble__sub">Reply within the day · Mon–Sun</div>
-            </div>
-            <button className="msg-bubble__x" onClick={() => setOpen(false)} aria-label="Close">×</button>
-          </div>
-          <p className="msg-bubble__body">
-            Quickest way to reach the team — Messenger, LINE, or Instagram DM. Pick your spot:
-          </p>
-          <div className="msg-bubble__channels">
-            <a href="https://m.me/oldschoolchillbkk" target="_blank" rel="noopener" className="msg-bubble__chan msg-bubble__chan--messenger">
-              <span className="msg-bubble__chan-k">Messenger</span>
-              <span className="msg-bubble__chan-v">@oldschoolchillbkk →</span>
-            </a>
-            <a href="#" className="msg-bubble__chan msg-bubble__chan--line msg-bubble__chan--soon" aria-disabled="true" onClick={(e) => e.preventDefault()}>
-              <span className="msg-bubble__chan-k">LINE <span className="msg-bubble__soon">Soon</span></span>
-              <span className="msg-bubble__chan-v">@oscbkk</span>
-            </a>
-            <a href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener" className="msg-bubble__chan msg-bubble__chan--ig">
-              <span className="msg-bubble__chan-k">Instagram</span>
-              <span className="msg-bubble__chan-v">@oldschoolchillbkk →</span>
-            </a>
-          </div>
-        </div>
-      )}
-      <button className="msg-bubble__btn" onClick={() => setOpen(o => !o)} aria-label={open ? "Close chat" : "Open chat"}>
-        {open ? (
-          <span style={{fontSize: 22, lineHeight: 1}}>×</span>
-        ) : (
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 2C6.48 2 2 6.04 2 11c0 2.84 1.51 5.36 3.86 7L5 22l4.2-2.18C10.07 19.94 11.02 20 12 20c5.52 0 10-4.04 10-9s-4.48-9-10-9zM7.1 13.97l3.31-5.27 3.45 2.7L17.1 8 13.8 13.27l-3.45-2.7-3.25 3.4z" fill="currentColor"/>
-          </svg>
-        )}
-      </button>
+    <div className="chat-floats" role="complementary" aria-label="Quick contact">
+      {floats.map(f => (
+        <a
+          key={f.k}
+          href={f.href}
+          target={f.href.startsWith("mailto:") ? undefined : "_blank"}
+          rel={f.href.startsWith("mailto:") ? undefined : "noopener"}
+          className={`chat-float ${f.cls}`}
+          aria-label={`Contact us via ${f.k}`}
+        >
+          <span className="chat-float__icon">{f.icon}</span>
+          <span className="chat-float__label">{f.k}</span>
+        </a>
+      ))}
     </div>
   );
 }
@@ -155,6 +185,7 @@ function Nav() {
         <a href="#tickets">Tickets</a>
         <a href="#lounges">Lounges</a>
         <a href="#rules">House Rules</a>
+        <a href="#contact">Contact</a>
       </div>
       <div className="nav__socials" aria-label="Follow us">
         <a className="nav__social" href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener" aria-label="Instagram">
@@ -959,7 +990,7 @@ function Lounges() {
           </div>
           <div className="custom-cta__actions">
             <a className="custom-cta__btn custom-cta__btn--primary" href="mailto:info@oscbkk.com?subject=Custom%20Package%20Enquiry%20%E2%80%94%20OSCBKK">Get in touch →</a>
-            <a className="custom-cta__btn custom-cta__btn--ghost" href="https://m.me/oldschoolchillbkk" target="_blank" rel="noopener">Or message us on Messenger</a>
+            <a className="custom-cta__btn custom-cta__btn--ghost" href={CONTACT.line} target="_blank" rel="noopener">Or message us on LINE</a>
           </div>
         </div>
 
@@ -970,19 +1001,19 @@ function Lounges() {
             <p className="thai">ติดต่อทีมงานเพื่อจองและสอบถามรายละเอียด</p>
           </div>
           <div className="lounges__contact-grid">
-            <a className="lounges__contact-card lounges__contact-card--soon" href="#" aria-disabled="true" onClick={(e) => e.preventDefault()}>
-              <span className="k">LINE <span className="lounges__soon">Soon</span></span>
-              <span className="v">@oscbkk</span>
+            <a className="lounges__contact-card lounges__contact-card--line" href={CONTACT.line} target="_blank" rel="noopener">
+              <span className="k">LINE</span>
+              <span className="v">{CONTACT.lineDisplay}</span>
             </a>
-            <a className="lounges__contact-card" href="https://m.me/oldschoolchillbkk" target="_blank" rel="noopener">
+            <a className="lounges__contact-card lounges__contact-card--whatsapp" href={CONTACT.whatsapp} target="_blank" rel="noopener">
+              <span className="k">WhatsApp</span>
+              <span className="v">{CONTACT.whatsappDisplay}</span>
+            </a>
+            <a className="lounges__contact-card" href={CONTACT.messenger} target="_blank" rel="noopener">
               <span className="k">Messenger</span>
-              <span className="v">@oldschoolchillbkk</span>
+              <span className="v">{CONTACT.fbDisplay}</span>
             </a>
-            <a className="lounges__contact-card" href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener">
-              <span className="k">Instagram DM</span>
-              <span className="v">@oldschoolchillbkk</span>
-            </a>
-            <a className="lounges__contact-card" href="mailto:info@oscbkk.com">
+            <a className="lounges__contact-card" href={CONTACT.email}>
               <span className="k">Email</span>
               <span className="v">info@oscbkk.com</span>
             </a>
@@ -1236,6 +1267,77 @@ function Rules() {
   );
 }
 
+/* ===================== CONTACT ===================== */
+function Contact() {
+  const channels = [
+    {
+      k: "LINE",
+      v: CONTACT.lineDisplay,
+      href: CONTACT.line,
+      cls: "contact__card--line",
+      icon: ChatIcon.line,
+    },
+    {
+      k: "WhatsApp",
+      v: CONTACT.whatsappDisplay,
+      href: CONTACT.whatsapp,
+      cls: "contact__card--whatsapp",
+      icon: ChatIcon.whatsapp,
+    },
+    {
+      k: "Messenger",
+      v: CONTACT.fbDisplay,
+      href: CONTACT.messenger,
+      cls: "contact__card--messenger",
+      icon: ChatIcon.messenger,
+    },
+    {
+      k: "Instagram DM",
+      v: CONTACT.igDisplay,
+      href: CONTACT.instagram,
+      cls: "contact__card--ig",
+      icon: ChatIcon.instagram,
+    },
+  ];
+  return (
+    <section className="section section--contact" id="contact">
+      <div className="container">
+        <div className="section__head">
+          <div className="num">07</div>
+          <div className="titles">
+            <div className="title">Talk <em>to us</em></div>
+            <div className="thai">ติดต่อทีมงาน · กดเลือกช่องทางที่สะดวก</div>
+          </div>
+        </div>
+
+        <div className="contact__lede">
+          <p>Got a question, a private party or special occasion to book, or a lounge to lock in? Tap any channel — it'll open the app and put you straight in our inbox.</p>
+          <p className="contact__lede-th">มีคำถาม · อยากจัดงานส่วนตัว · หรือจองโต๊ะ — กดเลือกช่องทางด้านล่าง เปิดแอปทักได้เลย</p>
+        </div>
+
+        <div className="contact__grid">
+          {channels.map(c => (
+            <a key={c.k} className={`contact__card ${c.cls}`} href={c.href} target="_blank" rel="noopener">
+              <span className="contact__mark" aria-hidden="true">{c.icon}</span>
+              <div className="contact__body">
+                <span className="contact__k">{c.k}</span>
+                <span className="contact__v">{c.v}</span>
+              </div>
+              <span className="contact__arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+
+        <div className="contact__email">
+          <span className="contact__email-k">Or email</span>
+          <a className="contact__email-v" href={CONTACT.email}>info@oscbkk.com</a>
+          <span className="contact__email-th">— สำหรับเรื่องเป็นทางการ ส่งอีเมลได้</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ===================== FOOTER ===================== */
 function Foot() {
   return (
@@ -1251,8 +1353,8 @@ function Foot() {
             <li><a href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener">Instagram ↗</a></li>
             <li><a href="https://facebook.com/oldschoolchillbkk" target="_blank" rel="noopener">Facebook ↗</a></li>
             <li><a href="https://tiktok.com/@oldschoolchillbkk" target="_blank" rel="noopener">TikTok ↗</a></li>
-            <li className="foot__col-soon"><span>LINE Official</span><span className="foot__soon">Soon</span></li>
-            <li><a href="https://open.spotify.com/user/31qnnw4ys3tpcc7eltq3dhosqcsq" target="_blank" rel="noopener">Follow on Spotify ↗</a></li>
+            <li><a href={CONTACT.line} target="_blank" rel="noopener">LINE ↗</a></li>
+            <li><a href="https://open.spotify.com/user/31qnnw4ys3tpcc7eltq3dhosqcsq" target="_blank" rel="noopener">Spotify ↗</a></li>
           </ul>
         </div>
         <div className="foot__col">
@@ -1268,8 +1370,10 @@ function Foot() {
         <div className="foot__col">
           <h4>Contact</h4>
           <ul>
+            <li><a href={CONTACT.whatsapp} target="_blank" rel="noopener">WhatsApp ↗</a></li>
+            <li><a href={CONTACT.line} target="_blank" rel="noopener">LINE ↗</a></li>
             <li><a href="mailto:info@oscbkk.com">info@oscbkk.com</a></li>
-            <li><a href="#lounges">Lounges / โต๊ะ</a></li>
+            <li><a href="#contact">All channels →</a></li>
             <li><a href="mailto:info@oscbkk.com?subject=Press%20%26%20PR%20Enquiry">Press &amp; PR</a></li>
             <li><a href="mailto:info@oscbkk.com?subject=Partner%20%2F%20Sponsor%20Enquiry">Partner / Sponsor</a></li>
           </ul>

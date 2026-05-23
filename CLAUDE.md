@@ -24,8 +24,9 @@ Edit this file freely — it's loaded as context at the start of every new chat 
   - New Jack lounge: `?aid=NEWJACK` · So So Def lounge: `?aid=SOSODEF` (the two base lounge tiers sold direct via Megatix; rest are enquiry-only)
 - **Meta Pixel ID:** `1342318294454589`
 - **Email:** info@oscbkk.com
+- **LINE Official:** `@oldschoolchillbkk` — deep link `https://line.me/R/ti/p/@oldschoolchillbkk`
+- **WhatsApp (Aussie virtual):** +61 488 846 198 — deep link `https://wa.me/61488846198`
 - **Socials:** IG / FB / TikTok all `@oldschoolchillbkk` · Messenger `m.me/oldschoolchillbkk`
-- **LINE:** pending — handle TBD (marked "Soon" everywhere)
 
 ## Tickets
 
@@ -75,8 +76,9 @@ Beyond the minimum, standard menu pricing.
 8. `<Lounges>` (#lounges) — 6 packages + custom enquiry CTA + contact grid
 9. `<VenuePhotos>` (#venue) — 4-photo grid (filtered to neutralise Aces' red lighting)
 10. `<Rules>` (#rules) — 4 house rules + Dress Code "Grown & Sexy"
-11. `<Foot>` — brand, socials, venue, contact
-12. `<MessengerBubble>` — floating bottom-left chat launcher
+11. `<Contact>` (#contact) — dedicated direct-message hub (LINE · WhatsApp · Messenger · Instagram + email)
+12. `<Foot>` — brand, socials, venue, contact
+13. `<ChatFloats>` — three stacked floating direct-link bubbles bottom-left (LINE · WhatsApp · Email). No popup card; socials live in the regular links.
 
 ## Design system
 
@@ -117,7 +119,6 @@ Beyond the minimum, standard menu pricing.
 
 ## Open threads / TODO
 
-- [ ] **LINE Official** — handle TBD, "Soon" pills in: Messenger bubble, Lounges contact grid, Footer
 - [ ] **Legacy CSS cleanup** — `.tables`, `.receipt`, `.lounge`, `.venue__ph` etc. all `display:none`. Safe to delete on a quiet pass.
 - [ ] **Press release** — updated May 2026 with new copy (El Rafa, Danny Bazzi credit, audience bullet list, quote callout). Last paragraph completion ("ideal backdrop for a premium R&B and Hip Hop experience") was written by Claude to close the user's truncated paste — confirm or rewrite.
 - [ ] **Real set times** — lineup roster says "Set times drop closer to the date"
