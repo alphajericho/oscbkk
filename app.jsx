@@ -899,7 +899,7 @@ function Lounges() {
       pax: "Up to 18 pax",
       price: "40,000",
       tier: "Ultra",
-      accent: "#4cc3ff",
+      accent: "#ff6a3d",
       featured: true,
       megatix: MEGATIX_URL,
       inclusions: [
