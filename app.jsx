@@ -731,11 +731,25 @@ function Tickets() {
       name: "General Admission", thai: "บัตรทั่วไป",
       bar: "TIER 02 / LIMITED",
       price: "600",
+      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
         "Ticket includes two drinks",
         "Limited numbers · advance only",
+      ],
+    },
+    {
+      key: "final",
+      name: "Final Release", thai: "บัตรรอบสุดท้าย",
+      bar: "TIER 03 / FINAL",
+      price: "700",
+      featured: true,
+      perks: [
+        "General Admission entry",
+        "Guaranteed entry · pre-sale only",
+        "Ticket includes two drinks",
+        "Last tier · selling out fast",
       ],
     },
   ];
@@ -801,6 +815,7 @@ function Lounges() {
       price: "4,000",
       tier: "Table",
       accent: "#ff3d8b",
+      soldOut: true,
       megatix: MEGATIX_URLS.newjack,
       inclusions: [
         "Event entry for up to 4 guests",
@@ -816,6 +831,7 @@ function Lounges() {
       price: "8,000",
       tier: "Lounge",
       accent: "#ff3d8b",
+      soldOut: true,
       megatix: MEGATIX_URLS.sosodef,
       inclusions: [
         "Event entry for up to 4 guests",
@@ -832,6 +848,7 @@ function Lounges() {
       price: "14,000",
       tier: "Lounge",
       accent: "#ff3d8b",
+      megatix: MEGATIX_URL,
       inclusions: [
         "Event entry for up to 6 guests",
         "Reserved lounge",
@@ -847,6 +864,7 @@ function Lounges() {
       price: "18,000",
       tier: "Premium",
       accent: "#f3b53b",
+      megatix: MEGATIX_URL,
       inclusions: [
         "Event entry for up to 8 guests",
         "Reserved lounge",
@@ -863,6 +881,7 @@ function Lounges() {
       tier: "VVIP",
       accent: "#4cc3ff",
       featured: true,
+      megatix: MEGATIX_URL,
       inclusions: [
         "Event entry for up to 10 guests",
         "Reserved lounge",
@@ -882,6 +901,7 @@ function Lounges() {
       tier: "Ultra",
       accent: "#4cc3ff",
       featured: true,
+      megatix: MEGATIX_URL,
       inclusions: [
         "Event entry for up to 18 guests",
         "Reserved lounge",
@@ -925,7 +945,8 @@ function Lounges() {
 
         <div className="packages">
           {packages.map(p => (
-            <article key={p.key} className={`package ${p.featured ? "package--featured" : ""} ${p.type === "table" ? "package--table" : ""}`} style={{"--pkg-accent": p.accent}}>
+            <article key={p.key} className={`package ${p.featured ? "package--featured" : ""} ${p.type === "table" ? "package--table" : ""} ${p.soldOut ? "package--sold-out" : ""}`} style={{"--pkg-accent": p.accent}}>
+              {p.soldOut && <span className="package__soldout-badge">Sold Out</span>}
               <div className="package__head">
                 <div className="package__label-row">
                   <span className="package__label">{p.label}</span>
@@ -936,7 +957,7 @@ function Lounges() {
               </div>
 
               <div className="package__price">
-                <span className="package__price-k">{p.megatix ? "All-In Price" : "Minimum Spend"}</span>
+                <span className="package__price-k">Minimum Spend</span>
                 <div className="package__price-row">
                   <span className="package__price-amt">฿{p.price}</span>
                   <span className="package__price-cur">THB</span>
@@ -950,7 +971,12 @@ function Lounges() {
                 {p.inclusions.map((inc, i) => <li key={i}>{inc}</li>)}
               </ul>
 
-              {p.megatix ? (
+              {p.soldOut ? (
+                <div className="package__ctas">
+                  <span className="package__cta package__cta--soldout" aria-disabled="true">Sold Out</span>
+                  <a className="package__cta-alt" href="#lounges-contact">Join the waitlist ↗</a>
+                </div>
+              ) : p.megatix ? (
                 <div className="package__ctas">
                   <a className="package__cta package__cta--buy" href={p.megatix} target="_blank" rel="noopener">Reserve on Megatix ↗</a>
                   <a className="package__cta-alt" href="#lounges-contact">Or enquire first ↗</a>

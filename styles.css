@@ -656,8 +656,8 @@ body::before {
 /* ====== TICKETS ====== */
 .tickets {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 880px;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1080px;
   margin: 0 auto;
   gap: 24px;
 }
@@ -1067,6 +1067,42 @@ body::before {
   transition: color .2s;
 }
 .package__cta-alt:hover { color: var(--ink); }
+
+/* sold-out package state */
+.package--sold-out {
+  opacity: 0.62;
+}
+.package--sold-out:hover { transform: none; border-color: var(--line); }
+.package--sold-out .package__head,
+.package--sold-out .package__price,
+.package--sold-out .package__list {
+  filter: grayscale(1);
+}
+.package--sold-out .package__price-amt {
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--ink-dim) 70%, transparent);
+}
+.package__soldout-badge {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 2;
+  font-family: "Archivo Black", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0b0814;
+  background: var(--ink-dim);
+  padding: 6px 10px;
+  transform: rotate(3deg);
+}
+.package__cta--soldout {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink-dim) !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.package--sold-out .package__cta-alt { pointer-events: auto; }
 
 /* legacy lounge cards (hidden) */
 .lounges__grid, .lounge, .lounge__photo, .lounge__badge, .lounge__body, .lounge__head, .lounge__name, .lounge__pax, .lounge__desc, .lounge__inc { display: none; }
