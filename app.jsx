@@ -1025,6 +1025,7 @@ function Lounges() {
       tier: "Ultra",
       accent: "#ff6a3d",
       featured: true,
+      soldOut: true,
       megatix: MEGATIX_URL,
       inclusions: [
         "Event entry for up to 15 guests",
