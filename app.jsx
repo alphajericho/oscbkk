@@ -5,6 +5,22 @@
 // button on the page. Same URL for all tiers — Megatix lets the buyer
 // pick their tier on its checkout page.
 const MEGATIX_URL = "https://megatix.in.th/events/oscbkk";
+
+// ─── WAITLIST (Brevo) ──────────────────────────────────────
+// The door-ticket waitlist feeds a Brevo contact list ("OSCBKK Waitlist").
+// We keep the site's own custom-styled form and POST it into Brevo's
+// serve endpoint through a hidden iframe — so visitors never leave the
+// page and still get the inline "You're on the list" success state.
+//
+// WAITLIST_ENDPOINT below is derived from the Brevo embed's iframe URL
+// (the /v2/serve/ part becomes /serve/). The email field Brevo expects
+// is named EMAIL.
+//
+// To verify it's live: submit a real email on the site, then check
+// Brevo → Contacts → list "OSCBKK Waitlist" — the address should appear.
+// If it doesn't, fall back to pasting Brevo's raw HTML embed and we'll
+// match the exact field names. Set to "" to run in offline DEMO mode.
+const WAITLIST_ENDPOINT = "https://5b489cb7.sibforms.com/serve/MUIFADb7ygpzNtT0RfeJOE5eLLUNy35Ijw0CJOdMYyIfBNzhVGsazqNnYklI5sYlvmU0tHaybERBFVO82RtuGfd4uzBKdymMVFHZJwU_B4xR1ehV10yFxRU7S8tDFIfKkmA6MppHkjrRYy9FEoyd6mcSQV4TbLE3INhDDvN4d9LBpG5bP1cItXTiwoLvpvWqqb5rSdy_52QAw7jz";
 const MEGATIX_URLS = {
   early: "https://megatix.in.th/events/oscbkk?aid=EARLYBIRD",
   ga:    "https://megatix.in.th/events/oscbkk?aid=GA",
@@ -745,6 +761,7 @@ function Tickets() {
       bar: "TIER 03 / FINAL",
       price: "700",
       featured: true,
+      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -797,8 +814,115 @@ function Tickets() {
             </article>
           ))}
         </div>
+
+        <Waitlist />
       </div>
     </section>
+  );
+}
+
+/* ===================== WAITLIST + DOOR NOTE ===================== */
+function Waitlist() {
+  const [email, setEmail] = React.useState("");
+  const [status, setStatus] = React.useState("idle"); // idle | sending | ok | error
+  const submittedRef = React.useRef(false);
+
+  function onSubmit(e) {
+    const value = email.trim();
+    if (!value || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) {
+      e.preventDefault();
+      setStatus("error");
+      return;
+    }
+    // DEMO mode — no endpoint configured: don't actually navigate/post.
+    if (!WAITLIST_ENDPOINT) {
+      e.preventDefault();
+      setStatus("sending");
+      setTimeout(() => setStatus("ok"), 500);
+      return;
+    }
+    // Live: let the native POST flow into the hidden Brevo iframe.
+    // We flip to success when that iframe reports back (onLoad).
+    submittedRef.current = true;
+    setStatus("sending");
+  }
+
+  function onSinkLoad() {
+    // The hidden iframe fires load once on mount (about:blank) — ignore
+    // until a real submission has happened.
+    if (submittedRef.current) {
+      submittedRef.current = false;
+      setStatus("ok");
+    }
+  }
+
+  return (
+    <div className="waitlist" id="waitlist">
+      <div className="waitlist__door">
+        <span className="waitlist__door-k">Door Tickets</span>
+        <p className="waitlist__door-en">
+          We cannot guarantee there will be any door tickets available. We will
+          announce any availability in the days leading up to the event.
+          <strong> Waitlist receives priority access.</strong>
+        </p>
+        <p className="waitlist__door-th">
+          ไม่รับประกันว่าจะมีบัตรหน้างาน · หากมีจะประกาศในช่วงไม่กี่วันก่อนงาน · ผู้ที่ลงชื่อในลิสต์รอจะได้สิทธิ์ก่อน
+        </p>
+      </div>
+
+      <div className="waitlist__form-wrap">
+        {status === "ok" ? (
+          <div className="waitlist__success" role="status">
+            <span className="waitlist__success-mark" aria-hidden="true">✓</span>
+            <div>
+              <strong>You're on the list.</strong>
+              <span>We'll email you first if door tickets open up. · คุณอยู่ในลิสต์รอแล้ว</span>
+            </div>
+          </div>
+        ) : (
+          <form
+            className="waitlist__form"
+            onSubmit={onSubmit}
+            action={WAITLIST_ENDPOINT || undefined}
+            method="POST"
+            target="oscbkk_waitlist_sink"
+            noValidate
+          >
+            <label className="waitlist__label" htmlFor="waitlist-email">
+              Join the waitlist
+              <small>ลงชื่อรอบัตรหน้างาน · รับสิทธิ์ก่อนใคร</small>
+            </label>
+            <div className="waitlist__row">
+              <input
+                id="waitlist-email"
+                name="EMAIL"
+                className={`waitlist__input ${status === "error" ? "waitlist__input--error" : ""}`}
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (status === "error") setStatus("idle"); }}
+                aria-invalid={status === "error"}
+                required
+              />
+              <button className="waitlist__btn" type="submit" disabled={status === "sending"}>
+                {status === "sending" ? "Adding…" : "Notify me"}
+              </button>
+            </div>
+            {/* Brevo honeypot + locale (hidden) */}
+            <input type="text" name="email_address_check" defaultValue="" tabIndex="-1" autoComplete="off" style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px" }} aria-hidden="true" />
+            <input type="hidden" name="locale" value="en" />
+            {status === "error" && (
+              <span className="waitlist__hint">Please enter a valid email address. · กรุณากรอกอีเมลให้ถูกต้อง</span>
+            )}
+          </form>
+        )}
+      </div>
+
+      {/* Hidden sink so the Brevo POST never navigates the page away */}
+      <iframe name="oscbkk_waitlist_sink" title="" onLoad={onSinkLoad} style={{ display: "none" }} aria-hidden="true"></iframe>
+    </div>
   );
 }
 
@@ -845,7 +969,7 @@ function Lounges() {
       key: "deathrow", label: "Death Row", type: "lounge",
       sofa: "Standard Lounge",
       pax: "Up to 6 pax",
-      price: "14,000",
+      price: "12,000",
       tier: "Lounge",
       accent: "#ff3d8b",
       megatix: MEGATIX_URL,
@@ -861,7 +985,7 @@ function Lounges() {
       key: "badboy", label: "Bad Boy", type: "lounge",
       sofa: "Prime Lounge",
       pax: "Up to 8 pax",
-      price: "18,000",
+      price: "16,000",
       tier: "Premium",
       accent: "#f3b53b",
       megatix: MEGATIX_URL,
@@ -877,7 +1001,7 @@ function Lounges() {
       key: "rocafella", label: "Roc-A-Fella", type: "lounge",
       sofa: "VVIP Lounge",
       pax: "Up to 10 pax",
-      price: "30,000",
+      price: "20,000",
       tier: "VVIP",
       accent: "#4cc3ff",
       featured: true,
@@ -896,14 +1020,14 @@ function Lounges() {
     {
       key: "defjam", label: "Def Jam", type: "lounge",
       sofa: "Ultra VVIP Lounge",
-      pax: "Up to 18 pax",
-      price: "40,000",
+      pax: "Up to 15 pax",
+      price: "30,000",
       tier: "Ultra",
       accent: "#ff6a3d",
       featured: true,
       megatix: MEGATIX_URL,
       inclusions: [
-        "Event entry for up to 18 guests",
+        "Event entry for up to 15 guests",
         "Reserved lounge",
         "Escorted VIP Priority Admission",
         "All-night priority entry",
@@ -974,7 +1098,7 @@ function Lounges() {
               {p.soldOut ? (
                 <div className="package__ctas">
                   <span className="package__cta package__cta--soldout" aria-disabled="true">Sold Out</span>
-                  <a className="package__cta-alt" href="#lounges-contact">Join the waitlist ↗</a>
+                  <a className="package__cta-alt" href="#waitlist">Join the waitlist ↗</a>
                 </div>
               ) : p.megatix ? (
                 <div className="package__ctas">
