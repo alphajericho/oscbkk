@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OSCBKK · Instagram Carousel — In Conversation</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sriracha&family=Pacifico&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --bg:#0b0814; --bg-2:#14102a; --ink:#f4eedd; --ink-dim:#9a92b5;
+  --line:rgba(244,238,221,0.14); --accent:#ff3d8b; --accent-2:#4cc3ff; --gold:#f3b53b;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:#070510; color:var(--ink);
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---- page chrome (not exported) ---- */
+.page-head{
+  position:sticky; top:0; z-index:20;
+  display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  padding:18px 28px;
+  background:rgba(7,5,16,0.92); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.page-head h1{
+  font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:0.22em;
+  text-transform:uppercase; color:var(--ink-dim); margin:0; font-weight:500;
+}
+.page-head h1 b{color:var(--ink); font-weight:500;}
+.page-head .hint{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:0.04em;
+  color:var(--ink-dim);
+}
+.page-head .hint b{color:var(--accent); font-weight:500;}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, 360px);
+  gap:40px 32px;
+  justify-content:center;
+  padding:44px 28px 90px;
+}
+.cell{ width:360px; }
+.cell__label{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--ink-dim); margin:0 0 12px; display:flex; gap:10px; align-items:baseline;
+}
+.cell__label b{ color:var(--accent); font-weight:500; }
+.cell__label .typ{ margin-left:auto; color:var(--ink-dim); opacity:0.7; }
+.cell__dl{
+  margin-top:10px; display:inline-flex; align-items:center; gap:8px;
+  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--ink-dim); cursor:pointer;
+  border:1px solid var(--line); padding:7px 12px; background:transparent;
+  transition:color .15s, border-color .15s;
+}
+.cell__dl:hover{ color:var(--accent); border-color:var(--accent); }
+.btn{
+  font-family:"Archivo Black",sans-serif; text-transform:uppercase; font-size:12px;
+  letter-spacing:0.04em; color:#0b0814; background:var(--accent);
+  border:0; padding:12px 18px; cursor:pointer; transition:filter .15s;
+}
+.btn:hover{ filter:brightness(1.08); }
+.btn[disabled]{ opacity:0.6; cursor:default; }
+.page-head .right{ display:flex; align-items:center; gap:16px; }
+
+/* scale 1080x1350 -> 360x450 (0.3333) */
+.tile-shell{
+  width:360px; height:450px; overflow:hidden; position:relative;
+  border:1px solid var(--line); background:var(--bg);
+  box-shadow:0 18px 50px rgba(0,0,0,0.5);
+}
+.tile{
+  width:1080px; height:1350px;
+  transform:scale(0.33333); transform-origin:top left;
+  position:absolute; top:0; left:0;
+}
+
+/* ---- EXPORT MODE: tiles at true 1080x1350, stacked, no chrome ---- */
+body.export .page-head,
+body.export .cell__label{ display:none; }
+body.export .gallery{ display:block; padding:0; }
+body.export .cell{ width:1080px; margin:0; }
+body.export .tile-shell{
+  width:1080px; height:1350px; border:0; box-shadow:none;
+}
+body.export .tile{ transform:none; }
+
+/* ============ TILE INTERNALS (authored at 1080x1350) ============ */
+.t{
+  width:1080px; height:1350px; position:relative; overflow:hidden;
+  background:var(--bg); color:var(--ink);
+  display:flex; flex-direction:column;
+}
+.t__grain{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:3;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='1'/></svg>");
+  opacity:0.07; mix-blend-mode:overlay;
+}
+/* shared header/footer rows inside a tile */
+.t__top{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:64px 72px 0; z-index:4;
+}
+.t__brand{
+  font-family:"Pacifico",cursive; font-size:38px; color:var(--accent);
+  text-shadow:0 0 22px color-mix(in srgb, var(--accent) 55%, transparent);
+  line-height:1;
+}
+.t__kicker{
+  font-family:"JetBrains Mono",monospace; font-size:22px; letter-spacing:0.28em;
+  text-transform:uppercase; color:var(--ink-dim);
+}
+.t__foot{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 72px 64px; z-index:4; margin-top:auto;
+}
+.t__handle{
+  font-family:"JetBrains Mono",monospace; font-size:22px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--ink-dim);
+}
+.t__page{
+  font-family:"Archivo Black",sans-serif; font-size:24px; color:var(--ink);
+  letter-spacing:0.02em;
+}
+.t__page span{ color:var(--ink-dim); }
+
+/* big watermark quote mark */
+.t__qmark{
+  position:absolute; z-index:1; font-family:"Archivo Black",sans-serif;
+  font-size:560px; line-height:0.7; color:color-mix(in srgb, var(--accent) 16%, transparent);
+  top:120px; left:48px; user-select:none;
+}
+.t--cyan .t__qmark{ color:color-mix(in srgb, var(--accent-2) 16%, transparent); }
+
+/* quote body */
+.t__body{ flex:1; display:flex; flex-direction:column; justify-content:center; padding:0 72px; z-index:4; }
+.t__num{
+  font-family:"JetBrains Mono",monospace; font-size:24px; letter-spacing:0.26em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:34px;
+}
+.t--cyan .t__num{ color:var(--accent-2); }
+.t__quote{
+  font-family:"Archivo Black",sans-serif; text-transform:uppercase;
+  font-size:84px; line-height:1.04; letter-spacing:-0.01em; margin:0;
+  text-wrap:balance;
+}
+.t__quote .hl{ color:var(--accent); }
+.t--cyan .t__quote .hl{ color:var(--accent-2); }
+.t__quote.sm{ font-size:66px; line-height:1.08; }
+.t__quote.lg{ font-size:104px; line-height:1.0; }
+.t__attrib{
+  margin-top:48px; display:flex; align-items:center; gap:18px;
+  font-family:"JetBrains Mono",monospace; font-size:24px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--ink-dim);
+}
+.t__attrib .bar{ width:54px; height:3px; background:var(--accent); }
+.t--cyan .t__attrib .bar{ background:var(--accent-2); }
+.t__th{
+  font-family:"Sriracha",cursive; font-size:30px; line-height:1.6;
+  color:var(--ink-dim); margin-top:30px; max-width:760px;
+}
+
+/* photo tiles (cover / cta) */
+.t--photo{ justify-content:flex-end; }
+.t__img{ position:absolute; inset:0; z-index:0; }
+.t__img img{ width:100%; height:100%; object-fit:cover; }
+.t__scrim{
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg, rgba(7,5,16,0.55) 0%, rgba(7,5,16,0.05) 32%, rgba(7,5,16,0.62) 68%, rgba(7,5,16,0.96) 100%);
+}
+.t__cover{
+  position:relative; z-index:4; padding:0 72px 0; margin-top:auto;
+}
+.t__eyebrow{
+  display:inline-block; font-family:"JetBrains Mono",monospace; font-size:24px;
+  letter-spacing:0.26em; text-transform:uppercase; color:#0b0814;
+  background:var(--accent); padding:12px 22px; margin-bottom:34px;
+}
+.t__title{
+  font-family:"Archivo Black",sans-serif; text-transform:uppercase;
+  font-size:128px; line-height:0.92; letter-spacing:-0.02em; margin:0;
+}
+.t__role{
+  font-family:"JetBrains Mono",monospace; font-size:26px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--ink); margin:28px 0 0;
+}
+.t__swipe{
+  display:flex; align-items:center; gap:16px; margin-top:40px;
+  font-family:"JetBrains Mono",monospace; font-size:24px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--accent);
+}
+.t__swipe .arrow{ font-size:30px; }
+
+/* CTA specifics */
+.t__cta-h{
+  font-family:"Archivo Black",sans-serif; text-transform:uppercase;
+  font-size:96px; line-height:0.96; letter-spacing:-0.01em; margin:0;
+}
+.t__cta-h em{ font-family:"Pacifico",cursive; font-style:normal; text-transform:none; color:var(--accent); }
+.t__facts{ margin-top:46px; display:flex; flex-direction:column; gap:0; }
+.t__fact{
+  display:grid; grid-template-columns:200px 1fr; gap:22px; padding:18px 0;
+  border-top:1px dashed var(--line);
+}
+.t__fact:last-child{ border-bottom:1px dashed var(--line); }
+.t__fact .k{
+  font-family:"JetBrains Mono",monospace; font-size:22px; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--ink-dim); align-self:center;
+}
+.t__fact .v{ font-family:"Archivo Black",sans-serif; font-size:30px; color:var(--ink); }
+.t__pill{
+  display:inline-flex; align-self:flex-start; margin-top:44px;
+  font-family:"Archivo Black",sans-serif; text-transform:uppercase; font-size:30px;
+  letter-spacing:0.02em; color:#0b0814; background:var(--accent); padding:22px 34px;
+}
+
+/* solid-accent quote variant */
+.t--solid{ background:var(--accent); color:#0b0814; }
+.t--solid .t__brand{ color:#0b0814; text-shadow:none; }
+.t--solid .t__kicker,
+.t--solid .t__handle{ color:rgba(11,8,20,0.66); }
+.t--solid .t__page{ color:#0b0814; }
+.t--solid .t__page span{ color:rgba(11,8,20,0.5); }
+.t--solid .t__num{ color:#0b0814; }
+.t--solid .t__quote{ color:#0b0814; }
+.t--solid .t__quote .hl{ color:var(--ink); }
+.t--solid .t__attrib{ color:rgba(11,8,20,0.7); }
+.t--solid .t__attrib .bar{ background:#0b0814; }
+.t--solid .t__qmark{ color:rgba(11,8,20,0.12); }
+.t--solid .t__th{ color:rgba(11,8,20,0.66); }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>OSCBKK · <b>Instagram Carousel</b> — In Conversation with DJ Jordan Adam</h1>
+  <div class="right">
+    <span class="hint">10 slides · 1080×1350 (4:5) · slides 2–9 work as standalone drip tiles</span>
+    <button class="btn" id="exportAll">Export all PNGs ↓</button>
+  </div>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<script>
+const SLIDES = [
+  /* 1 — COVER */
+  { type:"cover", typ:"Cover" },
+
+  /* 2 */
+  { type:"quote", variant:"", num:"On the gap", qmark:"“",
+    html:`There was <span class="hl">no home</span> for it.`,
+    sub:`No consistent, credible night where this was the whole point.`,
+    th:`มันไม่เคยมีบ้านของมัน — ไม่มีงานจริงจังที่ยกให้ดนตรีแนวนี้เป็นพระเอกเต็มตัว`,
+    attrib:"DJ Jordan Adam", typ:"Quote · standalone" },
+
+  /* 3 */
+  { type:"quote", variant:"cyan", num:"On the work", size:"sm", qmark:"“",
+    html:`This isn’t a hobby. It’s a <span class="hl">30-year career</span> built around music I love.`,
+    th:`นี่ไม่ใช่งานอดิเรก แต่คือเส้นทาง 30 ปีที่สร้างจากดนตรีที่ผมรัก`,
+    attrib:"DJ Jordan Adam", typ:"Quote · standalone" },
+
+  /* 4 — stat */
+  { type:"stat", typ:"Stat · standalone" },
+
+  /* 5 */
+  { type:"quote", variant:"solid", num:"On pre-2010", size:"lg", qmark:"“",
+    html:`Authenticity.<br>That’s the<br>short answer.`,
+    sub:`1990–2010 was the golden era. The cap keeps us honest.`,
+    th:`เปิดเฉพาะเพลงก่อนปี 2010 — เพราะมันคือยุคทองตัวจริง`,
+    attrib:"On the pre-2010 policy", typ:"Quote · standalone" },
+
+  /* 6 */
+  { type:"quote", variant:"cyan", num:"On the lineup", size:"sm", qmark:"“",
+    html:`<span class="hl">120+ years</span> of combined experience. Every one of them knows this music inside out.`,
+    th:`รวมประสบการณ์กว่า 120 ปี ทุกคนรู้จักดนตรีแนวนี้ลึกถึงแก่น`,
+    attrib:"DJ Jordan Adam", typ:"Quote · standalone" },
+
+  /* 7 */
+  { type:"quote", variant:"", num:"On the crowd", qmark:"“",
+    html:`The audience already <span class="hl">existed</span>. They just had nowhere to go.`,
+    th:`คนฟังมีอยู่แล้ว เพียงแต่ไม่เคยมีที่ให้ไป`,
+    attrib:"DJ Jordan Adam", typ:"Quote · standalone" },
+
+  /* 8 */
+  { type:"quote", variant:"solid", num:"On the vibe", size:"lg", qmark:"“",
+    html:`Leave the<br>attitude<br>at home.`,
+    sub:`A friendly room. A community room. Everybody welcome.`,
+    th:`ทิ้งแอตทิจูดไว้ที่บ้าน — ที่นี่คือห้องของทุกคน`,
+    attrib:"DJ Jordan Adam", typ:"Quote · standalone" },
+
+  /* 9 */
+  { type:"quote", variant:"cyan", num:"On the night", size:"sm", qmark:"“",
+    html:`Expect to feel like you <span class="hl">stepped back in time.</span>`,
+    th:`เดินเข้ามาแล้วจะรู้สึกเหมือนย้อนเวลากลับไป`,
+    attrib:"DJ Jordan Adam", typ:"Quote · standalone" },
+
+  /* 10 — CTA */
+  { type:"cta", typ:"CTA / End card" },
+];
+
+const HANDLE = "@oldschoolchillbkk";
+const BRAND = "Old School &amp; Chill";
+
+function topRow(kicker){
+  return `<div class="t__top"><div class="t__brand">${BRAND}</div><div class="t__kicker">${kicker||""}</div></div>`;
+}
+function footRow(n){
+  return `<div class="t__foot"><div class="t__handle">${HANDLE}</div><div class="t__page">${String(n).padStart(2,"0")}<span> / 10</span></div></div>`;
+}
+
+function renderTile(s, i){
+  const n = i+1;
+  if(s.type==="cover"){
+    return `<div class="t t--photo">
+      <div class="t__img"><img src="assets/danny.jpg" alt="DJ Jordan Adam"></div>
+      <div class="t__scrim"></div>
+      <div class="t__grain"></div>
+      ${topRow("In Conversation")}
+      <div class="t__cover" style="padding-bottom:0;">
+        <span class="t__eyebrow">Interview</span>
+        <h2 class="t__title">DJ Jordan<br>Adam</h2>
+        <p class="t__role">Founder · Old School &amp; Chill Bangkok</p>
+        <p class="t__th" style="color:var(--ink); opacity:0.85; margin-top:18px;">บทสัมภาษณ์ผู้ก่อตั้ง Old School &amp; Chill Bangkok</p>
+        <div class="t__swipe"><span>Swipe</span><span class="arrow">→</span></div>
+      </div>
+      ${footRow(n)}
+    </div>`;
+  }
+  if(s.type==="stat"){
+    return `<div class="t">
+      <div class="t__grain"></div>
+      ${topRow("By the numbers")}
+      <div class="t__body">
+        <div class="t__num">The response</div>
+        <h2 class="t__quote sm" style="margin-bottom:24px;">Early birds gone in <span class="hl">24 hours.</span></h2>
+        <div class="t__facts" style="margin-top:18px;">
+          <div class="t__fact"><span class="k">Early Bird</span><span class="v">Sold out · day one</span></div>
+          <div class="t__fact"><span class="k">Gen. Admission</span><span class="v">Sold out</span></div>
+          <div class="t__fact"><span class="k">Community</span><span class="v">Thousands · pre-sale</span></div>
+        </div>
+        <p class="t__th">บัตรเอิร์ลีเบิร์ดหมดใน 24 ชั่วโมง · บัตรทั่วไปขายหมดเกลี้ยง</p>
+      </div>
+      ${footRow(n)}
+    </div>`;
+  }
+  if(s.type==="cta"){
+    return `<div class="t t--photo">
+      <div class="t__img"><img src="assets/danny.jpg" alt="DJ Jordan Adam" style="object-position:50% 18%;"></div>
+      <div class="t__scrim" style="background:linear-gradient(180deg, rgba(7,5,16,0.7) 0%, rgba(7,5,16,0.55) 30%, rgba(7,5,16,0.9) 70%, rgba(7,5,16,0.98) 100%);"></div>
+      <div class="t__grain"></div>
+      ${topRow("Vol. 01")}
+      <div class="t__cover">
+        <h2 class="t__cta-h">This is just <em>Vol.&nbsp;01.</em></h2>
+        <div class="t__facts">
+          <div class="t__fact"><span class="k">When</span><span class="v">Sat 20 June 2026</span></div>
+          <div class="t__fact"><span class="k">Where</span><span class="v">Aces · Sukhumvit 11</span></div>
+          <div class="t__fact"><span class="k">Tickets</span><span class="v">Sold out · waitlist open</span></div>
+        </div>
+        <span class="t__pill">Read the full interview · oscbkk.com</span>
+        <p class="t__th" style="color:var(--ink); opacity:0.85; margin-top:28px;">นี่เป็นเพียงเล่มแรก · บัตรหมดแล้ว ลงชื่อรอบัตรหน้างานได้ที่เว็บไซต์</p>
+      </div>
+      ${footRow(n)}
+    </div>`;
+  }
+  // quote
+  const cls = s.variant==="cyan" ? "t--cyan" : s.variant==="solid" ? "t--solid" : "";
+  const qsize = s.size==="sm" ? "sm" : s.size==="lg" ? "lg" : "";
+  return `<div class="t ${cls}">
+    <div class="t__qmark">${s.qmark||"“"}</div>
+    <div class="t__grain"></div>
+    ${topRow("In Conversation")}
+    <div class="t__body">
+      <div class="t__num">${s.num||""}</div>
+      <h2 class="t__quote ${qsize}">${s.html}</h2>
+      ${s.sub?`<div class="t__attrib"><span class="bar"></span><span>${s.sub}</span></div>`:""}
+      ${s.th?`<p class="t__th">${s.th}</p>`:""}
+      ${s.attrib?`<div class="t__attrib" style="margin-top:${s.sub||s.th?'30px':'48px'};"><span class="bar"></span><span>${s.attrib}</span></div>`:""}
+    </div>
+    ${footRow(n)}
+  </div>`;
+}
+
+const gallery = document.getElementById("gallery");
+gallery.innerHTML = SLIDES.map((s,i)=>{
+  return `<div class="cell" data-idx="${i}">
+    <p class="cell__label"><b>${String(i+1).padStart(2,"0")}</b> ${s.type==='quote'?'Quote':s.type[0].toUpperCase()+s.type.slice(1)}<span class="typ">${s.typ||""}</span></p>
+    <div class="tile-shell"><div class="tile">${renderTile(s,i)}</div></div>
+    <button class="cell__dl" data-dl="${i}">↓ PNG ${String(i+1).padStart(2,"0")}</button>
+  </div>`;
+}).join("");
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script>
+function tileEl(i){ return document.querySelectorAll(".tile .t")[i]; }
+
+async function exportTile(i){
+  const node = tileEl(i);
+  // Use each tile's own background colour for the canvas fill + cloned root,
+  // otherwise html-to-image drops the solid-accent root bg and the slide
+  // exports as a flat dark tile with invisible dark text.
+  const bg = getComputedStyle(node).backgroundColor || "#0b0814";
+  const dataUrl = await window.htmlToImage.toPng(node, {
+    width:1080, height:1350, pixelRatio:1,
+    style:{ transform:"none", background:bg }, cacheBust:true, backgroundColor:bg
+  });
+  const a = document.createElement("a");
+  a.download = `oscbkk-carousel-${String(i+1).padStart(2,"0")}.png`;
+  a.href = dataUrl; a.click();
+  return new Promise(r=>setTimeout(r, 250));
+}
+
+document.querySelectorAll("[data-dl]").forEach(b=>{
+  b.addEventListener("click", ()=>exportTile(+b.dataset.dl));
+});
+
+document.getElementById("exportAll").addEventListener("click", async (e)=>{
+  const btn = e.currentTarget;
+  btn.disabled = true; const label = btn.textContent;
+  for(let i=0;i<SLIDES.length;i++){
+    btn.textContent = `Exporting ${i+1}/${SLIDES.length}…`;
+    await exportTile(i);
+  }
+  btn.textContent = "Done ✓"; setTimeout(()=>{ btn.textContent = label; btn.disabled = false; }, 1600);
+});
+</script>
+
+</body>
+</html>
