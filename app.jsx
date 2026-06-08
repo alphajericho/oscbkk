@@ -200,6 +200,7 @@ function Nav() {
         <a href="#lineup">Lineup</a>
         <a href="#tickets">Tickets</a>
         <a href="#lounges">Lounges</a>
+        <a href="In Conversation.html">Editorial</a>
         <a href="#rules">House Rules</a>
         <a href="#contact">Contact</a>
       </div>
@@ -1506,6 +1507,7 @@ function Foot() {
             <li><a href="https://tiktok.com/@oldschoolchillbkk" target="_blank" rel="noopener">TikTok ↗</a></li>
             <li><a href={CONTACT.line} target="_blank" rel="noopener">LINE ↗</a></li>
             <li><a href="https://open.spotify.com/user/31qnnw4ys3tpcc7eltq3dhosqcsq" target="_blank" rel="noopener">Spotify ↗</a></li>
+            <li><a href="In Conversation.html">Editorial — In Conversation</a></li>
           </ul>
         </div>
         <div className="foot__col">
