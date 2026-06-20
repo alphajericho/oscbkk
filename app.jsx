@@ -257,7 +257,7 @@ function Hero() {
       </div>
 
       <div className="hero__cta">
-        <a className="hero__btn hero__btn--primary" href={MEGATIX_URLS.early} target="_blank" rel="noopener">Get Tickets</a>
+        <a className="hero__btn hero__btn--primary" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
         <a className="hero__btn hero__btn--ghost" href="#lineup">See the Lineup</a>
       </div>
     </header>
@@ -358,8 +358,8 @@ function TheNight() {
             <div className="row">
               <span className="k">Curated by</span>
               <span className="v">
-                DJ Jordan Adam
-                <small>creator &amp; music director</small>
+                Alpha Eleven Asia
+                <small>events &amp; music curation</small>
               </span>
             </div>
             <div className="row">
@@ -442,17 +442,17 @@ function PressBody() {
       </p>
 
       <p>
-        The concept was created by <strong>DJ Jordan Adam (Danny Bazzi)</strong>, a
-        specialist in classic R&amp;B and Hip Hop culture and nightlife with long-standing
-        ties to some of the biggest names in R&amp;B and Hip Hop internationally. With
-        decades immersed in the genre as both a promoter and music curator in Australia,
+        Old School &amp; Chill is created and curated by <strong>Alpha Eleven Asia</strong>, a
+        new events entity specialising in classic R&amp;B and Hip Hop culture and nightlife, with
+        long-standing ties to some of the biggest names in R&amp;B and Hip Hop internationally. With
+        decades of combined experience in the genre as promoters and music curators,
         the vision behind Old School &amp; Chill has always been to build a genuine
         community around nostalgic music culture rather than simply create another
         nightclub event.
       </p>
 
       <p>
-        He brings with him one of Australia's finest hosts and mic controllers, another
+        The night brings together one of Australia's finest hosts and mic controllers, another
         familiar face in Australian nightlife and R&amp;B and Hip Hop folklore: the
         incomparable <strong>El Rafa</strong>.
       </p>
@@ -539,8 +539,8 @@ function PressBody() {
           <span className="press-modal__detail-v">El Rafa (AUS)</span>
         </div>
         <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Curator</span>
-          <span className="press-modal__detail-v">DJ Jordan Adam (Danny Bazzi)</span>
+          <span className="press-modal__detail-k">Curated by</span>
+          <span className="press-modal__detail-v">Alpha Eleven Asia</span>
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Tickets</span>
@@ -554,8 +554,8 @@ function PressBody() {
 
       <p className="press-modal__note">
         <em>Note to editors:</em> high-res images, logos and the official poster
-        available on request. Interview opportunities with DJ Jordan Adam (Danny Bazzi)
-        and El Rafa available in the lead-up to the event.
+        available on request. Interview opportunities with El Rafa
+        available in the lead-up to the event.
       </p>
     </>
   );
