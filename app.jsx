@@ -4,7 +4,7 @@
 // Live Megatix event URL. Pasted into every "Get Tickets" / "Reserve"
 // button on the page. Same URL for all tiers — Megatix lets the buyer
 // pick their tier on its checkout page.
-const MEGATIX_URL = "https://megatix.in.th/events/oscbkk";
+const MEGATIX_URL = "https://megatix.in.th/events/august-old-school-chill-bangkok";
 
 // ─── WAITLIST (Brevo) ──────────────────────────────────────
 // The door-ticket waitlist feeds a Brevo contact list ("OSCBKK Waitlist").
@@ -22,14 +22,14 @@ const MEGATIX_URL = "https://megatix.in.th/events/oscbkk";
 // match the exact field names. Set to "" to run in offline DEMO mode.
 const WAITLIST_ENDPOINT = "https://5b489cb7.sibforms.com/serve/MUIFADb7ygpzNtT0RfeJOE5eLLUNy35Ijw0CJOdMYyIfBNzhVGsazqNnYklI5sYlvmU0tHaybERBFVO82RtuGfd4uzBKdymMVFHZJwU_B4xR1ehV10yFxRU7S8tDFIfKkmA6MppHkjrRYy9FEoyd6mcSQV4TbLE3INhDDvN4d9LBpG5bP1cItXTiwoLvpvWqqb5rSdy_52QAw7jz";
 const MEGATIX_URLS = {
-  early: "https://megatix.in.th/events/oscbkk?aid=EARLYBIRD",
-  ga:    "https://megatix.in.th/events/oscbkk?aid=GA",
+  early: MEGATIX_URL + "?aid=EARLYBIRD",
+  ga:    MEGATIX_URL + "?aid=GA",
   door:  MEGATIX_URL,
   table: MEGATIX_URL,
   // Lounge packages — pre-paid via Megatix as a "minimum spend reservation".
   // The amount paid here goes onto the customer's tab on the night.
-  newjack:  "https://megatix.in.th/events/oscbkk?aid=NEWJACK",
-  sosodef:  "https://megatix.in.th/events/oscbkk?aid=SOSODEF",
+  newjack:  MEGATIX_URL + "?aid=NEWJACK",
+  sosodef:  MEGATIX_URL + "?aid=SOSODEF",
 };
 
 // ─── DIRECT MESSAGING ──────────────────────────────────────
@@ -52,16 +52,16 @@ const CONTACT = {
 // ────────────────────────────────────────────────────────────
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accent": "#ff3d8b",
+  "accent": "#f3b53b",
   "density": "standard",
   "motion": "subtle"
 }/*EDITMODE-END*/;
 
 const ACCENT_OPTIONS = [
-  "#ff3d8b", // hot magenta (default)
+  "#f3b53b", // temple gold (Vol. 02 default)
+  "#ff3d8b", // hot magenta (Vol. 01)
   "#ff6a3d", // sunset orange
-  "#f3b53b", // temple gold
-  "#4cc3ff"  // electric cyan (uses cyan as primary)
+  "#4cc3ff"  // electric cyan
 ];
 
 function App() {
@@ -86,6 +86,7 @@ function App() {
       <VenuePhotos />
       <Rules />
       <Contact />
+      <PastEvents />
       <Foot />
 
       <ChatFloats />
@@ -165,7 +166,6 @@ const ChatIcon = {
 function ChatFloats() {
   const floats = [
     { k: "LINE",     icon: ChatIcon.line,     href: CONTACT.line,     cls: "chat-float--line"     },
-    { k: "WhatsApp", icon: ChatIcon.whatsapp, href: CONTACT.whatsapp, cls: "chat-float--whatsapp" },
     { k: "Email",    icon: ChatIcon.email,    href: CONTACT.email,    cls: "chat-float--email"    },
   ];
   return (
@@ -193,14 +193,15 @@ function Nav() {
     <nav className="nav">
       <div className="nav__brand">
         <span className="mark">Old School &amp; Chill</span>
-        <span className="sub">BKK · Vol. 01</span>
+        <span className="sub">BKK · Vol. 02</span>
       </div>
       <div className="nav__links">
-        <a href="#night">The Event</a>
+        <a href="#night">Event</a>
         <a href="#lineup">Lineup</a>
         <a href="#tickets">Tickets</a>
-        <a href="#lounges">Lounges</a>
-        <a href="#rules">House Rules</a>
+        <a href="#lounges">Bookings</a>
+        <a href="#rules">Rules</a>
+        <a href="#past">Past</a>
         <a href="#contact">Contact</a>
       </div>
       <div className="nav__socials" aria-label="Follow us">
@@ -222,7 +223,7 @@ function Nav() {
           </svg>
         </a>
       </div>
-      <a className="nav__cta" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
+      <a className="nav__cta" href={MEGATIX_URL} target="_blank" rel="noopener">Tickets</a>
     </nav>
   );
 }
@@ -230,31 +231,10 @@ function Nav() {
 /* ===================== HERO ===================== */
 function Hero() {
   return (
-    <header className="hero">
-      <img className="hero__image" src="assets/hero.png" alt="Old School & Chill Bangkok — the crew, Sukhumvit at night" />
-
-      <div className="hero__bottom">
-        <div className="cell">
-          <span className="k">When</span>
-          <span className="v">Sat, 20.06.26</span>
-          <span className="vth">วันเสาร์ที่ 20 มิถุนายน</span>
-        </div>
-        <div className="cell">
-          <span className="k">Where</span>
-          <span className="v">Aces — Sukhumvit Soi 11</span>
-          <span className="vth">เอซ · สุขุมวิท ซอย 11</span>
-        </div>
-        <div className="cell">
-          <span className="k">Sound</span>
-          <span className="v">'90s · '00s R&amp;B + Hip&nbsp;Hop</span>
-          <span className="vth">อาร์แอนด์บีและฮิปฮอปยุค 90s–2000s</span>
-        </div>
-        <div className="cell">
-          <span className="k">Doors</span>
-          <span className="v">22:00 — 03:00</span>
-          <span className="vth">เปิดประตูสี่ทุ่ม · ลากยาว</span>
-        </div>
-      </div>
+    <header className="hero hero--art">
+      <img className="hero__photo" src="assets/hero-photo.png" alt="Old School & Chill Bangkok — the crew at Aces" />
+      <div className="hero__scrim" aria-hidden="true"></div>
+      <img className="hero__logo" src="assets/logo.png" alt="Old School & Chill · Bangkok" />
 
       <div className="hero__cta">
         <a className="hero__btn hero__btn--primary" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
@@ -293,19 +273,6 @@ function Marquee() {
 
 /* ===================== THE EVENT ===================== */
 function TheNight() {
-  const [pressOpen, setPressOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!pressOpen) return;
-    const onKey = (e) => { if (e.key === "Escape") setPressOpen(false); };
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [pressOpen]);
-
   return (
     <section className="section" id="night">
       <div className="container">
@@ -320,22 +287,33 @@ function TheNight() {
         <div className="intro">
           <div className="intro__body">
             <p className="intro__lede">
-              Bangkok is about to get something it has been missing for a very long time.
+              Another dose of '90s &amp; 2000s R&amp;B and Hip Hop in Bangkok.
             </p>
             <p>
-              Old School &amp; Chill is a new nightlife concept built around one thing
-              above all else: <strong>the music</strong>. Curated exclusively to '90s and
-              2000s R&amp;B and hip hop — this is not another commercial nightclub chasing
-              trends, bottle parades or influencer culture, but a music and culture-driven
-              night for the people who lived this era, loved this music, and still connect
-              to it.
+              Following a sold-out debut in June, Bangkok's newest old-school experience
+              returns on <strong>Saturday 1 August</strong>. In June, Old School &amp; Chill
+              sold out its first event before most people even knew the brand existed — no
+              influencer push, no gimmicks, just a room full of people singing every word
+              to records they grew up on.
             </p>
             <p>
-              It is also for those who have discovered it later and have not yet
-              experienced the magic of the likes of Aaliyah, TLC, Montell Jordan, 112
-              or Blackstreet on the dance floor. If you ever want to feel like you
-              stepped back onto a dance floor sometime between 1990 — 2010, then
-              this is the spot to be.
+              August brings more of exactly that. The focus tightens onto timeless R&amp;B,
+              the singalong records everyone knows by heart, with Hip Hop staying in the mix
+              as the party starter between the big moments. Strictly '90s and '00s — nothing
+              after 2010.
+            </p>
+            <p>
+              The sounds come courtesy of Australia's <strong>DJ Jordan Adam</strong>,
+              <strong> DJ Young G</strong> (Philippines) and <strong>Junior</strong> (Thailand),
+              all of whom boast decades of experience playing this exact genre with a
+              fan-first approach that'll have you buzzing and singing along from the moment
+              you arrive. Our host will once again be <strong>El Rafa</strong>, one of
+              Australia's most experienced and in-demand party starters.
+            </p>
+            <p>
+              This event isn't built for people chasing social-media moments or VIP culture.
+              It's for a mature crowd after real music, real nostalgia and a room that sings
+              along rather than just watches.
             </p>
 
             <p className="thai">
@@ -343,9 +321,10 @@ function TheNight() {
               จัดที่ Aces Nightclub สุขุมวิท ซอย 11
             </p>
 
-            <button className="intro__toggle" onClick={() => setPressOpen(true)} aria-haspopup="dialog">
-              Read the full press release ↗
-            </button>
+            <p className="intro__book">Buy your tickets early. Contact us for party, table and booth bookings.</p>
+            <div className="intro__actions">
+              <a className="intro__btn" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets ↗</a>
+            </div>
 
             <div className="intro__pull">Real music. Real nostalgia.</div>
           </div>
@@ -353,7 +332,7 @@ function TheNight() {
           <div className="intro__card">
             <div className="row">
               <span className="k">Vol.</span>
-              <span className="v">01 / 2026</span>
+              <span className="v">02 / 2026</span>
             </div>
             <div className="row">
               <span className="k">Curated by</span>
@@ -383,8 +362,6 @@ function TheNight() {
           </div>
         </div>
       </div>
-
-      {pressOpen && <PressModal onClose={() => setPressOpen(false)} />}
     </section>
   );
 }
@@ -398,8 +375,8 @@ function PressModal({ onClose }) {
         <header className="press-modal__head">
           <div>
             <div className="press-modal__kicker">Press Release · For Immediate Release</div>
-            <h2 id="press-title" className="press-modal__title">Old School &amp; Chill <em>Vol. 01</em></h2>
-            <div className="press-modal__sub">Aces Nightclub · Bangkok · Saturday 20 June 2026</div>
+            <h2 id="press-title" className="press-modal__title">Old School &amp; Chill <em>Vol. 02</em></h2>
+            <div className="press-modal__sub">Aces Nightclub · Bangkok · Saturday 1 August 2026</div>
           </div>
           <button className="press-modal__x" onClick={onClose} aria-label="Close">×</button>
         </header>
@@ -459,7 +436,7 @@ function PressBody() {
 
       <p>
         With the focus on the music comes a carefully selected group of experienced
-        DJs — <strong>K9, Young G, Travellin' Matt, Junior and Jordan Adam</strong> — music
+        DJs — <strong>Young G, Junior and Jordan Adam</strong> — music
         commanders who not only know their stuff, they live it, breathe it, and will play
         records you thought you would never hear in a Bangkok club.
       </p>
@@ -516,11 +493,11 @@ function PressBody() {
       <div className="press-modal__details">
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Event</span>
-          <span className="press-modal__detail-v">Old School &amp; Chill — Vol. 01</span>
+          <span className="press-modal__detail-v">Old School &amp; Chill — Vol. 02</span>
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Date</span>
-          <span className="press-modal__detail-v">Saturday 20 June 2026 · 10pm — Late</span>
+          <span className="press-modal__detail-v">Saturday 1 August 2026 · 10pm — Late</span>
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Venue</span>
@@ -532,7 +509,7 @@ function PressBody() {
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">DJs</span>
-          <span className="press-modal__detail-v">K9 · Young G · Travellin' Matt · Junior · Jordan Adam</span>
+          <span className="press-modal__detail-v">Young G · Junior · Jordan Adam</span>
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Host</span>
@@ -578,11 +555,11 @@ function Lineup({ motion }) {
           <div className="lineup__tease">
             <div className="lineup__stamp">
               <span className="lineup__stamp-row">Vol.</span>
-              <span className="lineup__stamp-row lineup__stamp-row--accent">01</span>
+              <span className="lineup__stamp-row lineup__stamp-row--accent">02</span>
             </div>
 
             <div className="lineup__copy">
-              <p className="lineup__kicker">The Sound Crew + Your Host</p>
+              <p className="lineup__kicker">The Selectors &amp; Host</p>
               <h3 className="lineup__hero">
                 Five selectors <em>+</em> one MC.
               </h3>
@@ -596,8 +573,8 @@ function Lineup({ motion }) {
               <ul className="lineup__roster">
                 <li className="lineup__roster-item">
                   <span className="lineup__roster-n">01</span>
-                  <span className="lineup__roster-name">K9</span>
-                  <span className="lineup__roster-flag" title="Thailand" aria-label="Thailand">🇹🇭</span>
+                  <span className="lineup__roster-name">Jordan Adam</span>
+                  <span className="lineup__roster-flag" title="Australia" aria-label="Australia">🇦🇺</span>
                 </li>
                 <li className="lineup__roster-item">
                   <span className="lineup__roster-n">02</span>
@@ -606,16 +583,6 @@ function Lineup({ motion }) {
                 </li>
                 <li className="lineup__roster-item">
                   <span className="lineup__roster-n">03</span>
-                  <span className="lineup__roster-name">Travellin' Matt</span>
-                  <span className="lineup__roster-flag" title="Thai / USA" aria-label="Thai / USA">🇹🇭&nbsp;🇺🇸</span>
-                </li>
-                <li className="lineup__roster-item">
-                  <span className="lineup__roster-n">04</span>
-                  <span className="lineup__roster-name">Jordan Adam</span>
-                  <span className="lineup__roster-flag" title="Australia" aria-label="Australia">🇦🇺</span>
-                </li>
-                <li className="lineup__roster-item">
-                  <span className="lineup__roster-n">05</span>
                   <span className="lineup__roster-name">Junior</span>
                   <span className="lineup__roster-flag" title="Thailand" aria-label="Thailand">🇹🇭</span>
                 </li>
@@ -627,8 +594,7 @@ function Lineup({ motion }) {
               </ul>
 
               <div className="lineup__actions">
-                <a className="lineup__btn lineup__btn--primary" href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener">Follow on Instagram</a>
-                <a className="lineup__btn lineup__btn--ghost" href={MEGATIX_URL} target="_blank" rel="noopener">Get tickets</a>
+                <a className="lineup__btn lineup__btn--primary" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
               </div>
             </div>
           </div>
@@ -664,42 +630,23 @@ function Poster() {
     <section className="poster-section" id="poster">
       <div className="container poster-section__wrap">
         <aside className="poster-section__copy">
-          <p className="poster-section__kicker">Spread the word</p>
+          <p className="poster-section__kicker">The Artwork</p>
           <h3 className="poster-section__title">
-            The <em>First</em> Edition.
+            The <em>Poster</em>.
           </h3>
           <p className="poster-section__body">
-            Vol. 01 · the inaugural night. Save it, share it, print it, stick it
-            on the fridge of every friend you've ever made a mixtape for.
+            Vol. 02 · Saturday 1 August. The official flyer — screenshot it,
+            share it, send it to every friend you've ever made a mixtape for.
           </p>
           <p className="poster-section__thai">
-            บันทึก · แชร์ · พิมพ์ออกมา · ส่งให้เพื่อนที่รักเพลงเก่าเหมือนกัน
+            แชร์ให้เพื่อนที่รักเพลงเก่าเหมือนกัน · เจอกันวันที่ 1 สิงหาคม
           </p>
-
-          <div className="poster-section__downloads">
-            <div className="poster-section__dlrow">
-              <span className="poster-section__dl-k">IG Post · 1:1</span>
-              <a className="poster-section__dl" href="assets/social-1x1.png" download="OSCBKK-Vol01-IG-Post.png">
-                <span className="poster-section__dl-fmt">1080 × 1080 · Square</span>
-                <span className="poster-section__dl-cta">Download ↓</span>
-              </a>
-            </div>
-            <div className="poster-section__dlrow">
-              <span className="poster-section__dl-k">IG Reel / Story · 9:16</span>
-              <a className="poster-section__dl" href="assets/social-9x16.png" download="OSCBKK-Vol01-IG-Story.png">
-                <span className="poster-section__dl-fmt">1080 × 1920 · Portrait</span>
-                <span className="poster-section__dl-cta">Download ↓</span>
-              </a>
-            </div>
-          </div>
 
           <div className="poster-section__share">
             <span className="poster-section__share-k">Share</span>
             <div className="poster-section__share-row">
               <a className="poster-section__share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Foscbkk.com" target="_blank" rel="noopener" aria-label="Share on Facebook">Facebook</a>
-              <a className="poster-section__share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Foscbkk.com&text=Old%20School%20%26%20Chill%20BKK%20%E2%80%94%20Vol.%2001%20%E2%80%94%2020%20June%202026" target="_blank" rel="noopener" aria-label="Share on X">X / Twitter</a>
-              <a className="poster-section__share-btn" href="https://api.whatsapp.com/send?text=Old%20School%20%26%20Chill%20BKK%20%E2%80%94%2020%20June%202026%20%E2%80%94%20https%3A%2F%2Foscbkk.com" target="_blank" rel="noopener" aria-label="Share on WhatsApp">WhatsApp</a>
-              <a className="poster-section__share-btn" href="mailto:?subject=Old%20School%20%26%20Chill%20BKK%20%E2%80%94%20Vol.%2001&body=Catch%20me%20at%20the%20first%20Old%20School%20%26%20Chill%20Bangkok%2C%2020%20June%202026.%20https%3A%2F%2Foscbkk.com" aria-label="Share by email">Email</a>
+              <a className="poster-section__share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Foscbkk.com&text=Old%20School%20%26%20Chill%20BKK%20%E2%80%94%20Vol.%2002%20%E2%80%94%201%20August%202026" target="_blank" rel="noopener" aria-label="Share on X">X / Twitter</a>
               <button className="poster-section__share-btn poster-section__share-btn--copy" onClick={(e) => {
                 navigator.clipboard?.writeText('https://oscbkk.com').then(() => {
                   const b = e.currentTarget;
@@ -714,7 +661,7 @@ function Poster() {
         </aside>
 
         <div className="poster-section__frame">
-          <img className="poster-section__img" src="assets/poster.png" alt="Old School & Chill Vol. 01 — Bangkok · 20 June 2026 — official poster" />
+          <img className="poster-section__img" src="assets/poster.png" alt="Old School & Chill Vol. 02 — Bangkok · 1 August 2026 — official poster" />
           <span className="poster-section__corner poster-section__corner--tl" />
           <span className="poster-section__corner poster-section__corner--tr" />
           <span className="poster-section__corner poster-section__corner--bl" />
@@ -734,39 +681,24 @@ function Tickets() {
       bar: "TIER 01 / LIMITED",
       price: "500",
       light: true,
-      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
-        "Ticket includes two drinks",
+        "Ticket includes one drink",
         "Limited numbers · first come, first served",
       ],
     },
     {
       key: "ga",
       name: "General Admission", thai: "บัตรทั่วไป",
-      bar: "TIER 02 / LIMITED",
+      bar: "TIER 02 / GENERAL",
       price: "600",
-      soldOut: true,
+      locked: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
-        "Ticket includes two drinks",
+        "Ticket includes one drink",
         "Limited numbers · advance only",
-      ],
-    },
-    {
-      key: "final",
-      name: "Final Release", thai: "บัตรรอบสุดท้าย",
-      bar: "TIER 03 / FINAL",
-      price: "700",
-      featured: true,
-      soldOut: true,
-      perks: [
-        "General Admission entry",
-        "Guaranteed entry · pre-sale only",
-        "Ticket includes two drinks",
-        "Last tier · selling out fast",
       ],
     },
   ];
@@ -778,16 +710,21 @@ function Tickets() {
           <div className="num">03</div>
           <div className="titles">
             <div className="title">The <em>Tickets</em></div>
-            <div className="thai">บัตรเข้างาน · 3 ระดับ</div>
+            <div className="thai">บัตรเข้างาน · 2 ระดับ</div>
           </div>
         </div>
 
         <div className="tickets">
           {tiers.map((tk, i) => (
-            <article key={i} className={`ticket ${tk.featured ? "ticket--featured" : ""} ${tk.light ? "ticket--light" : ""} ${tk.soldOut ? "ticket--soldout" : ""}`}>
+            <article key={i} className={`ticket ${tk.featured ? "ticket--featured" : ""} ${tk.light ? "ticket--light" : ""} ${tk.soldOut ? "ticket--soldout" : ""} ${tk.locked ? "ticket--locked" : ""}`}>
               {tk.soldOut && (
                 <div className="ticket__soldout-ribbon" aria-hidden="true">
                   <span>Sold Out</span>
+                </div>
+              )}
+              {tk.locked && (
+                <div className="ticket__soldout-ribbon ticket__soldout-ribbon--soon" aria-hidden="true">
+                  <span>Next Release</span>
                 </div>
               )}
               <div className="ticket__top">
@@ -808,14 +745,14 @@ function Tickets() {
               </ul>
               {tk.soldOut ? (
                 <span className="ticket__cta ticket__cta--disabled" aria-disabled="true">Sold Out · บัตรหมดแล้ว</span>
+              ) : tk.locked ? (
+                <span className="ticket__cta ticket__cta--disabled" aria-disabled="true">Opens when Early Bird sells out</span>
               ) : (
                 <a className="ticket__cta" href={MEGATIX_URLS[tk.key] || MEGATIX_URL} target="_blank" rel="noopener">Reserve</a>
               )}
             </article>
           ))}
         </div>
-
-        <Waitlist />
       </div>
     </section>
   );
@@ -1047,133 +984,40 @@ function Lounges() {
         <div className="section__head">
           <div className="num">04</div>
           <div className="titles">
-            <div className="title">The <em>Lounges</em></div>
-            <div className="thai">โต๊ะ & เลานจ์ · จองล่วงหน้า · ยอดใช้จ่ายขั้นต่ำ</div>
+            <div className="title">Table &amp; Booth <em>Bookings</em></div>
+            <div className="thai">จองโต๊ะ · บูธ · งานปาร์ตี้</div>
           </div>
         </div>
 
-        <div className="lounges__intro">
-          <p className="lounges__intro-lede">Reserve your spot. <em>Customise</em> the night.</p>
-          <p>
-            Every package below is a <strong>minimum spend</strong> — what goes on your tab once you arrive.
-            Order anything from the Aces menu: bottles, cocktails, champagne, bar bites. Your server keeps
-            a running tab and lets you know when you've reached the minimum. Beyond that, standard menu pricing.
-          </p>
-          <p className="thai">
-            ทุกแพ็กเกจคือยอดใช้จ่ายขั้นต่ำ · สั่งอะไรก็ได้จากเมนู Aces · เซิร์ฟเวอร์จะแจ้งเมื่อถึงยอด
-          </p>
-          <div className="lounges__intro-actions">
-            <button className="lounges__pill" onClick={() => setMenuOpen(true)}>View the menu ↗</button>
-            <button className="lounges__pill" onClick={() => setTermsOpen(true)}>Terms &amp; conditions ↗</button>
-          </div>
-        </div>
-
-        <div className="packages">
-          {packages.map(p => (
-            <article key={p.key} className={`package ${p.featured ? "package--featured" : ""} ${p.type === "table" ? "package--table" : ""} ${p.soldOut ? "package--sold-out" : ""}`} style={{"--pkg-accent": p.accent}}>
-              {p.soldOut && <span className="package__soldout-badge">Sold Out</span>}
-              <div className="package__head">
-                <div className="package__label-row">
-                  <span className="package__label">{p.label}</span>
-                  <span className="package__tier">{p.tier}</span>
-                </div>
-                <div className="package__sofa">{p.sofa}</div>
-                <div className="package__pax">{p.pax}</div>
-              </div>
-
-              <div className="package__price">
-                <span className="package__price-k">Minimum Spend</span>
-                <div className="package__price-row">
-                  <span className="package__price-amt">฿{p.price}</span>
-                  <span className="package__price-cur">THB</span>
-                </div>
-                {p.megatix && (
-                  <span className="package__price-perk">No separate tickets · group entry included</span>
-                )}
-              </div>
-
-              <ul className="package__list">
-                {p.inclusions.map((inc, i) => <li key={i}>{inc}</li>)}
-              </ul>
-
-              {p.soldOut ? (
-                <div className="package__ctas">
-                  <span className="package__cta package__cta--soldout" aria-disabled="true">Sold Out</span>
-                  <a className="package__cta-alt" href="#waitlist">Join the waitlist ↗</a>
-                </div>
-              ) : p.megatix ? (
-                <div className="package__ctas">
-                  <a className="package__cta package__cta--buy" href={p.megatix} target="_blank" rel="noopener">Reserve on Megatix ↗</a>
-                  <a className="package__cta-alt" href="#lounges-contact">Or enquire first ↗</a>
-                </div>
-              ) : (
-                <a className="package__cta" href="#lounges-contact">Enquire</a>
-              )}
-            </article>
-          ))}
-        </div>
-
-        <div className="packages__note">
-          <span className="packages__note-k">All packages</span>
-          <span className="packages__note-v">Customisable · spend anything on the Aces menu</span>
-          <span className="packages__note-x">
-            <button className="lounges__pill lounges__pill--inline" onClick={() => setMenuOpen(true)}>Menu</button>
-            <button className="lounges__pill lounges__pill--inline" onClick={() => setTermsOpen(true)}>T&amp;Cs</button>
-          </span>
-        </div>
-
-        <div className="custom-cta">
-          <div className="custom-cta__copy">
-            <span className="custom-cta__kicker">Private parties · Birthdays · Brand activations</span>
-            <h3 className="custom-cta__title">
-              Want something <em>custom?</em>
-            </h3>
-            <p className="custom-cta__body">
-              Private party, milestone birthday, brand takeover, corporate night?
-              Bigger group than 18, a different format, or want the whole place to yourself?
-              We build packages around the night — anything from a reserved lounge with
-              bespoke pours, to a full venue buyout with branding, photographer, and red carpet.
-              Tell us what you have in mind.
+        <div className="bookings" id="lounges-contact">
+          <div className="bookings__copy">
+            <p className="bookings__kicker">Reserve ahead</p>
+            <h3 className="bookings__title">Table &amp; Booth <em>Bookings</em></h3>
+            <p className="bookings__body">
+              Want a table, a booth, or the whole crew sorted for the night? Private parties,
+              birthdays and group bookings all welcome. Message us and we'll build the night
+              around you — packages, availability and pricing confirmed within the day.
             </p>
-            <p className="custom-cta__thai">
-              จัดงานส่วนตัว · วันเกิด · งานบริษัท · เหมาร้าน · ติดต่อทีมงาน
-            </p>
+            <p className="bookings__thai">สนใจจองโต๊ะ บูธ หรือจัดงานปาร์ตี้ · ทักหาเราได้เลย</p>
+            <p className="bookings__contactline">Contact us — we'll sort you out.</p>
           </div>
-          <div className="custom-cta__actions">
-            <a className="custom-cta__btn custom-cta__btn--primary" href="mailto:info@oscbkk.com?subject=Custom%20Package%20Enquiry%20%E2%80%94%20OSCBKK">Get in touch →</a>
-            <a className="custom-cta__btn custom-cta__btn--ghost" href={CONTACT.line} target="_blank" rel="noopener">Or message us on LINE</a>
-          </div>
-        </div>
 
-        <div className="lounges__contact" id="lounges-contact">
-          <div className="lounges__contact-copy">
-            <h4>Reserve a lounge</h4>
-            <p>Drop us a message — we'll come back within the day with availability for 20 June and confirm your package.</p>
-            <p className="thai">ติดต่อทีมงานเพื่อจองและสอบถามรายละเอียด</p>
-          </div>
-          <div className="lounges__contact-grid">
-            <a className="lounges__contact-card lounges__contact-card--line" href={CONTACT.line} target="_blank" rel="noopener">
+          <div className="bookings__grid">
+            <a className="bookings__card bookings__card--line" href={CONTACT.line} target="_blank" rel="noopener">
               <span className="k">LINE</span>
               <span className="v">{CONTACT.lineDisplay}</span>
             </a>
-            <a className="lounges__contact-card lounges__contact-card--whatsapp" href={CONTACT.whatsapp} target="_blank" rel="noopener">
-              <span className="k">WhatsApp</span>
-              <span className="v">{CONTACT.whatsappDisplay}</span>
-            </a>
-            <a className="lounges__contact-card" href={CONTACT.messenger} target="_blank" rel="noopener">
+            <a className="bookings__card" href={CONTACT.messenger} target="_blank" rel="noopener">
               <span className="k">Messenger</span>
               <span className="v">{CONTACT.fbDisplay}</span>
             </a>
-            <a className="lounges__contact-card" href={CONTACT.email}>
+            <a className="bookings__card" href={CONTACT.email}>
               <span className="k">Email</span>
               <span className="v">info@oscbkk.com</span>
             </a>
           </div>
         </div>
       </div>
-
-      {menuOpen && <MenuModal onClose={() => setMenuOpen(false)} />}
-      {termsOpen && <TermsModal onClose={() => setTermsOpen(false)} />}
     </section>
   );
 }
@@ -1264,7 +1108,7 @@ function TermsModal({ onClose }) {
     <Modal
       kicker="Lounge &amp; Table Reservations"
       title={<>Terms &amp; <em>Conditions</em></>}
-      sub="Old School &amp; Chill · Vol. 01 · 20 June 2026"
+      sub="Old School &amp; Chill · Vol. 02 · 1 August 2026"
       onClose={onClose}
       footer={<>
         <a className="modal__btn modal__btn--ghost" href="mailto:info@oscbkk.com?subject=Lounge%20Booking%20%E2%80%94%20Question">Question? Email us</a>
@@ -1429,13 +1273,6 @@ function Contact() {
       icon: ChatIcon.line,
     },
     {
-      k: "WhatsApp",
-      v: CONTACT.whatsappDisplay,
-      href: CONTACT.whatsapp,
-      cls: "contact__card--whatsapp",
-      icon: ChatIcon.whatsapp,
-    },
-    {
       k: "Messenger",
       v: CONTACT.fbDisplay,
       href: CONTACT.messenger,
@@ -1489,6 +1326,93 @@ function Contact() {
   );
 }
 
+/* ===================== PAST EVENTS ===================== */
+/* Archive of previous editions. Vol. 01 (20 June 2026) preserved here with
+   its original poster art. Add newer entries to the top of `editions`. */
+function PastEvents() {
+  const editions = [
+    {
+      vol: "Vol. 01",
+      date: "Saturday 20 June 2026",
+      dateTh: "วันเสาร์ที่ 20 มิถุนายน 2569",
+      venue: "Aces Nightclub · Sukhumvit Soi 11",
+      poster: "assets/poster-vol01.png",
+      status: "Sold Out",
+      djs: ["K9", "Young G", "Travellin' Matt", "Jordan Adam", "Junior"],
+      host: "El Rafa",
+      note: "The inaugural night. Strictly pre-2010 R&B and Hip Hop — sold out in advance across every tier.",
+      noteTh: "คืนแรกของ Old School & Chill · บัตรหมดทุกระดับก่อนวันงาน",
+      photos: ["assets/venue-1.jpg", "assets/venue-4.jpg"],
+    },
+  ];
+
+  return (
+    <section className="section past" id="past">
+      <div className="container">
+        <div className="section__head">
+          <div className="num">08</div>
+          <div className="titles">
+            <div className="title">Previous <em>Events</em></div>
+            <div className="thai">อีเวนต์ที่ผ่านมา</div>
+          </div>
+        </div>
+
+        <div className="past__list">
+          {editions.map((e, i) => (
+            <article key={i} className="past-card">
+              <div className="past-card__frame">
+                <img className="past-card__img" src={e.poster} alt={`Old School & Chill ${e.vol} — official poster`} />
+                {e.status && <span className="past-card__stamp" aria-hidden="true">{e.status}</span>}
+                <span className="past-card__corner past-card__corner--tl" />
+                <span className="past-card__corner past-card__corner--tr" />
+                <span className="past-card__corner past-card__corner--bl" />
+                <span className="past-card__corner past-card__corner--br" />
+              </div>
+
+              <div className="past-card__body">
+                <div className="past-card__vol">{e.vol}</div>
+                <div className="past-card__meta">
+                  <div className="past-card__row">
+                    <span className="k">When</span>
+                    <span className="v">{e.date}<small>{e.dateTh}</small></span>
+                  </div>
+                  <div className="past-card__row">
+                    <span className="k">Where</span>
+                    <span className="v">{e.venue}</span>
+                  </div>
+                  <div className="past-card__row">
+                    <span className="k">Status</span>
+                    <span className="v past-card__soldout">{e.status} · บัตรหมด</span>
+                  </div>
+                </div>
+
+                <p className="past-card__note">{e.note}</p>
+                <p className="past-card__note thai">{e.noteTh}</p>
+
+                <div className="past-card__lineup">
+                  <span className="past-card__lineup-k">On the decks</span>
+                  <div className="past-card__djs">
+                    {e.djs.map((d, j) => <span key={j} className="past-card__dj">{d}</span>)}
+                  </div>
+                  <span className="past-card__host">Hosted by {e.host}</span>
+                </div>
+
+                <div className="past-card__photos">
+                  {e.photos.map((src, j) => (
+                    <figure key={j} className="past-card__photo">
+                      <img src={src} alt={`${e.vol} — venue`} />
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ===================== FOOTER ===================== */
 function Foot() {
   return (
@@ -1521,7 +1445,6 @@ function Foot() {
         <div className="foot__col">
           <h4>Contact</h4>
           <ul>
-            <li><a href={CONTACT.whatsapp} target="_blank" rel="noopener">WhatsApp ↗</a></li>
             <li><a href={CONTACT.line} target="_blank" rel="noopener">LINE ↗</a></li>
             <li><a href="mailto:info@oscbkk.com">info@oscbkk.com</a></li>
             <li><a href="#contact">All channels →</a></li>
