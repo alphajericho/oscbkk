@@ -561,7 +561,7 @@ function Lineup({ motion }) {
             <div className="lineup__copy">
               <p className="lineup__kicker">The Selectors &amp; Host</p>
               <h3 className="lineup__hero">
-                Five selectors <em>+</em> one MC.
+                The Selectors <em>&amp;</em> Your Host.
               </h3>
               <p className="lineup__body">
                 All night on pre-2010. Set times drop closer to the date.
