@@ -681,6 +681,7 @@ function Tickets() {
       bar: "TIER 01 / LIMITED",
       price: "500",
       light: true,
+      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -693,7 +694,7 @@ function Tickets() {
       name: "General Admission", thai: "บัตรทั่วไป",
       bar: "TIER 02 / GENERAL",
       price: "600",
-      locked: true,
+      featured: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
