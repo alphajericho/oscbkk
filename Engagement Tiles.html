@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OSCBKK · Engagement Tiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sriracha&family=Pacifico&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0b0814; --bg-2:#14102a;
+  --ink:#f4eedd; --ink-dim:#9a92b5;
+  --line:rgba(244,238,221,0.14);
+  --gold:#f3b53b; --cyan:#4cc3ff; --magenta:#ff3d8b;
+  --accent:var(--magenta);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:#08060f;
+  color:var(--ink);
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---- page chrome ---- */
+.page-head{
+  position:sticky; top:0; z-index:20;
+  display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  padding:16px 28px;
+  background:rgba(8,6,15,0.92); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.page-head h1{ font-size:15px; font-weight:500; margin:0; letter-spacing:0.01em; color:var(--ink-dim); }
+.page-head h1 b{ color:var(--ink); font-weight:700; }
+.controls{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.seg{ display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+.seg button{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  background:transparent; color:var(--ink-dim); border:0; padding:9px 15px; cursor:pointer;
+}
+.seg button.on{ background:var(--ink); color:#0b0814; font-weight:500; }
+.btn{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  background:var(--magenta); color:#0b0814; border:0; border-radius:999px; padding:10px 18px; cursor:pointer; font-weight:600;
+}
+.btn:disabled{ opacity:0.5; cursor:default; }
+.btn--ghost{ background:transparent; color:var(--ink); border:1px solid var(--line); }
+.filelabel{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  background:transparent; color:var(--ink); border:1px dashed var(--line); border-radius:999px; padding:10px 18px; cursor:pointer;
+}
+.filelabel input{ display:none; }
+.hint{ font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-dim); letter-spacing:0.04em; }
+
+/* ---- gallery ---- */
+.gallery{ display:flex; flex-wrap:wrap; gap:34px; padding:34px 28px 90px; align-items:flex-start; }
+.cell{ display:flex; flex-direction:column; gap:12px; }
+.cell__label{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:0.06em; color:var(--ink-dim); margin:0;
+  display:flex; align-items:center; gap:10px; text-transform:uppercase;
+}
+.cell__label b{ color:var(--ink); }
+.cell__typ{ color:var(--magenta); }
+.cell__tools{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.swatches{ display:flex; gap:6px; }
+.sw{ width:18px; height:18px; border-radius:50%; border:2px solid transparent; cursor:pointer; padding:0; }
+.sw.on{ border-color:var(--ink); }
+.cell__dl{
+  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+  background:transparent; color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:7px 12px; cursor:pointer;
+}
+
+/* shell scales the fixed-size tile down for on-screen preview */
+.shell{ background:#000; border-radius:8px; overflow:hidden; position:relative; }
+.shell--sq{ width:360px; height:360px; }
+.shell--st{ width:270px; height:480px; }
+.shell .tile{ position:absolute; top:0; left:0; transform-origin:top left; }
+.shell--sq .tile{ transform:scale(0.3333); }      /* 1080 -> 360 */
+.shell--st .tile{ transform:scale(0.25); }         /* 1080 -> 270 */
+
+/* ================= TILE ================= */
+.tile{ font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; }
+.t{
+  position:relative; overflow:hidden;
+  background:var(--bg); color:var(--ink);
+  display:flex; flex-direction:column;
+}
+.t--sq{ width:1080px; height:1080px; padding:82px 84px; }
+.t--st{ width:1080px; height:1920px; padding:120px 90px 130px; }
+
+/* photo variant */
+.t__img{ position:absolute; inset:0; z-index:0; }
+.t__img img{ width:100%; height:100%; object-fit:cover; filter:saturate(0.5) hue-rotate(-10deg) brightness(0.62); }
+.t__scrim{
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg, rgba(8,6,15,0.72) 0%, rgba(8,6,15,0.5) 40%, rgba(8,6,15,0.9) 100%);
+}
+.t__grain{
+  position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:overlay; opacity:0.07;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+/* accent glow blob */
+.t__glow{
+  position:absolute; z-index:1; width:640px; height:640px; border-radius:50%;
+  background:radial-gradient(circle, color-mix(in srgb, var(--accent) 40%, transparent) 0%, transparent 68%);
+  filter:blur(20px); top:-160px; right:-160px; pointer-events:none;
+}
+.t--st .t__glow{ width:760px; height:760px; top:-120px; }
+
+/* content layers above */
+.t__top,.t__mid,.t__foot{ position:relative; z-index:3; }
+.t__top{ display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
+.t__logo{ height:130px; width:auto; filter:drop-shadow(0 0 18px rgba(255,61,139,0.35)); }
+.t--st .t__logo{ height:158px; }
+.t__kick{
+  font-family:"JetBrains Mono",monospace; font-size:19px; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--accent); text-align:right; line-height:1.5; padding-top:8px; white-space:pre-line;
+}
+
+.t__mid{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+.t--st .t__mid{ justify-content:center; }
+
+.t__num{
+  font-family:"JetBrains Mono",monospace; font-size:20px; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--ink-dim); margin-bottom:30px;
+}
+.t__q{
+  font-family:"Archivo Black",Impact,sans-serif; text-transform:uppercase;
+  font-size:96px; line-height:0.98; letter-spacing:-0.01em; margin:0; text-wrap:balance;
+}
+.t--st .t__q{ font-size:112px; }
+.t__q em{ font-family:"Pacifico",cursive; font-style:normal; text-transform:none; color:var(--accent); letter-spacing:0; }
+.t__q .hl{ color:var(--accent); }
+.t__q.sm{ font-size:78px; } .t--st .t__q.sm{ font-size:92px; }
+.t__q.lg{ font-size:120px; } .t--st .t__q.lg{ font-size:140px; }
+
+.t__th{
+  font-family:"Sriracha",cursive; font-size:33px; line-height:1.5; color:var(--ink); opacity:0.82;
+  margin:36px 0 0; text-wrap:pretty; max-width:88%;
+}
+.t--st .t__th{ font-size:38px; }
+
+/* this-or-that */
+.t__vs{ display:flex; flex-direction:column; gap:26px; margin:6px 0; }
+.t__opt{
+  font-family:"Archivo Black",Impact,sans-serif; text-transform:uppercase; letter-spacing:-0.01em;
+  font-size:1em; line-height:0.92; margin:0; text-wrap:balance;
+}
+.t--st .t__opt{ font-size:1em; }
+.t__opt:nth-child(1){ color:var(--ink); }
+.t__opt:nth-child(3){ color:var(--accent); }
+.t__or{
+  font-family:"Pacifico",cursive; font-size:46px; color:var(--ink-dim); line-height:1;
+  display:flex; align-items:center; gap:22px;
+}
+.t__or::before,.t__or::after{ content:""; height:2px; flex:0 0 64px; background:var(--line); }
+
+.t__foot{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-top:auto; padding-top:40px; }
+.t__prompt{
+  font-family:"Archivo Black",Impact,sans-serif; text-transform:uppercase; font-size:27px; letter-spacing:0.02em;
+  color:#0b0814; background:var(--accent); padding:14px 22px; border-radius:999px; line-height:1;
+}
+.t--st .t__prompt{ font-size:31px; padding:16px 26px; }
+.t__site{ font-family:"JetBrains Mono",monospace; font-size:21px; letter-spacing:0.14em; color:var(--ink-dim); text-transform:lowercase; }
+.t--st .t__site{ font-size:24px; }
+
+/* accent-driven variants — logo always on dark so neon reads */
+.v-magenta{ --accent:var(--magenta); }
+.v-cyan{ --accent:var(--cyan); }
+.v-gold{ --accent:var(--gold); }
+.v-photo{ --accent:var(--magenta); }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>OSCBKK · <b>Engagement Tiles</b></h1>
+  <div class="controls">
+    <div class="seg" id="fmtSeg">
+      <button data-fmt="sq" class="on">1:1</button>
+      <button data-fmt="st">9:16</button>
+      <button data-fmt="both">Both</button>
+    </div>
+    <label class="filelabel">Load CSV<input type="file" id="csvFile" accept=".csv,text/csv" /></label>
+    <button class="btn btn--ghost" id="cycleBtn">Shuffle colours</button>
+    <button class="btn btn--ghost" id="exportCsv">Captions CSV ↓</button>
+    <button class="btn" id="exportAll">Export all PNGs ↓</button>
+  </div>
+</div>
+
+<div class="hint" style="padding:14px 28px 0;">
+  50 posts loaded from <b>OSC_Engagement_Posts.xlsx</b>. Formats: Open Question · This or That · Debate · Tag a Friend · Caption · Guess · List · Community. Tag / Caption / Community default to a venue-photo background — click a swatch under any tile to recolour. The sheet's <b>prompt</b> column (art brief) drives the look; the pill CTA comes from the format. Wrap words in *stars* to accent them. (Load CSV to override.)
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<script>
+const HANDLE = "@oldschoolchillbkk";
+const SITE = "oscbkk.com";
+const VARIANTS = ["magenta","cyan","gold","photo"];
+const VENUE = ["assets/venue-1.jpg","assets/venue-2.jpg","assets/venue-3.jpg","assets/venue-4.jpg"];
+
+/* type -> CTA pill text. Photo-brief formats also default to the venue-photo variant. */
+const TYPES = {
+  openquestion:  { prompt:"Answer below" },
+  thisorthat:    { prompt:"Pick one" },
+  debate:        { prompt:"Fight it out" },
+  tagafriend:    { prompt:"Tag them", photo:true },
+  captionprompt: { prompt:"Caption it", photo:true },
+  guessgame:     { prompt:"Name it" },
+  listprompt:    { prompt:"Drop your list" },
+  communitystory:{ prompt:"Tell us", photo:true },
+};
+
+/* ---------- content (from OSC_Engagement_Posts.xlsx · wrap *word* to accent) ---------- */
+let RECORDS = [
+  { type:"Open Question", kicker:"R&B ROLL CALL", question:"What's your *favourite* R&B song of all time?", thai:"เพลง R&B เพลงโปรดตลอดกาลของคุณคือเพลงไหน?" },
+  { type:"Open Question", kicker:"FIRST SPIN", question:"Drop the *first* R&B album you ever bought or downloaded", size:"sm", thai:"อัลบั้ม R&B แรกที่คุณซื้อหรือดาวน์โหลดคืออะไร?" },
+  { type:"Debate", kicker:"PEAK ERA", optionA:"90s", optionB:"00s", thai:"R&B ยุคไหนคือยุคทองที่สุด? มาถกกันในคอมเมนต์" },
+  { type:"Tag a Friend", kicker:"BRING THEM", question:"Tag someone you're bringing to the next *Old School & Chill*", size:"sm", thai:"แท็กคนที่คุณจะพาไป Old School & Chill ครั้งหน้า" },
+  { type:"Open Question", kicker:"FIRST DANCE", question:"First *slow dance* song — go.", thai:"เพลงที่คุณใช้เต้นช้าครั้งแรกคือเพลงอะไร?" },
+  { type:"Open Question", kicker:"UNDERRATED", question:"Most *underrated* R&B artist nobody talks about enough", size:"sm", thai:"ศิลปิน R&B ที่ถูกมองข้ามทั้งที่เก่งมากคือใคร?" },
+  { type:"Open Question", kicker:"INSTANT MOVE", question:"Which song instantly gets you on the *dance floor?*", size:"sm", thai:"เพลงไหนที่ทำให้คุณลุกขึ้นเต้นทันที?" },
+  { type:"This or That", kicker:"DECADE DUEL", optionA:"90s R&B", optionB:"00s R&B", thai:"R&B ยุค 90 หรือยุค 2000 เลือกได้แค่หนึ่งเดียวตลอดไป" },
+  { type:"Open Question", kicker:"THROWBACK", question:"What song reminds you of *high school?*", thai:"เพลงไหนที่ทำให้คุณนึกถึงช่วงมัธยม?" },
+  { type:"List Prompt", kicker:"ULTIMATE SETLIST", question:"Drop your ultimate R&B setlist — *5 songs* only", size:"sm", thai:"ขอเพลย์ลิสต์ R&B สุดยอดของคุณ 5 เพลงเท่านั้น" },
+  { type:"Open Question", kicker:"BEST HARMONIES", question:"Which R&B group had the *best harmonies?*", thai:"วงไหนมีการประสานเสียงที่ดีที่สุดในสาย R&B?" },
+  { type:"Caption Prompt", kicker:"CAPTION THIS", question:"*Caption* this.", size:"lg", thai:"แคปชั่นรูปนี้ให้หน่อย (ภาพจากงานที่แล้ว)" },
+  { type:"Open Question", kicker:"SING IT", question:"One song that gets the *whole room* singing?", thai:"เพลงไหนที่ทำให้ทั้งฟลอร์ร้องตามกันหมด?" },
+  { type:"Guess Game", kicker:"GUESS THE LYRIC", question:"Guess the *lyric.*", size:"lg", thai:"ทายเนื้อเพลง (โพสต์ท่อนเพลง ไม่บอกชื่อเพลง ใครทายถูกก่อน)" },
+  { type:"Open Question", kicker:"BEST COLLAB", question:"Best R&B *collab* of all time?", thai:"คอลแลปเพลง R&B ที่ดีที่สุดตลอดกาลคือคู่ไหน?" },
+  { type:"Open Question", kicker:"ONE MORE ALBUM", question:"Which artist would you bring back for *one more album?*", size:"sm", thai:"ศิลปินคนไหนที่คุณอยากให้กลับมาออกอัลบั้มอีกสักครั้ง?" },
+  { type:"Community Story", kicker:"OSC MOMENT", question:"Tell us your *Old School & Chill* moment.", thai:"เล่าโมเมนต์สุดประทับใจของคุณจากงาน Old School & Chill ครั้งที่แล้ว" },
+  { type:"This or That", kicker:"GROUP DUEL", optionA:"Boyz II Men", optionB:"Jodeci", thai:"เลือกอย่างใดอย่างหนึ่ง Boyz II Men หรือ Jodeci" },
+  { type:"Open Question", kicker:"SET THE MOOD", question:"What song do you play to *set the mood?*", thai:"เพลงไหนที่คุณเปิดเพื่อสร้างบรรยากาศ?" },
+  { type:"Open Question", kicker:"GOOD CRY", question:"Your go-to R&B artist when you need a *good cry?*", size:"sm", thai:"ศิลปิน R&B คนไหนที่คุณฟังเวลาต้องการร้องไห้ให้สุด?" },
+  { type:"List Prompt", kicker:"MUST PLAY", question:"Comment your must-play song for *1 August*", size:"sm", thai:"คอมเมนต์เพลงที่คุณอยากให้เปิดในงานวันที่ 1 สิงหาคม" },
+  { type:"This or That", kicker:"BOY GROUP DUEL", optionA:"New Edition", optionB:"Jodeci", thai:"เลือกอย่างใดอย่างหนึ่ง New Edition หรือ Jodeci" },
+  { type:"This or That", kicker:"BOY GROUP DUEL", optionA:"Boyz II Men", optionB:"Dru Hill", thai:"เลือกอย่างใดอย่างหนึ่ง Boyz II Men หรือ Dru Hill" },
+  { type:"This or That", kicker:"BOY GROUP DUEL", optionA:"112", optionB:"Blackstreet", thai:"เลือกอย่างใดอย่างหนึ่ง 112 หรือ Blackstreet" },
+  { type:"This or That", kicker:"BOY GROUP DUEL", optionA:"Silk", optionB:"Az Yet", thai:"เลือกอย่างใดอย่างหนึ่ง Silk หรือ Az Yet" },
+  { type:"This or That", kicker:"BOY GROUP DUEL", optionA:"B2K", optionB:"Immature", thai:"เลือกอย่างใดอย่างหนึ่ง B2K หรือ Immature" },
+  { type:"This or That", kicker:"BOY GROUP DUEL", optionA:"Jagged Edge", optionB:"Dru Hill", thai:"เลือกอย่างใดอย่างหนึ่ง Jagged Edge หรือ Dru Hill" },
+  { type:"This or That", kicker:"GIRL GROUP DUEL", optionA:"TLC", optionB:"Destiny's Child", thai:"เลือกอย่างใดอย่างหนึ่ง TLC หรือ Destiny's Child" },
+  { type:"This or That", kicker:"GIRL GROUP DUEL", optionA:"SWV", optionB:"En Vogue", thai:"เลือกอย่างใดอย่างหนึ่ง SWV หรือ En Vogue" },
+  { type:"This or That", kicker:"GIRL GROUP DUEL", optionA:"Xscape", optionB:"702", thai:"เลือกอย่างใดอย่างหนึ่ง Xscape หรือ 702" },
+  { type:"This or That", kicker:"GIRL GROUP DUEL", optionA:"Total", optionB:"3LW", thai:"เลือกอย่างใดอย่างหนึ่ง Total หรือ 3LW" },
+  { type:"This or That", kicker:"FEMALE ICON DUEL", optionA:"Mary J Blige", optionB:"Whitney Houston", thai:"เลือกอย่างใดอย่างหนึ่ง Mary J Blige หรือ Whitney Houston" },
+  { type:"This or That", kicker:"FEMALE ICON DUEL", optionA:"Aaliyah", optionB:"Brandy", thai:"เลือกอย่างใดอย่างหนึ่ง Aaliyah หรือ Brandy" },
+  { type:"This or That", kicker:"FEMALE ICON DUEL", optionA:"Monica", optionB:"Brandy", thai:"เลือกอย่างใดอย่างหนึ่ง Monica หรือ Brandy" },
+  { type:"This or That", kicker:"FEMALE ICON DUEL", optionA:"Toni Braxton", optionB:"Faith Evans", thai:"เลือกอย่างใดอย่างหนึ่ง Toni Braxton หรือ Faith Evans" },
+  { type:"This or That", kicker:"FEMALE ICON DUEL", optionA:"Ashanti", optionB:"Ciara", thai:"เลือกอย่างใดอย่างหนึ่ง Ashanti หรือ Ciara" },
+  { type:"This or That", kicker:"FEMALE ICON DUEL", optionA:"Alicia Keys", optionB:"Beyonce", thai:"เลือกอย่างใดอย่างหนึ่ง Alicia Keys หรือ Beyonce" },
+  { type:"This or That", kicker:"FEMALE ICON DUEL", optionA:"Mariah Carey", optionB:"Whitney Houston", thai:"เลือกอย่างใดอย่างหนึ่ง Mariah Carey หรือ Whitney Houston" },
+  { type:"This or That", kicker:"MALE ICON DUEL", optionA:"Usher", optionB:"Chris Brown", thai:"เลือกอย่างใดอย่างหนึ่ง Usher หรือ Chris Brown" },
+  { type:"This or That", kicker:"MALE ICON DUEL", optionA:"Ne-Yo", optionB:"Trey Songz", thai:"เลือกอย่างใดอย่างหนึ่ง Ne-Yo หรือ Trey Songz" },
+  { type:"This or That", kicker:"MALE ICON DUEL", optionA:"Tyrese", optionB:"Ginuwine", thai:"เลือกอย่างใดอย่างหนึ่ง Tyrese หรือ Ginuwine" },
+  { type:"This or That", kicker:"MALE ICON DUEL", optionA:"Musiq Soulchild", optionB:"Anthony Hamilton", thai:"เลือกอย่างใดอย่างหนึ่ง Musiq Soulchild หรือ Anthony Hamilton" },
+  { type:"This or That", kicker:"MALE ICON DUEL", optionA:"D'Angelo", optionB:"Maxwell", thai:"เลือกอย่างใดอย่างหนึ่ง D'Angelo หรือ Maxwell" },
+  { type:"This or That", kicker:"MALE ICON DUEL", optionA:"Brian McKnight", optionB:"Joe", thai:"เลือกอย่างใดอย่างหนึ่ง Brian McKnight หรือ Joe" },
+  { type:"This or That", kicker:"ICON DUEL", optionA:"Michael Jackson", optionB:"Prince", thai:"เลือกอย่างใดอย่างหนึ่ง Michael Jackson หรือ Prince" },
+  { type:"This or That", kicker:"ICON DUEL", optionA:"Missy Elliott", optionB:"Lauryn Hill", thai:"เลือกอย่างใดอย่างหนึ่ง Missy Elliott หรือ Lauryn Hill" },
+  { type:"Open Question", kicker:"GIRL GROUP LOVE", question:"Which girl group had the *best outfits* back in the day?", size:"sm", thai:"เกิร์ลกรุ๊ปวงไหนแต่งตัวเจ๋งที่สุดในยุคนั้น?" },
+  { type:"Open Question", kicker:"BOY GROUP LOVE", question:"Which boy group had the *best choreography?*", thai:"บอยแบนด์วงไหนมีท่าเต้นเจ๋งที่สุด?" },
+  { type:"Open Question", kicker:"SOLO QUEEN", question:"Greatest *female* R&B vocalist of all time?", thai:"ใครคือนักร้องหญิงสาย R&B ที่ยิ่งใหญ่ที่สุดตลอดกาล?" },
+  { type:"Open Question", kicker:"SOLO KING", question:"Greatest *male* R&B vocalist of all time?", thai:"ใครคือนักร้องชายสาย R&B ที่ยิ่งใหญ่ที่สุดตลอดกาล?" },
+];
+
+/* per-index chosen variant */
+let variantOf = [];
+let format = "sq";
+
+/* ---------- helpers ---------- */
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function accentize(s){ // *word* -> highlighted
+  return esc(s).replace(/\*(.+?)\*/g, '<span class="hl">$1</span>');
+}
+function typeMeta(t){ return TYPES[(t||"").toLowerCase().replace(/[^a-z]/g,"")] || TYPES.openquestion; }
+
+function renderTile(rec, i, fmt){
+  const v = variantOf[i];
+  const meta = typeMeta(rec.type);
+  const fmtCls = fmt==="st" ? "t--st" : "t--sq";
+  const photo = v==="photo" ? `<div class="t__img"><img src="${VENUE[i%VENUE.length]}" alt=""></div><div class="t__scrim"></div>` : `<div class="t__glow"></div>`;
+  const kicker = (rec.kicker || "").replace(/\\n/g,"\n");
+
+  let mid;
+  if(rec.optionA && rec.optionB){
+    const longest = Math.max(rec.optionA.length, rec.optionB.length);
+    // fit long artist names: shrink font as the longest option grows
+    const base = fmt==='st' ? 120 : 104;
+    const px = longest<=8 ? base : longest<=13 ? base*0.72 : longest<=17 ? base*0.56 : base*0.46;
+    mid = `<div class="t__vs" style="font-size:${Math.round(px)}px">
+        <p class="t__opt">${esc(rec.optionA)}</p>
+        <div class="t__or">or</div>
+        <p class="t__opt">${esc(rec.optionB)}</p>
+      </div>`;
+  } else {
+    const qsize = rec.size==="lg"?"lg":rec.size==="sm"?"sm":"";
+    mid = `<h2 class="t__q ${qsize}">${accentize(rec.question)}</h2>`;
+  }
+  const th = rec.thai ? `<p class="t__th">${esc(rec.thai)}</p>` : "";
+
+  return `<div class="t ${fmtCls} v-${v}">
+    ${photo}
+    <div class="t__grain"></div>
+    <div class="t__top">
+      <img class="t__logo" src="assets/logo.png" alt="Old School & Chill Bangkok" crossorigin="anonymous">
+      <div class="t__kick">${esc(kicker)}</div>
+    </div>
+    <div class="t__mid">
+      ${mid}
+      ${th}
+    </div>
+    <div class="t__foot">
+      <span class="t__prompt">${esc(meta.prompt)}</span>
+      <span class="t__site">${SITE}</span>
+    </div>
+  </div>`;
+}
+
+function render(){
+  if(!variantOf.length || variantOf.length!==RECORDS.length){
+    const cyc=["magenta","cyan","gold"]; let k=0;
+    variantOf = RECORDS.map(r=> typeMeta(r.type).photo ? "photo" : cyc[k++%cyc.length]);
+  }
+  const gallery = document.getElementById("gallery");
+  const fmts = format==="both" ? ["sq","st"] : [format];
+  gallery.innerHTML = RECORDS.map((rec,i)=>{
+    const shells = fmts.map(f=>{
+      const shellCls = f==="st" ? "shell--st" : "shell--sq";
+      return `<div class="shell ${shellCls}"><div class="tile" data-idx="${i}" data-fmt="${f}">${renderTile(rec,i,f)}</div></div>`;
+    }).join("");
+    const sw = VARIANTS.map(v=>{
+      const col = v==="photo" ? "linear-gradient(135deg,#4cc3ff,#ff3d8b)" :
+                  v==="cyan"?"#4cc3ff":v==="gold"?"#f3b53b":"#ff3d8b";
+      return `<button class="sw ${variantOf[i]===v?'on':''}" data-i="${i}" data-v="${v}" style="background:${col}" title="${v}"></button>`;
+    }).join("");
+    return `<div class="cell">
+      <p class="cell__label"><b>${String(i+1).padStart(2,"0")}</b> ${esc((rec.type||"qotd"))}<span class="cell__typ">${fmts.map(f=>f==="st"?"9:16":"1:1").join(" · ")}</span></p>
+      <div style="display:flex; gap:20px; align-items:flex-start;">${shells}</div>
+      <div class="cell__tools">
+        <div class="swatches">${sw}</div>
+        <button class="cell__dl" data-i="${i}">↓ PNG</button>
+      </div>
+    </div>`;
+  }).join("");
+
+  gallery.querySelectorAll(".sw").forEach(b=>b.onclick=()=>{ variantOf[+b.dataset.i]=b.dataset.v; render(); });
+  gallery.querySelectorAll(".cell__dl").forEach(b=>b.onclick=()=>exportRecord(+b.dataset.i));
+}
+
+/* ---------- format toggle ---------- */
+document.getElementById("fmtSeg").querySelectorAll("button").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll("#fmtSeg button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); format=b.dataset.fmt; render();
+  };
+});
+document.getElementById("cycleBtn").onclick=()=>{
+  variantOf = RECORDS.map(()=>VARIANTS[Math.floor(Math.random()*VARIANTS.length)]);
+  render();
+};
+
+/* ---------- CSV ---------- */
+function parseCSV(text){
+  const rows=[]; let row=[], cur="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; }
+      else cur+=c;
+    } else {
+      if(c==='"') q=true;
+      else if(c===',') { row.push(cur); cur=""; }
+      else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n')i++; row.push(cur); rows.push(row); row=[]; cur=""; }
+      else cur+=c;
+    }
+  }
+  if(cur.length||row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r=>r.some(x=>x.trim()!==""));
+}
+document.getElementById("csvFile").onchange=(e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    const rows=parseCSV(rd.result);
+    if(!rows.length) return;
+    const head=rows[0].map(h=>h.trim().toLowerCase());
+    const idx=k=>head.indexOf(k);
+    RECORDS = rows.slice(1).map(r=>({
+      type:(r[idx("type")]||"qotd").trim(),
+      kicker:(r[idx("kicker")]||"").trim(),
+      question:(r[idx("question")]||"").trim(),
+      optionA:(r[idx("optiona")]||"").trim(),
+      optionB:(r[idx("optionb")]||"").trim(),
+      thai:(r[idx("thai")]||"").trim(),
+      prompt:(r[idx("prompt")]||"").trim(),
+    }));
+    variantOf=[]; render();
+  };
+  rd.readAsText(f);
+};
+
+render();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script>
+async function exportTileEl(node, w, h, name){
+  const bg = getComputedStyle(node).backgroundColor || "#0b0814";
+  const dataUrl = await window.htmlToImage.toPng(node, {
+    width:w, height:h, pixelRatio:1, style:{ transform:"none" }, cacheBust:true, backgroundColor:bg
+  });
+  const a=document.createElement("a"); a.download=name; a.href=dataUrl; a.click();
+  return new Promise(r=>setTimeout(r,260));
+}
+function dims(fmt){ return fmt==="st" ? [1080,1920] : [1080,1080]; }
+
+async function exportRecord(i){
+  const nodes=[...document.querySelectorAll(`.tile[data-idx="${i}"]`)];
+  for(const n of nodes){
+    const fmt=n.dataset.fmt; const [w,h]=dims(fmt);
+    await exportTileEl(n.querySelector(".t"), w, h, `oscbkk-tile-${String(i+1).padStart(2,"0")}-${fmt==="st"?"9x16":"1x1"}.png`);
+  }
+}
+document.getElementById("exportAll").onclick=async(e)=>{
+  const btn=e.currentTarget; btn.disabled=true; const label=btn.textContent;
+  for(let i=0;i<RECORDS.length;i++){ btn.textContent=`Exporting ${i+1}/${RECORDS.length}…`; await exportRecord(i); }
+  btn.textContent="Done ✓"; setTimeout(()=>{btn.textContent=label; btn.disabled=false;},1600);
+};
+
+/* ---------- caption sheet: 1 row per post, ready for a scheduler's bulk import ---------- */
+const HASHTAGS = "#OldSchoolAndChill #OSCBKK #Bangkok #RnB #HipHop #90sRnB #2000sRnB #ThrowbackThailand #BangkokNightlife";
+function stripStars(s){ return (s||"").replace(/\*/g,""); }
+function captionFor(rec){
+  const meta = typeMeta(rec.type);
+  const head = (rec.optionA && rec.optionB)
+    ? `${stripStars(rec.optionA)} or ${stripStars(rec.optionB)}?`
+    : stripStars(rec.question);
+  const cta = { "Answer below":"Drop your answer below \ud83d\udc47","Pick one":"Pick one \ud83d\udc47","Fight it out":"Settle it in the comments \ud83d\udc47","Tag them":"Tag them \ud83d\udc47","Caption it":"Caption it \ud83d\udc47","Name it":"Name that track \ud83d\udc47","Drop your list":"Drop your list \ud83d\udc47","Tell us":"Tell us in the comments \ud83d\udc47" }[meta.prompt] || "Comment below \ud83d\udc47";
+  return `${head}\n${cta}\n\n${stripStars(rec.thai||"")}\n\n${HASHTAGS}`;
+}
+function csvCell(s){ return `"${String(s).replace(/"/g,'""')}"`; }
+document.getElementById("exportCsv").onclick=()=>{
+  const rows = [["post","type","kicker","image_1x1","image_9x16","caption","thai_only","date","time"]];
+  RECORDS.forEach((rec,i)=>{
+    const n = String(i+1).padStart(2,"0");
+    rows.push([
+      n, rec.type||"", rec.kicker||"",
+      `oscbkk-tile-${n}-1x1.png`, `oscbkk-tile-${n}-9x16.png`,
+      captionFor(rec), stripStars(rec.thai||""), "", ""
+    ]);
+  });
+  const csv = "\ufeff" + rows.map(r=>r.map(csvCell).join(",")).join("\r\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.download = "oscbkk-captions.csv"; a.href = URL.createObjectURL(blob); a.click();
+};
+</script>
+
+</body>
+</html>

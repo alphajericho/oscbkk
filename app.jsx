@@ -32,18 +32,25 @@ const MEGATIX_URLS = {
   sosodef:  MEGATIX_URL + "?aid=SOSODEF",
 };
 
+// Venue (Aces) table & lounge packages — booked on the venue site via our
+// affiliate link. Every package CTA in the Lounges section routes here.
+const VENUE_PACKAGES_URL = "http://wly.sg/pmksEGQg";
+
 // ─── DIRECT MESSAGING ──────────────────────────────────────
 // Every CTA that says "message us" routes through one of these.
 // Update here = updates everywhere (nav, floating bubble, lounges,
 // dedicated Contact section, footer).
 const CONTACT = {
-  line:      "https://line.me/R/ti/p/@oldschoolchillbkk",
-  whatsapp:  "https://wa.me/61488846198",
+  // LINE: official QR/add-friend link (unique token from LINE's own QR code).
+  // Works in-browser and deep-links into the app — do NOT swap back to the
+  // line.me/R/ti/p/@id or page.line.me forms, both 404 for this account.
+  line:      "https://line.me/ti/p/9B-L5dXVSf",
+  whatsapp:  "https://wa.me/61427155999",
   messenger: "https://m.me/oldschoolchillbkk",
   instagram: "https://instagram.com/oldschoolchillbkk",
   email:     "mailto:info@oscbkk.com",
   // Display strings
-  whatsappDisplay: "+61 488 846 198",
+  whatsappDisplay: "+61 427 155 999",
   lineDisplay:     "@oldschoolchillbkk",
   igDisplay:       "@oldschoolchillbkk",
   fbDisplay:       "@oldschoolchillbkk",
@@ -166,6 +173,7 @@ const ChatIcon = {
 function ChatFloats() {
   const floats = [
     { k: "LINE",     icon: ChatIcon.line,     href: CONTACT.line,     cls: "chat-float--line"     },
+    { k: "WhatsApp", icon: ChatIcon.whatsapp, href: CONTACT.whatsapp, cls: "chat-float--whatsapp" },
     { k: "Email",    icon: ChatIcon.email,    href: CONTACT.email,    cls: "chat-float--email"    },
   ];
   return (
@@ -869,113 +877,39 @@ function Lounges() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [termsOpen, setTermsOpen] = React.useState(false);
 
+  // Venue packages — OSC label names over Aces' tiers. Booked on the venue
+  // site via our affiliate link (VENUE_PACKAGES_URL). Kept deliberately light:
+  // full bottle lists live on the venue page.
   const packages = [
     {
-      key: "newjack", label: "New Jack", type: "table",
-      sofa: "Reserved Standing Table",
-      pax: "Up to 4 pax",
-      price: "4,000",
-      tier: "Table",
-      accent: "#ff3d8b",
-      soldOut: true,
-      megatix: MEGATIX_URLS.newjack,
-      inclusions: [
-        "Event entry for up to 4 guests",
-        "฿4,000 bar credit · spend on the menu",
-        "Reserved standing table",
-        "Dedicated server",
-      ],
+      key: "newjack", label: "New Jack", sub: "Table Upgrade", venue: "Standing Table",
+      pax: "2–4", price: "3,000", priceLabel: "Min Spend",
+      summary: "Reserved standing table · order anything off the menu",
+      accent: "#ff3d8b", entry: false,
     },
     {
-      key: "sosodef", label: "So So Def", type: "lounge",
-      sofa: "Base Lounge",
-      pax: "Up to 4 pax",
-      price: "8,000",
-      tier: "Lounge",
-      accent: "#ff3d8b",
-      soldOut: true,
-      megatix: MEGATIX_URLS.sosodef,
-      inclusions: [
-        "Event entry for up to 4 guests",
-        "฿8,000 bar credit · spend on the menu",
-        "Reserved lounge",
-        "VIP Priority Admission",
-        "Dedicated server",
-      ],
+      key: "sosodef", label: "So So Def", sub: "Silver", venue: "Silver Package",
+      pax: "2–4", price: "11,000", priceLabel: "Package",
+      summary: "1 spirit + Chandon Brut + 6 mixers",
+      accent: "#4cc3ff", entry: true,
     },
     {
-      key: "deathrow", label: "Death Row", type: "lounge",
-      sofa: "Standard Lounge",
-      pax: "Up to 6 pax",
-      price: "12,000",
-      tier: "Lounge",
-      accent: "#ff3d8b",
-      megatix: MEGATIX_URL,
-      inclusions: [
-        "Event entry for up to 6 guests",
-        "Reserved lounge",
-        "VIP Priority Admission",
-        "Dedicated server",
-        "Thug Passion welcome shots",
-      ],
+      key: "badboy", label: "Bad Boy", sub: "Gold", venue: "Gold Package",
+      pax: "6–8", price: "15,000", priceLabel: "Package",
+      summary: "2 spirits + Chandon Rosé + 6 mixers",
+      accent: "#f3b53b", entry: true,
     },
     {
-      key: "badboy", label: "Bad Boy", type: "lounge",
-      sofa: "Prime Lounge",
-      pax: "Up to 8 pax",
-      price: "16,000",
-      tier: "Premium",
-      accent: "#f3b53b",
-      megatix: MEGATIX_URL,
-      inclusions: [
-        "Event entry for up to 8 guests",
-        "Reserved lounge",
-        "VIP Priority Admission",
-        "Dedicated server",
-        "Thug Passion welcome shots",
-      ],
+      key: "rocafella", label: "Roc-A-Fella", sub: "Platinum", venue: "Platinum Package",
+      pax: "8–10", price: "23,000", priceLabel: "Package",
+      summary: "Up to 3 spirits + Chandon + 8 mixers",
+      accent: "#f3b53b", entry: true, featured: true,
     },
     {
-      key: "rocafella", label: "Roc-A-Fella", type: "lounge",
-      sofa: "VVIP Lounge",
-      pax: "Up to 10 pax",
-      price: "20,000",
-      tier: "VVIP",
-      accent: "#4cc3ff",
-      featured: true,
-      megatix: MEGATIX_URL,
-      inclusions: [
-        "Event entry for up to 10 guests",
-        "Reserved lounge",
-        "Escorted VIP Priority Admission",
-        "All-night priority entry",
-        "Dedicated host",
-        "Thug Passion welcome shots",
-        "Private photo session · pics emailed direct",
-        "Bar bites",
-      ],
-    },
-    {
-      key: "defjam", label: "Def Jam", type: "lounge",
-      sofa: "Ultra VVIP Lounge",
-      pax: "Up to 15 pax",
-      price: "30,000",
-      tier: "Ultra",
-      accent: "#ff6a3d",
-      featured: true,
-      soldOut: true,
-      megatix: MEGATIX_URL,
-      inclusions: [
-        "Event entry for up to 15 guests",
-        "Reserved lounge",
-        "Escorted VIP Priority Admission",
-        "All-night priority entry",
-        "Dedicated host",
-        "Thug Passion welcome shots",
-        "Private photo session · pics emailed direct",
-        "Personalised LED banner",
-        "Bar bites",
-      ],
+      key: "defjam", label: "Def Jam", sub: "Diamond", venue: "Diamond Package",
+      pax: "10–15", price: "45,000", priceLabel: "Package",
+      summary: "3 spirits + Moët & Chandon + 8 mixers",
+      accent: "#4cc3ff", entry: true, featured: true,
     },
   ];
 
@@ -988,6 +922,48 @@ function Lounges() {
             <div className="title">Table &amp; Booth <em>Bookings</em></div>
             <div className="thai">จองโต๊ะ · บูธ · งานปาร์ตี้</div>
           </div>
+        </div>
+
+        <div className="pkgs__intro">
+          <p className="pkgs__lede">
+            Tables and bottle packages are booked directly with Aces Nightclub. Bottle packages are a
+            <strong> set price and include entry tickets</strong> for your group — you pick Option A or B
+            at the venue. New Jack is a <strong>minimum spend</strong> only.
+          </p>
+          <p className="pkgs__warn">New Jack does not include entry tickets</p>
+          <p className="pkgs__thai">แพ็กเกจขวดรวมบัตรเข้างานแล้ว · จองที่เว็บไซต์ Aces โดยตรง</p>
+        </div>
+
+        <div className="pkgs">
+          {packages.map((p) => (
+            <a
+              key={p.key}
+              className={`pkg ${p.featured ? "pkg--featured" : ""}`}
+              style={{ "--pkg-accent": p.accent }}
+              href={VENUE_PACKAGES_URL}
+              target="_blank"
+              rel="noopener"
+            >
+              <div className="pkg__venue">{p.venue}</div>
+              <h3 className="pkg__label">{p.label}</h3>
+              <div className="pkg__sub">{p.sub}</div>
+              <div className="pkg__price">
+                <span className="cur">฿</span>
+                <span className="val">{p.price}</span>
+              </div>
+              <div className="pkg__min">{p.priceLabel} · {p.pax} pax</div>
+              <p className="pkg__summary">{p.summary}</p>
+              <span className={`pkg__entry ${p.entry ? "is-yes" : "is-no"}`}>
+                {p.entry ? "Entry included" : "No entry tickets"}
+              </span>
+              <span className="pkg__cta">Book at Aces ↗</span>
+            </a>
+          ))}
+        </div>
+
+        <div className="pkgs__foot">
+          <a className="pkgs__all" href={VENUE_PACKAGES_URL} target="_blank" rel="noopener">See all packages &amp; book ↗</a>
+          <button className="pkgs__menu" onClick={() => setMenuOpen(true)}>View the menu</button>
         </div>
 
         <div className="bookings" id="lounges-contact">
@@ -1007,6 +983,10 @@ function Lounges() {
             <a className="bookings__card bookings__card--line" href={CONTACT.line} target="_blank" rel="noopener">
               <span className="k">LINE</span>
               <span className="v">{CONTACT.lineDisplay}</span>
+            </a>
+            <a className="bookings__card bookings__card--whatsapp" href={CONTACT.whatsapp} target="_blank" rel="noopener">
+              <span className="k">WhatsApp</span>
+              <span className="v">{CONTACT.whatsappDisplay}</span>
             </a>
             <a className="bookings__card" href={CONTACT.messenger} target="_blank" rel="noopener">
               <span className="k">Messenger</span>
@@ -1272,6 +1252,13 @@ function Contact() {
       href: CONTACT.line,
       cls: "contact__card--line",
       icon: ChatIcon.line,
+    },
+    {
+      k: "WhatsApp",
+      v: CONTACT.whatsappDisplay,
+      href: CONTACT.whatsapp,
+      cls: "contact__card--whatsapp",
+      icon: ChatIcon.whatsapp,
     },
     {
       k: "Messenger",
