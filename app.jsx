@@ -24,6 +24,7 @@ const WAITLIST_ENDPOINT = "https://5b489cb7.sibforms.com/serve/MUIFADb7ygpzNtT0R
 const MEGATIX_URLS = {
   early: MEGATIX_URL + "?aid=EARLYBIRD",
   ga:    MEGATIX_URL + "?aid=GA",
+  final: MEGATIX_URL + "?aid=FINAL",
   door:  MEGATIX_URL,
   table: MEGATIX_URL,
   // Lounge packages — pre-paid via Megatix as a "minimum spend reservation".
@@ -32,9 +33,10 @@ const MEGATIX_URLS = {
   sosodef:  MEGATIX_URL + "?aid=SOSODEF",
 };
 
-// Venue (Aces) table & lounge packages — booked on the venue site via our
-// affiliate link. Every package CTA in the Lounges section routes here.
-const VENUE_PACKAGES_URL = "http://wly.sg/pmksEGQg";
+// Table & bottle packages are now sold through Megatix (previously booked
+// direct with the venue). Full inclusions are shown on our own page; the
+// CTA hands off to Megatix checkout.
+const VENUE_PACKAGES_URL = MEGATIX_URL;
 
 // ─── DIRECT MESSAGING ──────────────────────────────────────
 // Every CTA that says "message us" routes through one of these.
@@ -710,6 +712,18 @@ function Tickets() {
         "Limited numbers · advance only",
       ],
     },
+    {
+      key: "final",
+      name: "Final Release", thai: "รอบสุดท้าย",
+      bar: "TIER 03 / FINAL",
+      price: "700",
+      perks: [
+        "General Admission entry",
+        "Guaranteed entry · pre-sale only",
+        "Ticket includes one drink",
+        "Limited numbers · advance only",
+      ],
+    },
   ];
 
   return (
@@ -719,7 +733,7 @@ function Tickets() {
           <div className="num">03</div>
           <div className="titles">
             <div className="title">The <em>Tickets</em></div>
-            <div className="thai">บัตรเข้างาน · 2 ระดับ</div>
+            <div className="thai">บัตรเข้างาน · 3 ระดับ</div>
           </div>
         </div>
 
@@ -877,39 +891,51 @@ function Lounges() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [termsOpen, setTermsOpen] = React.useState(false);
 
-  // Venue packages — OSC label names over Aces' tiers. Booked on the venue
-  // site via our affiliate link (VENUE_PACKAGES_URL). Kept deliberately light:
-  // full bottle lists live on the venue page.
+  // Table & bottle packages — OSC label names over the venue's tiers.
+  // Now sold via Megatix. Full inclusions shown here on our own page;
+  // bottle packages let the buyer pick Option A or B at the venue.
   const packages = [
     {
       key: "newjack", label: "New Jack", sub: "Table Upgrade", venue: "Standing Table",
       pax: "2–4", price: "3,000", priceLabel: "Min Spend",
-      summary: "Reserved standing table · order anything off the menu",
       accent: "#ff3d8b", entry: false,
+      note: "Reserved standing table with a dedicated server. The ฿3,000 is a minimum spend — order anything off the Aces menu and your tab is tracked on the night.",
     },
     {
       key: "sosodef", label: "So So Def", sub: "Silver", venue: "Silver Package",
       pax: "2–4", price: "11,000", priceLabel: "Package",
-      summary: "1 spirit + Chandon Brut + 6 mixers",
       accent: "#4cc3ff", entry: true,
+      options: [
+        ["Johnnie Walker Black Label × 1", "Chandon Brut × 1", "Mixer set × 6"],
+        ["Tanqueray × 1", "Chandon Brut × 1", "Mixer set × 6"],
+      ],
     },
     {
       key: "badboy", label: "Bad Boy", sub: "Gold", venue: "Gold Package",
       pax: "6–8", price: "15,000", priceLabel: "Package",
-      summary: "2 spirits + Chandon Rosé + 6 mixers",
       accent: "#f3b53b", entry: true,
+      options: [
+        ["Chivas Regal 12 × 1", "Absolut Vodka × 1", "Chandon Rosé × 1", "Mixer set × 6"],
+        ["Bombay Sapphire × 1", "Absolut Vodka × 1", "Chandon Rosé × 1", "Mixer set × 6"],
+      ],
     },
     {
       key: "rocafella", label: "Roc-A-Fella", sub: "Platinum", venue: "Platinum Package",
       pax: "8–10", price: "23,000", priceLabel: "Package",
-      summary: "Up to 3 spirits + Chandon + 8 mixers",
       accent: "#f3b53b", entry: true, featured: true,
+      options: [
+        ["Johnnie Walker Gold Label × 1", "Belvedere Vodka × 1", "Chandon Rosé × 1", "Patrón Silver × 1", "Mixer set × 8"],
+        ["Belvedere Vodka × 1", "Chandon Brut × 1", "Tanqueray No. Ten × 1", "Mixer set × 8"],
+      ],
     },
     {
       key: "defjam", label: "Def Jam", sub: "Diamond", venue: "Diamond Package",
       pax: "10–15", price: "45,000", priceLabel: "Package",
-      summary: "3 spirits + Moët & Chandon + 8 mixers",
       accent: "#4cc3ff", entry: true, featured: true,
+      options: [
+        ["Glenlivet 15 × 1", "Grey Goose × 1", "Don Julio Reposado × 2", "Moët & Chandon Brut × 1", "Mixer set × 8"],
+        ["Glenfiddich 15 × 1", "Grey Goose × 1", "Patrón Reposado × 1", "Moët & Chandon Rosé × 1", "Mixer set × 8"],
+      ],
     },
   ];
 
@@ -926,38 +952,57 @@ function Lounges() {
 
         <div className="pkgs__intro">
           <p className="pkgs__lede">
-            Tables and bottle packages are booked directly with Aces Nightclub. Bottle packages are a
-            <strong> set price and include entry tickets</strong> for your group — you pick Option A or B
-            at the venue. New Jack is a <strong>minimum spend</strong> only.
+            Tables and bottle packages are booked through <strong>Megatix</strong>, same as tickets.
+            Bottle packages are a <strong>set price and include entry</strong> for your whole group —
+            choose Option A or Option B at the venue. New Jack is a <strong>minimum spend</strong> only.
           </p>
           <p className="pkgs__warn">New Jack does not include entry tickets</p>
-          <p className="pkgs__thai">แพ็กเกจขวดรวมบัตรเข้างานแล้ว · จองที่เว็บไซต์ Aces โดยตรง</p>
+          <p className="pkgs__thai">แพ็กเกจขวดรวมบัตรเข้างานแล้ว · เลือกเซ็ต A หรือ B ที่หน้างาน</p>
         </div>
 
         <div className="pkgs">
           {packages.map((p) => (
-            <a
+            <article
               key={p.key}
               className={`pkg ${p.featured ? "pkg--featured" : ""}`}
               style={{ "--pkg-accent": p.accent }}
-              href={VENUE_PACKAGES_URL}
-              target="_blank"
-              rel="noopener"
             >
-              <div className="pkg__venue">{p.venue}</div>
-              <h3 className="pkg__label">{p.label}</h3>
-              <div className="pkg__sub">{p.sub}</div>
-              <div className="pkg__price">
-                <span className="cur">฿</span>
-                <span className="val">{p.price}</span>
+              <div className="pkg__top">
+                <div className="pkg__id">
+                  <div className="pkg__venue">{p.venue}</div>
+                  <h3 className="pkg__label">
+                    {p.label} <span className="pkg__sub">{p.sub}</span>
+                  </h3>
+                  <div className="pkg__tags">
+                    <span className="pkg__tag">{p.pax} pax</span>
+                    <span className={`pkg__tag ${p.entry ? "is-yes" : "is-no"}`}>
+                      {p.entry ? "Entry included" : "No entry tickets"}
+                    </span>
+                  </div>
+                </div>
+                <div className="pkg__money">
+                  <div className="pkg__price"><span className="cur">฿</span>{p.price}</div>
+                  <div className="pkg__min">{p.priceLabel}</div>
+                </div>
               </div>
-              <div className="pkg__min">{p.priceLabel} · {p.pax} pax</div>
-              <p className="pkg__summary">{p.summary}</p>
-              <span className={`pkg__entry ${p.entry ? "is-yes" : "is-no"}`}>
-                {p.entry ? "Entry included" : "No entry tickets"}
-              </span>
-              <span className="pkg__cta">Book at Aces ↗</span>
-            </a>
+
+              {p.note && <p className="pkg__note">{p.note}</p>}
+
+              {p.options && (
+                <div className="pkg__opts">
+                  {p.options.map((opt, oi) => (
+                    <div key={oi} className="pkg__opt">
+                      <div className="pkg__opt-k">Option {oi === 0 ? "A" : "B"}</div>
+                      <ul>{opt.map((line, li) => <li key={li}>{line}</li>)}</ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <a className="pkg__cta" href={VENUE_PACKAGES_URL} target="_blank" rel="noopener">
+                Reserve on Megatix ↗
+              </a>
+            </article>
           ))}
         </div>
 

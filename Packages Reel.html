@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OSCBKK · Packages Reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sriracha&family=Pacifico&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#0b0814;--ink:#f4eedd;--ink-dim:#9a92b5;--line:rgba(244,238,221,0.14);--gold:#f3b53b;--cyan:#4cc3ff;--magenta:#ff3d8b}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:#08060f;color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.page-head{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:16px 28px;background:rgba(8,6,15,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.page-head h1{font-size:15px;font-weight:500;margin:0;color:var(--ink-dim)}.page-head h1 b{color:var(--ink);font-weight:700}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--magenta);color:#0b0814;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;font-weight:600}
+.btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.hint{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim);padding:14px 28px 0}
+.stage{padding:34px 28px 90px;display:flex;gap:34px;flex-wrap:wrap;align-items:flex-start}
+.shell{width:405px;height:720px;background:#000;border-radius:8px;overflow:hidden;position:relative}
+.shell .tile{position:absolute;top:0;left:0;transform-origin:top left;transform:scale(.375)}
+
+/* ================= REEL 1080x1920 ================= */
+.t{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;padding:96px 78px 88px}
+.t__glow{position:absolute;z-index:1;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(255,61,139,.34) 0%,transparent 68%);filter:blur(24px);top:-300px;left:-240px;pointer-events:none}
+.t__glow2{position:absolute;z-index:1;width:820px;height:820px;border-radius:50%;background:radial-gradient(circle,rgba(76,195,255,.26) 0%,transparent 68%);filter:blur(24px);bottom:-320px;right:-260px;pointer-events:none}
+.t__grain{position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:overlay;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+.t__head,.t__rows,.t__foot{position:relative;z-index:3}
+.t__logo{display:block;width:430px;height:auto;margin:0 auto 22px;filter:drop-shadow(0 0 26px rgba(255,61,139,.4))}
+.t__kick{font-family:"JetBrains Mono",monospace;font-size:30px;letter-spacing:.26em;text-transform:uppercase;color:var(--magenta);text-align:center;margin-bottom:18px}
+.t__h1{font-family:"Archivo Black",Impact,sans-serif;text-transform:uppercase;font-size:104px;line-height:.94;letter-spacing:-.02em;text-align:center;margin:0}
+.t__h1 .hl{color:var(--magenta)}
+.t__th{font-family:"Sriracha",cursive;font-size:31px;line-height:1.45;color:var(--ink);opacity:.8;text-align:center;margin:20px 0 0}
+
+.t__rows{display:flex;flex-direction:column;gap:14px;margin:26px 0 auto}
+.row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:22px;padding:16px 28px;border:2px solid var(--line);background:linear-gradient(180deg,rgba(244,238,221,.05),rgba(244,238,221,.012))}
+.row--f{border-color:color-mix(in srgb,var(--ra) 50%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--ra) 11%,transparent),rgba(244,238,221,.012))}
+.row__venue{font-family:"JetBrains Mono",monospace;font-size:28px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:8px}
+.row__name{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.row__label{font-family:"Archivo Black",Impact,sans-serif;text-transform:uppercase;font-size:42px;line-height:1;letter-spacing:-.01em;color:var(--ink)}
+.row__tier{font-family:"Pacifico",cursive;font-size:38px;line-height:1;color:var(--ra)}
+.row__sum{font-size:30px;line-height:1.35;color:var(--ink-dim);margin-top:10px}
+.row__right{text-align:right;white-space:nowrap}
+.row__price{font-family:"Archivo Black",Impact,sans-serif;font-size:52px;line-height:1;letter-spacing:-.02em;color:var(--ra)}
+.row__price .cur{font-family:"JetBrains Mono",monospace;font-size:26px;color:var(--ink-dim);margin-right:4px}
+.row__meta{font-family:"JetBrains Mono",monospace;font-size:28px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);margin-top:10px}
+.row__meta .yes{color:#7fe0a0}
+.row__entry{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:5px 9px;border:1px solid;margin-top:10px}
+.is-yes{color:#7fe0a0;border-color:rgba(127,224,160,.5);background:rgba(127,224,160,.1)}
+.is-no{color:var(--ink-dim);border-color:var(--line)}
+
+.t__foot{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-top:44px}
+.t__at-k{font-family:"JetBrains Mono",monospace;font-size:28px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px}
+.t__aces{display:block;width:250px;height:auto}
+.t__more{text-align:right}
+.t__more-k{font-family:"JetBrains Mono",monospace;font-size:28px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:10px}
+.t__more-v{font-family:"Archivo Black",Impact,sans-serif;text-transform:uppercase;font-size:38px;letter-spacing:-.01em;color:var(--magenta);line-height:1}
+</style>
+</head>
+<body>
+<div class="page-head">
+  <h1>OSCBKK · <b>Packages Reel</b> — 1080×1920</h1>
+  <div class="controls">
+    <button class="btn btn--ghost" id="tog">Toggle glow</button>
+    <button class="btn" id="dl">Export PNG ↓</button>
+  </div>
+</div>
+<div class="hint">9:16 reel / story graphic · heading “Upgrade Your Experience” · packages pulled from the site’s venue-package data.</div>
+<div class="stage">
+  <div class="shell"><div class="tile" id="tile"></div></div>
+</div>
+
+<script>
+const PKGS = [
+  { label:"New Jack",    tier:"Table",    venue:"Standing Table", pax:"2–4 pax",   price:"3,000",  meta:"Min spend", sum:"Reserved table · order off menu", accent:"#ff3d8b", entry:false },
+  { label:"So So Def",   tier:"Silver",   venue:"Silver",         pax:"2–4 pax",   price:"11,000", meta:"Package",   sum:"1 spirit + Chandon Brut + 6 mixers",           accent:"#4cc3ff", entry:true },
+  { label:"Bad Boy",     tier:"Gold",     venue:"Gold",           pax:"6–8 pax",   price:"15,000", meta:"Package",   sum:"2 spirits + Chandon Rosé + 6 mixers",          accent:"#f3b53b", entry:true },
+  { label:"Roc-A-Fella", tier:"Platinum", venue:"Platinum",       pax:"8–10 pax",  price:"23,000", meta:"Package",   sum:"Up to 3 spirits + Chandon + 8 mixers",         accent:"#f3b53b", entry:true, f:true },
+  { label:"Def Jam",     tier:"Diamond",  venue:"Diamond",        pax:"10–15 pax", price:"45,000", meta:"Package",   sum:"3 spirits + Moët + 8 mixers",        accent:"#4cc3ff", entry:true, f:true },
+];
+let glow = true;
+function render(){
+  document.getElementById("tile").innerHTML = `<div class="t">
+    ${glow ? '<div class="t__glow"></div><div class="t__glow2"></div>' : ''}
+    <div class="t__grain"></div>
+    <div class="t__head">
+      <img class="t__logo" src="assets/logo.png" alt="Old School & Chill Bangkok" crossorigin="anonymous">
+      <div class="t__kick">Tables &amp; Bottle Packages</div>
+      <h1 class="t__h1">Upgrade Your <span class="hl">Experience</span></h1>
+      <p class="t__th">อัปเกรดค่ำคืนของคุณ · จองโต๊ะและแพ็กเกจขวด</p>
+    </div>
+    <div class="t__rows">
+      ${PKGS.map(p=>`<div class="row ${p.f?'row--f':''}" style="--ra:${p.accent}">
+        <div class="row__left">
+          <div class="row__venue">${p.venue}</div>
+          <div class="row__name"><span class="row__label">${p.label}</span><span class="row__tier">${p.tier}</span></div>
+          <div class="row__sum">${p.sum}</div>
+        </div>
+        <div class="row__right">
+          <div class="row__price"><span class="cur">฿</span>${p.price}</div>
+          <div class="row__meta">${p.meta} · ${p.pax}<br>${p.entry?'<span class="yes">Entry included</span>':'No entry'}</div>
+        </div>
+      </div>`).join("")}
+    </div>
+    <div class="t__foot">
+      <div class="t__at">
+        <div class="t__at-k">At</div>
+        <img class="t__aces" src="assets/aces-logo-cream.png" alt="Aces Nightclub" crossorigin="anonymous">
+      </div>
+      <div class="t__more">
+        <div class="t__more-k">More information</div>
+        <div class="t__more-v">oscbkk.com</div>
+      </div>
+    </div>
+  </div>`;
+}
+document.getElementById("tog").onclick=()=>{ glow=!glow; render(); };
+render();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script>
+document.getElementById("dl").onclick=async(e)=>{
+  const b=e.currentTarget; b.disabled=true; const l=b.textContent; b.textContent="Exporting…";
+  const node=document.querySelector("#tile .t");
+  const url=await window.htmlToImage.toPng(node,{width:1080,height:1920,pixelRatio:1,style:{transform:"none"},cacheBust:true,backgroundColor:"#0b0814"});
+  const a=document.createElement("a"); a.download="oscbkk-packages-reel-1080x1920.png"; a.href=url; a.click();
+  b.textContent="Done ✓"; setTimeout(()=>{b.textContent=l;b.disabled=false;},1500);
+};
+</script>
+</body>
+</html>
