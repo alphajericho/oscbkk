@@ -155,30 +155,18 @@ body::before {
   overflow: hidden;
   background: #050309;
 }
+.hero__frame { position: relative; overflow: hidden; line-height: 0; }
 .hero__photo {
   display: block;
   width: 100%;
-  height: min(88vh, 940px);
-  object-fit: cover;
-  object-position: 50% 40%;
+  height: auto;
 }
 .hero__scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(5,3,9,0.62) 0%, rgba(5,3,9,0.12) 26%, rgba(5,3,9,0) 46%),
-    linear-gradient(0deg, rgba(5,3,9,0.55) 0%, rgba(5,3,9,0) 30%);
-}
-.hero__logo {
-  position: absolute;
-  top: clamp(16px, 2.2vh, 30px);
-  left: clamp(16px, 3vw, 40px);
-  width: min(300px, 40vw);
-  height: auto;
-  filter: drop-shadow(0 0 24px rgba(255,60,150,0.35)) drop-shadow(0 6px 16px rgba(0,0,0,0.5));
-  pointer-events: none;
-  z-index: 2;
+    linear-gradient(0deg, rgba(5,3,9,0.5) 0%, rgba(5,3,9,0) 22%);
 }
 .hero--art .hero__cta {
   position: relative;
@@ -187,8 +175,7 @@ body::before {
   padding-top: 24px;
 }
 @media (max-width: 760px) {
-  .hero__photo { height: min(78vh, 680px); object-position: 50% 36%; }
-  .hero__logo { top: clamp(18px, 2.6vh, 34px); left: 14px; width: 46vw; }
+  .hero__photo { object-position: 50% 50%; }
 }
 
 .hero__stack, .hero__photo-wrap, .hero__photo-fade, .hero__topbar { display: none; }
@@ -661,6 +648,8 @@ body::before {
   text-shadow: 0 0 12px color-mix(in srgb, var(--accent-2) 50%, transparent);
 }
 .lineup__roster-item--mc .lineup__roster-n { color: var(--accent-2); }
+.lineup__roster-item--guest .lineup__roster-n { color: var(--accent); letter-spacing: .12em; }
+.lineup__roster-item--guest .lineup__roster-name { color: var(--accent); text-shadow: 0 0 14px color-mix(in srgb, var(--accent) 55%, transparent); }
 
 .mixtape {
   position: relative;

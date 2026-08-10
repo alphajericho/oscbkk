@@ -1,10 +1,15 @@
 /* global React, ReactDOM, TweaksPanel, TweakSection, TweakRadio, TweakColor, TweakSlider, useTweaks */
 
 // ─── TICKETING ──────────────────────────────────────────────
-// Live Megatix event URL. Pasted into every "Get Tickets" / "Reserve"
+// Live Megatix white-label URL. Pasted into every "Get Tickets" / "Reserve"
 // button on the page. Same URL for all tiers — Megatix lets the buyer
 // pick their tier on its checkout page.
-const MEGATIX_URL = "https://megatix.in.th/events/august-old-school-chill-bangkok";
+//
+// The Megatix widget script (loaded in index.html) intercepts clicks on any
+// /white-label/ link and opens the checkout in a full-screen overlay on top of
+// this page, so buyers never leave oscbkk.com. If the script fails to load the
+// link still works as a normal navigation to Megatix.
+const MEGATIX_URL = "https://megatix.in.th/white-label/old-school-chill-bangkok-september-2026";
 
 // ─── WAITLIST (Brevo) ──────────────────────────────────────
 // The door-ticket waitlist feeds a Brevo contact list ("OSCBKK Waitlist").
@@ -203,7 +208,7 @@ function Nav() {
     <nav className="nav">
       <div className="nav__brand">
         <span className="mark">Old School &amp; Chill</span>
-        <span className="sub">BKK · Vol. 02</span>
+        <span className="sub">BKK · Vol. 03</span>
       </div>
       <div className="nav__links">
         <a href="#night">Event</a>
@@ -242,9 +247,10 @@ function Nav() {
 function Hero() {
   return (
     <header className="hero hero--art">
-      <img className="hero__photo" src="assets/hero-photo.png" alt="Old School & Chill Bangkok — the crew at Aces" />
-      <div className="hero__scrim" aria-hidden="true"></div>
-      <img className="hero__logo" src="assets/logo.png" alt="Old School & Chill · Bangkok" />
+      <div className="hero__frame">
+        <img className="hero__photo" src="assets/hero-photo.png" alt="Old School & Chill Bangkok — Vol. 03 · Saturday 5 September" />
+        <div className="hero__scrim" aria-hidden="true"></div>
+      </div>
 
       <div className="hero__cta">
         <a className="hero__btn hero__btn--primary" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
@@ -300,20 +306,20 @@ function TheNight() {
               Another dose of '90s &amp; 2000s R&amp;B and Hip Hop in Bangkok.
             </p>
             <p>
-              Following a sold-out debut in June, Bangkok's newest old-school experience
-              returns on <strong>Saturday 1 August</strong>. In June, Old School &amp; Chill
-              sold out its first event before most people even knew the brand existed — no
-              influencer push, no gimmicks, just a room full of people singing every word
-              to records they grew up on.
+              After two sold-out nights, Bangkok's old-school night returns on
+              <strong>Saturday 5 September</strong>. Both previous editions sold out in
+              advance — no influencer push, no gimmicks, just a room full of people singing
+              every word to records they grew up on.
             </p>
             <p>
-              August brings more of exactly that. The focus tightens onto timeless R&amp;B,
+              September brings more of exactly that. The focus tightens onto timeless R&amp;B,
               the singalong records everyone knows by heart, with Hip Hop staying in the mix
               as the party starter between the big moments. Strictly '90s and '00s — nothing
               after 2010.
             </p>
             <p>
-              The sounds come courtesy of Australia's <strong>DJ Jordan Adam</strong>,
+              Joining the residents this time is special guest <strong>Sebi D</strong> (Australia).
+              The rest of the night comes courtesy of Australia's <strong>DJ Jordan Adam</strong>,
               <strong> DJ Young G</strong> (Philippines) and <strong>Junior</strong> (Thailand),
               all of whom boast decades of experience playing this exact genre with a
               fan-first approach that'll have you buzzing and singing along from the moment
@@ -342,7 +348,7 @@ function TheNight() {
           <div className="intro__card">
             <div className="row">
               <span className="k">Vol.</span>
-              <span className="v">02 / 2026</span>
+              <span className="v">03 / 2026</span>
             </div>
             <div className="row">
               <span className="k">Curated by</span>
@@ -385,8 +391,8 @@ function PressModal({ onClose }) {
         <header className="press-modal__head">
           <div>
             <div className="press-modal__kicker">Press Release · For Immediate Release</div>
-            <h2 id="press-title" className="press-modal__title">Old School &amp; Chill <em>Vol. 02</em></h2>
-            <div className="press-modal__sub">Aces Nightclub · Bangkok · Saturday 1 August 2026</div>
+            <h2 id="press-title" className="press-modal__title">Old School &amp; Chill <em>Vol. 03</em></h2>
+            <div className="press-modal__sub">Aces Nightclub · Bangkok · Saturday 5 September 2026</div>
           </div>
           <button className="press-modal__x" onClick={onClose} aria-label="Close">×</button>
         </header>
@@ -503,11 +509,11 @@ function PressBody() {
       <div className="press-modal__details">
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Event</span>
-          <span className="press-modal__detail-v">Old School &amp; Chill — Vol. 02</span>
+          <span className="press-modal__detail-v">Old School &amp; Chill — Vol. 03</span>
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Date</span>
-          <span className="press-modal__detail-v">Saturday 1 August 2026 · 10pm — Late</span>
+          <span className="press-modal__detail-v">Saturday 5 September 2026 · 10pm — Late</span>
         </div>
         <div className="press-modal__detail">
           <span className="press-modal__detail-k">Venue</span>
@@ -565,7 +571,7 @@ function Lineup({ motion }) {
           <div className="lineup__tease">
             <div className="lineup__stamp">
               <span className="lineup__stamp-row">Vol.</span>
-              <span className="lineup__stamp-row lineup__stamp-row--accent">02</span>
+              <span className="lineup__stamp-row lineup__stamp-row--accent">03</span>
             </div>
 
             <div className="lineup__copy">
@@ -577,10 +583,15 @@ function Lineup({ motion }) {
                 All night on pre-2010. Set times drop closer to the date.
               </p>
               <p className="lineup__thai">
-                ดีเจตัวจริง 5 คน พร้อมโฮสต์ MC · เปิดเพลงยุค 90s–2000s ตลอดคืน
+แขกรับเชิญพิเศษ Sebi D พร้อมดีเจประจำและโฮสต์ MC · เปิดเพลงยุค 90s–2000s ตลอดคืน
               </p>
 
               <ul className="lineup__roster">
+                <li className="lineup__roster-item lineup__roster-item--guest">
+                  <span className="lineup__roster-n">GUEST</span>
+                  <span className="lineup__roster-name">Sebi D</span>
+                  <span className="lineup__roster-flag" title="Australia" aria-label="Australia">🇦🇺</span>
+                </li>
                 <li className="lineup__roster-item">
                   <span className="lineup__roster-n">01</span>
                   <span className="lineup__roster-name">Jordan Adam</span>
@@ -645,18 +656,18 @@ function Poster() {
             The <em>Poster</em>.
           </h3>
           <p className="poster-section__body">
-            Vol. 02 · Saturday 1 August. The official flyer — screenshot it,
+            Vol. 03 · Saturday 5 September. The official flyer — screenshot it,
             share it, send it to every friend you've ever made a mixtape for.
           </p>
           <p className="poster-section__thai">
-            แชร์ให้เพื่อนที่รักเพลงเก่าเหมือนกัน · เจอกันวันที่ 1 สิงหาคม
+            แชร์ให้เพื่อนที่รักเพลงเก่าเหมือนกัน · เจอกันวันที่ 5 กันยายน
           </p>
 
           <div className="poster-section__share">
             <span className="poster-section__share-k">Share</span>
             <div className="poster-section__share-row">
               <a className="poster-section__share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Foscbkk.com" target="_blank" rel="noopener" aria-label="Share on Facebook">Facebook</a>
-              <a className="poster-section__share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Foscbkk.com&text=Old%20School%20%26%20Chill%20BKK%20%E2%80%94%20Vol.%2002%20%E2%80%94%201%20August%202026" target="_blank" rel="noopener" aria-label="Share on X">X / Twitter</a>
+              <a className="poster-section__share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Foscbkk.com&text=Old%20School%20%26%20Chill%20BKK%20%E2%80%94%20Vol.%2003%20%E2%80%94%205%20September%202026" target="_blank" rel="noopener" aria-label="Share on X">X / Twitter</a>
               <button className="poster-section__share-btn poster-section__share-btn--copy" onClick={(e) => {
                 navigator.clipboard?.writeText('https://oscbkk.com').then(() => {
                   const b = e.currentTarget;
@@ -671,7 +682,7 @@ function Poster() {
         </aside>
 
         <div className="poster-section__frame">
-          <img className="poster-section__img" src="assets/poster.png" alt="Old School & Chill Vol. 02 — Bangkok · 1 August 2026 — official poster" />
+          <img className="poster-section__img" src="assets/poster.png" alt="Old School & Chill Vol. 03 — Bangkok · 5 September 2026 — official poster" />
           <span className="poster-section__corner poster-section__corner--tl" />
           <span className="poster-section__corner poster-section__corner--tr" />
           <span className="poster-section__corner poster-section__corner--bl" />
@@ -691,7 +702,6 @@ function Tickets() {
       bar: "TIER 01 / LIMITED",
       price: "500",
       light: true,
-      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -1134,7 +1144,7 @@ function TermsModal({ onClose }) {
     <Modal
       kicker="Lounge &amp; Table Reservations"
       title={<>Terms &amp; <em>Conditions</em></>}
-      sub="Old School &amp; Chill · Vol. 02 · 1 August 2026"
+      sub="Old School &amp; Chill · Vol. 03 · 5 September 2026"
       onClose={onClose}
       footer={<>
         <a className="modal__btn modal__btn--ghost" href="mailto:info@oscbkk.com?subject=Lounge%20Booking%20%E2%80%94%20Question">Question? Email us</a>
@@ -1364,6 +1374,19 @@ function Contact() {
    its original poster art. Add newer entries to the top of `editions`. */
 function PastEvents() {
   const editions = [
+    {
+      vol: "Vol. 02",
+      date: "Saturday 1 August 2026",
+      dateTh: "วันเสาร์ที่ 1 สิงหาคม 2569",
+      venue: "Aces Nightclub · Sukhumvit Soi 11",
+      poster: "assets/poster-vol02.png",
+      status: "Sold Out",
+      djs: ["Jordan Adam", "Young G", "Junior"],
+      host: "El Rafa",
+      note: "The second edition. Timeless R&B up front, Hip Hop as the party starter — sold out again in advance.",
+      noteTh: "คืนที่สองของ Old School & Chill · บัตรหมดล่วงหน้าอีกครั้ง",
+      photos: ["assets/venue-2.jpg", "assets/venue-3.jpg"],
+    },
     {
       vol: "Vol. 01",
       date: "Saturday 20 June 2026",
