@@ -62,6 +62,45 @@ alt="" /></noscript>
 <!-- Megatix checkout widget: intercepts clicks on white-label links and opens checkout in an on-site overlay -->
 <script defer async src="https://megatix.in.th/build/js/widgets/megatix.js"></script>
 
+<!-- Site-side funnel tracking. The Megatix checkout runs in an iframe, so our
+     pixel cannot see events inside it. This fires InitiateCheckout on our own
+     pixel whenever a visitor opens the checkout from any CTA on this page, and
+     a ViewContent when the tickets section is first scrolled into view. Optimise
+     campaigns toward InitiateCheckout — it is the last event we own reliably. -->
+<script>
+(function(){
+  if (typeof fbq !== 'function') return;
+  var fired = {};
+  function label(a){
+    var card = a.closest('.ticket, .pkg');
+    var name = card && card.querySelector('.ticket__name, .pkg__name');
+    return (name ? name.textContent : a.textContent).trim().replace(/\s*↗$/,'');
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="megatix.in.th"]');
+    if (!a) return;
+    fbq('track', 'InitiateCheckout', {
+      content_name: label(a),
+      content_category: a.closest('.pkg') ? 'Lounge Package' : 'Ticket',
+      currency: 'THB'
+    });
+  }, true);
+  var tickets = null;
+  function watch(){
+    tickets = document.getElementById('tickets');
+    if (!tickets) return setTimeout(watch, 400);
+    new IntersectionObserver(function(entries, obs){
+      if (entries[0].isIntersecting && !fired.vc) {
+        fired.vc = true;
+        fbq('track', 'ViewContent', { content_name: 'Tickets', content_category: 'Ticket', currency: 'THB' });
+        obs.disconnect();
+      }
+    }, { threshold: 0.4 }).observe(tickets);
+  }
+  watch();
+})();
+</script>
+
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>

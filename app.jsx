@@ -48,19 +48,19 @@ const VENUE_PACKAGES_URL = MEGATIX_URL;
 // Update here = updates everywhere (nav, floating bubble, lounges,
 // dedicated Contact section, footer).
 const CONTACT = {
-  // LINE: official QR/add-friend link (unique token from LINE's own QR code).
-  // Works in-browser and deep-links into the app — do NOT swap back to the
-  // line.me/R/ti/p/@id or page.line.me forms, both 404 for this account.
-  line:      "https://line.me/ti/p/9B-L5dXVSf",
+  // LINE: official BUSINESS account add-friend link (Aug 2026). Use the lin.ee
+  // short form — it works in-browser and deep-links into the app. Do NOT swap
+  // back to line.me/R/ti/p/@id or page.line.me, both 404 for this account.
+  line:      "https://lin.ee/qjkaN1d",
   whatsapp:  "https://wa.me/61427155999",
-  messenger: "https://m.me/oldschoolchillbkk",
-  instagram: "https://instagram.com/oldschoolchillbkk",
+  messenger: "https://m.me/oscbkk",
+  instagram: "https://instagram.com/oscbkk",
   email:     "mailto:info@oscbkk.com",
   // Display strings
   whatsappDisplay: "+61 427 155 999",
-  lineDisplay:     "@oldschoolchillbkk",
-  igDisplay:       "@oldschoolchillbkk",
-  fbDisplay:       "@oldschoolchillbkk",
+  igDisplay:       "@oscbkk",
+  fbDisplay:       "@oscbkk",
+  emailDisplay:    "info@oscbkk.com",
 };
 // ────────────────────────────────────────────────────────────
 // ────────────────────────────────────────────────────────────
@@ -165,8 +165,10 @@ const ChatIcon = {
     </svg>
   ),
   instagram: (
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-      <path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
     </svg>
   ),
   email: (
@@ -220,19 +222,19 @@ function Nav() {
         <a href="#contact">Contact</a>
       </div>
       <div className="nav__socials" aria-label="Follow us">
-        <a className="nav__social" href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener" aria-label="Instagram">
+        <a className="nav__social" href="https://instagram.com/oscbkk" target="_blank" rel="noopener" aria-label="Instagram">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5" />
             <circle cx="12" cy="12" r="4" />
             <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
           </svg>
         </a>
-        <a className="nav__social" href="https://facebook.com/oldschoolchillbkk" target="_blank" rel="noopener" aria-label="Facebook">
+        <a className="nav__social" href="https://facebook.com/oscbkk" target="_blank" rel="noopener" aria-label="Facebook">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.6-1.5H16.5V4.3a22 22 0 0 0-2.4-.1c-2.4 0-4 1.4-4 4v2.3H7.5v3h2.6V21h3.4z" />
           </svg>
         </a>
-        <a className="nav__social" href="https://tiktok.com/@oldschoolchillbkk" target="_blank" rel="noopener" aria-label="TikTok">
+        <a className="nav__social" href="https://tiktok.com/@oscbkk" target="_blank" rel="noopener" aria-label="TikTok">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M16.5 3h-2.6v12.1c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5c.3 0 .5 0 .8.1V10c-.3 0-.5-.1-.8-.1-2.8 0-5.1 2.3-5.1 5.1S8.6 20.1 11.4 20.1s5.1-2.3 5.1-5.1V9.4c1 .7 2.2 1.1 3.5 1.1V7.9c-1.9 0-3.5-1.6-3.5-3.5V3z" />
           </svg>
@@ -306,8 +308,7 @@ function TheNight() {
               Another dose of '90s &amp; 2000s R&amp;B and Hip Hop in Bangkok.
             </p>
             <p>
-              After two sold-out nights, Bangkok's old-school night returns on
-              <strong>Saturday 5 September</strong>. Both previous editions sold out in
+              After two sold-out nights, Bangkok's old-school night returns on <strong>Saturday 5 September</strong>. Both previous editions sold out in
               advance — no influencer push, no gimmicks, just a room full of people singing
               every word to records they grew up on.
             </p>
@@ -320,8 +321,8 @@ function TheNight() {
             <p>
               Joining the residents this time is special guest <strong>Sebi D</strong> (Australia).
               The rest of the night comes courtesy of Australia's <strong>DJ Jordan Adam</strong>,
-              <strong> DJ Young G</strong> (Philippines) and <strong>Junior</strong> (Thailand),
-              all of whom boast decades of experience playing this exact genre with a
+              and <strong>DJ Young G</strong> (Philippines), both of whom boast decades
+              of experience playing this exact genre with a
               fan-first approach that'll have you buzzing and singing along from the moment
               you arrive. Our host will once again be <strong>El Rafa</strong>, one of
               Australia's most experienced and in-demand party starters.
@@ -382,178 +383,6 @@ function TheNight() {
   );
 }
 
-/* Press release modal — full copy lives here.
-   Swap the <PressBody/> contents when the final presser arrives. */
-function PressModal({ onClose }) {
-  return (
-    <div className="press-modal" role="dialog" aria-modal="true" aria-labelledby="press-title" onClick={onClose}>
-      <div className="press-modal__sheet" onClick={(e) => e.stopPropagation()}>
-        <header className="press-modal__head">
-          <div>
-            <div className="press-modal__kicker">Press Release · For Immediate Release</div>
-            <h2 id="press-title" className="press-modal__title">Old School &amp; Chill <em>Vol. 03</em></h2>
-            <div className="press-modal__sub">Aces Nightclub · Bangkok · Saturday 5 September 2026</div>
-          </div>
-          <button className="press-modal__x" onClick={onClose} aria-label="Close">×</button>
-        </header>
-
-        <div className="press-modal__body">
-          <PressBody />
-        </div>
-
-        <footer className="press-modal__foot">
-          <a className="press-modal__btn press-modal__btn--ghost" href="mailto:info@oscbkk.com?subject=Press%20%26%20PR%20Enquiry%20%E2%80%94%20OSCBKK">Press &amp; PR contact</a>
-          <button className="press-modal__btn press-modal__btn--primary" onClick={onClose}>Close</button>
-        </footer>
-      </div>
-    </div>
-  );
-}
-
-/* Press release body — updated copy (May 2026).
-   Title/tagline reflect the formal release; full press contact in press__details. */
-function PressBody() {
-  return (
-    <>
-      <p className="press-modal__tagline">A new home for '90s &amp; 2000s R&amp;B + Hip Hop culture in Bangkok.</p>
-
-      <p className="press-modal__lede">
-        Bangkok is about to get something it has been missing for a very long time.
-      </p>
-
-      <p>
-        Old School &amp; Chill is a brand new nightlife concept built around one thing
-        above all else: <strong>the music</strong>.
-      </p>
-
-      <p>
-        Not just any music — this event is focused exclusively on curated '90s and 2000s
-        R&amp;B and Hip Hop. Old School &amp; Chill is not another commercial nightclub
-        event chasing trends, bottle parades or influencer culture. It is a music and
-        culture-driven experience designed for people who genuinely lived this era, loved
-        this music and still connect to it emotionally today.
-      </p>
-
-      <p>
-        Old School &amp; Chill is created and curated by <strong>Alpha Eleven Asia</strong>, a
-        new events entity specialising in classic R&amp;B and Hip Hop culture and nightlife, with
-        long-standing ties to some of the biggest names in R&amp;B and Hip Hop internationally. With
-        decades of combined experience in the genre as promoters and music curators,
-        the vision behind Old School &amp; Chill has always been to build a genuine
-        community around nostalgic music culture rather than simply create another
-        nightclub event.
-      </p>
-
-      <p>
-        The night brings together one of Australia's finest hosts and mic controllers, another
-        familiar face in Australian nightlife and R&amp;B and Hip Hop folklore: the
-        incomparable <strong>El Rafa</strong>.
-      </p>
-
-      <p>
-        With the focus on the music comes a carefully selected group of experienced
-        DJs — <strong>Young G, Junior and Jordan Adam</strong> — music
-        commanders who not only know their stuff, they live it, breathe it, and will play
-        records you thought you would never hear in a Bangkok club.
-      </p>
-
-      <p>
-        Before the first event has even launched, the response online has already confirmed
-        what many people have been quietly waiting for: a mature, stylish and authentic
-        nightlife experience centred around timeless R&amp;B and Hip Hop records. Within
-        weeks of launching its social platforms, Old School &amp; Chill attracted thousands
-        of followers and significant engagement from locals, expats and tourists alike — many
-        asking the same question:
-      </p>
-
-      <p className="press-modal__quote">"When is this finally happening?"</p>
-
-      <p>
-        Unlike generic nightlife concepts, Old School &amp; Chill is designed to feel
-        intentional. The music is curated carefully. The atmosphere matters. The crowd
-        matters. The culture matters.
-      </p>
-
-      <p>
-        This is not intended to be a venue for kids chasing social media moments or a place
-        built around pretentious VIP culture. While all music lovers are welcome, the core
-        audience is a more mature demographic looking for:
-      </p>
-
-      <div className="press-modal__expect">
-        <span className="press-modal__expect-k">For</span>
-        <ul>
-          <li>Real music</li>
-          <li>Real nostalgia</li>
-          <li>Genuine atmosphere</li>
-          <li>Dancing</li>
-          <li>Connection</li>
-          <li>Hospitality</li>
-          <li>Energy</li>
-          <li>Community</li>
-        </ul>
-      </div>
-
-      <p>
-        It is a place where the soundtrack matters just as much as the environment itself.
-      </p>
-
-      <p>
-        The event launches at <strong>Aces</strong> on Sukhumvit Soi 11 — a visually
-        striking venue in the heart of Bangkok's lower Sukhumvit nightlife, and the ideal
-        backdrop for a premium R&amp;B and Hip Hop experience.
-      </p>
-
-      <hr className="press-modal__rule" />
-
-      <div className="press-modal__details">
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Event</span>
-          <span className="press-modal__detail-v">Old School &amp; Chill — Vol. 03</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Date</span>
-          <span className="press-modal__detail-v">Saturday 5 September 2026 · 10pm — Late</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Venue</span>
-          <span className="press-modal__detail-v">Aces Nightclub, The Ambassador Hotel, Sukhumvit Soi 11, Bangkok</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Genre</span>
-          <span className="press-modal__detail-v">'90s &amp; '00s R&amp;B and Hip Hop · strictly pre-2010</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">DJs</span>
-          <span className="press-modal__detail-v">Young G · Junior · Jordan Adam</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Host</span>
-          <span className="press-modal__detail-v">El Rafa (AUS)</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Curated by</span>
-          <span className="press-modal__detail-v">Alpha Eleven Asia</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Tickets</span>
-          <span className="press-modal__detail-v">megatix.in.th/events/oscbkk</span>
-        </div>
-        <div className="press-modal__detail">
-          <span className="press-modal__detail-k">Press</span>
-          <span className="press-modal__detail-v">info@oscbkk.com</span>
-        </div>
-      </div>
-
-      <p className="press-modal__note">
-        <em>Note to editors:</em> high-res images, logos and the official poster
-        available on request. Interview opportunities with El Rafa
-        available in the lead-up to the event.
-      </p>
-    </>
-  );
-}
-
 /* ===================== LINEUP ===================== */
 function Lineup({ motion }) {
   return (
@@ -601,11 +430,6 @@ function Lineup({ motion }) {
                   <span className="lineup__roster-n">02</span>
                   <span className="lineup__roster-name">Young G</span>
                   <span className="lineup__roster-flag" title="Philippines" aria-label="Philippines">🇵🇭</span>
-                </li>
-                <li className="lineup__roster-item">
-                  <span className="lineup__roster-n">03</span>
-                  <span className="lineup__roster-name">Junior</span>
-                  <span className="lineup__roster-flag" title="Thailand" aria-label="Thailand">🇹🇭</span>
                 </li>
                 <li className="lineup__roster-item lineup__roster-item--mc">
                   <span className="lineup__roster-n">MC</span>
@@ -677,7 +501,7 @@ function Poster() {
                 });
               }}>Copy link</button>
             </div>
-            <p className="poster-section__share-tag">Tag us <a href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener">@oldschoolchillbkk</a> · #oscbkk</p>
+            <p className="poster-section__share-tag">Tag us <a href="https://instagram.com/oscbkk" target="_blank" rel="noopener">@oscbkk</a> · #oscbkk</p>
           </div>
         </aside>
 
@@ -702,6 +526,7 @@ function Tickets() {
       bar: "TIER 01 / LIMITED",
       price: "500",
       light: true,
+      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -714,7 +539,7 @@ function Tickets() {
       name: "General Admission", thai: "บัตรทั่วไป",
       bar: "TIER 02 / GENERAL",
       price: "600",
-      featured: true,
+      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -727,6 +552,7 @@ function Tickets() {
       name: "Final Release", thai: "รอบสุดท้าย",
       bar: "TIER 03 / FINAL",
       price: "700",
+      featured: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -779,9 +605,9 @@ function Tickets() {
               {tk.soldOut ? (
                 <span className="ticket__cta ticket__cta--disabled" aria-disabled="true">Sold Out · บัตรหมดแล้ว</span>
               ) : tk.locked ? (
-                <span className="ticket__cta ticket__cta--disabled" aria-disabled="true">Opens when Early Bird sells out</span>
+                <span className="ticket__cta ticket__cta--disabled" aria-disabled="true">Not on sale yet · ยังไม่เปิดขาย</span>
               ) : (
-                <a className="ticket__cta" href={MEGATIX_URLS[tk.key] || MEGATIX_URL} target="_blank" rel="noopener">Reserve</a>
+                <a className="ticket__cta" href={MEGATIX_URLS[tk.key] || MEGATIX_URL} target="_blank" rel="noopener">Book Now</a>
               )}
             </article>
           ))}
@@ -908,7 +734,7 @@ function Lounges() {
     {
       key: "newjack", label: "New Jack", sub: "Table Upgrade", venue: "Standing Table",
       pax: "2–4", price: "3,000", priceLabel: "Min Spend",
-      accent: "#ff3d8b", entry: false,
+      accent: "#ff3d8b", entry: false, soldOut: true,
       note: "Reserved standing table with a dedicated server. The ฿3,000 is a minimum spend — order anything off the Aces menu and your tab is tracked on the night.",
     },
     {
@@ -974,7 +800,7 @@ function Lounges() {
           {packages.map((p) => (
             <article
               key={p.key}
-              className={`pkg ${p.featured ? "pkg--featured" : ""}`}
+              className={`pkg ${p.featured ? "pkg--featured" : ""} ${p.soldOut ? "pkg--soldout" : ""}`}
               style={{ "--pkg-accent": p.accent }}
             >
               <div className="pkg__top">
@@ -1009,9 +835,13 @@ function Lounges() {
                 </div>
               )}
 
-              <a className="pkg__cta" href={VENUE_PACKAGES_URL} target="_blank" rel="noopener">
-                Reserve on Megatix ↗
-              </a>
+              {p.soldOut ? (
+                <span className="pkg__cta pkg__cta--disabled" aria-disabled="true">Sold Out · บัตรหมดแล้ว</span>
+              ) : (
+                <a className="pkg__cta" href={VENUE_PACKAGES_URL} target="_blank" rel="noopener">
+                  Book Now
+                </a>
+              )}
             </article>
           ))}
         </div>
@@ -1037,7 +867,7 @@ function Lounges() {
           <div className="bookings__grid">
             <a className="bookings__card bookings__card--line" href={CONTACT.line} target="_blank" rel="noopener">
               <span className="k">LINE</span>
-              <span className="v">{CONTACT.lineDisplay}</span>
+              <img className="bookings__card-linebtn" src="https://scdn.line-apps.com/n/line_add_friends/btn/en.png" alt="Add friend on LINE" height="36" />
             </a>
             <a className="bookings__card bookings__card--whatsapp" href={CONTACT.whatsapp} target="_blank" rel="noopener">
               <span className="k">WhatsApp</span>
@@ -1302,13 +1132,6 @@ function Rules() {
 function Contact() {
   const channels = [
     {
-      k: "LINE",
-      v: CONTACT.lineDisplay,
-      href: CONTACT.line,
-      cls: "contact__card--line",
-      icon: ChatIcon.line,
-    },
-    {
       k: "WhatsApp",
       v: CONTACT.whatsappDisplay,
       href: CONTACT.whatsapp,
@@ -1328,6 +1151,13 @@ function Contact() {
       href: CONTACT.instagram,
       cls: "contact__card--ig",
       icon: ChatIcon.instagram,
+    },
+    {
+      k: "Email",
+      v: CONTACT.emailDisplay,
+      href: CONTACT.email,
+      cls: "contact__card--email",
+      icon: ChatIcon.email,
     },
   ];
   return (
@@ -1359,10 +1189,16 @@ function Contact() {
           ))}
         </div>
 
-        <div className="contact__email">
-          <span className="contact__email-k">Or email</span>
-          <a className="contact__email-v" href={CONTACT.email}>info@oscbkk.com</a>
-          <span className="contact__email-th">— สำหรับเรื่องเป็นทางการ ส่งอีเมลได้</span>
+        <div className="contact__line">
+          <span className="contact__line-mark" aria-hidden="true">{ChatIcon.line}</span>
+          <div className="contact__line-copy">
+            <span className="contact__line-k">Official LINE</span>
+            <p className="contact__line-body">Fastest reply for table bookings, guestlist and questions.</p>
+            <p className="contact__line-th">แอดไลน์เพื่อสอบถามและจองโต๊ะ — ตอบเร็วที่สุด</p>
+          </div>
+          <a className="contact__line-btn" href={CONTACT.line} target="_blank" rel="noopener">
+            <img src="https://scdn.line-apps.com/n/line_add_friends/btn/en.png" alt="Add friend on LINE" height="36" />
+          </a>
         </div>
       </div>
     </section>
@@ -1481,9 +1317,9 @@ function Foot() {
         <div className="foot__col">
           <h4>Find Us</h4>
           <ul>
-            <li><a href="https://instagram.com/oldschoolchillbkk" target="_blank" rel="noopener">Instagram ↗</a></li>
-            <li><a href="https://facebook.com/oldschoolchillbkk" target="_blank" rel="noopener">Facebook ↗</a></li>
-            <li><a href="https://tiktok.com/@oldschoolchillbkk" target="_blank" rel="noopener">TikTok ↗</a></li>
+            <li><a href="https://instagram.com/oscbkk" target="_blank" rel="noopener">Instagram ↗</a></li>
+            <li><a href="https://facebook.com/oscbkk" target="_blank" rel="noopener">Facebook ↗</a></li>
+            <li><a href="https://tiktok.com/@oscbkk" target="_blank" rel="noopener">TikTok ↗</a></li>
             <li><a href={CONTACT.line} target="_blank" rel="noopener">LINE ↗</a></li>
             <li><a href="https://open.spotify.com/user/31qnnw4ys3tpcc7eltq3dhosqcsq" target="_blank" rel="noopener">Spotify ↗</a></li>
           </ul>

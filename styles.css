@@ -1313,6 +1313,37 @@ body::before {
   border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
 }
 
+.contact__card--email { border-color: color-mix(in srgb, var(--gold) 34%, var(--line)); }
+.contact__card--email:hover { border-color: color-mix(in srgb, var(--gold) 60%, var(--line)); }
+.contact__card--email .contact__mark { background: color-mix(in srgb, var(--gold) 12%, transparent); color: var(--gold); }
+
+/* Official LINE — full-width bar sitting under the contact card grid */
+.contact__line {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center;
+  margin-top: -14px; padding: 20px 22px;
+  border: 1px solid color-mix(in srgb, #06C755 40%, var(--line));
+  background: color-mix(in srgb, #06C755 5%, transparent);
+  transition: border-color .2s, background .2s;
+}
+.contact__line:hover { border-color: color-mix(in srgb, #06C755 70%, var(--line)); }
+.contact__line-mark {
+  display: grid; place-items: center; width: 46px; height: 46px;
+  background: color-mix(in srgb, #06C755 14%, transparent); color: #06C755;
+}
+.contact__line-k {
+  font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: #06C755;
+}
+.contact__line-body { font-size: 14px; color: var(--ink); margin: 5px 0 2px; text-wrap: pretty; }
+.contact__line-th { font-family: "Sriracha", cursive; font-size: 12px; color: var(--ink-dim); margin: 0; }
+.contact__line-btn { display: inline-block; line-height: 0; transition: opacity .2s, transform .2s; }
+.contact__line-btn:hover { opacity: .85; transform: translateY(-1px); }
+.contact__line-btn img { height: 36px; width: auto; display: block; }
+@media (max-width: 700px) {
+  .contact__line { grid-template-columns: auto 1fr; row-gap: 16px; }
+  .contact__line-btn { grid-column: 1 / -1; }
+}
+
 .contact__email {
   display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;
   padding-top: 22px;
@@ -3096,6 +3127,7 @@ body::before {
   color: var(--ink-dim);
   margin: 0 0 18px;
 }
+.bookings__card-linebtn { height: 32px; width: 103px; display: block; align-self: flex-start; margin-top: 6px; }
 .bookings__contactline {
   font-family: "Archivo Black", Impact, sans-serif;
   text-transform: uppercase;
@@ -3142,3 +3174,7 @@ body::before {
 @media (max-width: 760px) {
   .bookings { grid-template-columns: 1fr; gap: 28px; }
 }
+
+.pkg--soldout{opacity:.5;filter:grayscale(.7)}
+.pkg--soldout .pkg__price{text-decoration:line-through;text-decoration-thickness:2px}
+.pkg__cta--disabled{margin-top:auto;display:block;text-align:center;font-family:"JetBrains Mono",monospace;text-transform:uppercase;font-size:11px;letter-spacing:.14em;padding:16px 18px;background:transparent;border:1px dashed color-mix(in srgb,var(--ink-dim) 45%,transparent);color:var(--ink-dim);cursor:not-allowed}
