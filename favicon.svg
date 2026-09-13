@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#0b0814"></rect>
-  <rect x="2.5" y="2.5" width="59" height="59" rx="10" fill="none" stroke="#ff3d8b" stroke-width="3"></rect>
-  <text x="32" y="35" text-anchor="middle" dominant-baseline="central" font-family="Archivo Black, sans-serif" font-size="23" font-weight="900" fill="#f4eedd" letter-spacing="-1.5">OSC</text>
-</svg>
