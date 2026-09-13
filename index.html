@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Old School &amp; Chill · Bangkok · 5 September 2026</title>
-<meta name="description" content="A '90s & '00s R&B and hip hop night at Aces Nightclub, Bangkok. Saturday 5 September 2026. Good music, good people, good vibes." />
+<title>Old School &amp; Chill · Bangkok · 3 October 2026</title>
+<meta name="description" content="A '90s & '00s R&B and hip hop night at Aces Nightclub, Bangkok. Saturday 3 October 2026. Good music, good people, good vibes." />
 
 <link rel="canonical" href="https://oscbkk.com/" />
 
@@ -18,17 +18,17 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Old School &amp; Chill BKK" />
 <meta property="og:url" content="https://oscbkk.com/" />
-<meta property="og:title" content="Old School &amp; Chill · Vol. 03 · Bangkok · 5 September 2026" />
-<meta property="og:description" content="The '90s & '00s R&B and hip hop night Bangkok has been missing. Aces Nightclub, Sukhumvit Soi 11. Special guest Sebi D · Jordan Adam · Young G · Junior. Hosted by El Rafa." />
+<meta property="og:title" content="Old School &amp; Chill · Bangkok · 3 October 2026" />
+<meta property="og:description" content="The '90s & '00s R&B and hip hop night Bangkok has been missing. Aces Nightclub, Sukhumvit Soi 11. Special guests DJ Tara &amp; MC Timmy · residents Jordan Adam &amp; Young G. Hosted by El Rafa." />
 <meta property="og:image" content="https://oscbkk.com/assets/poster.png" />
-<meta property="og:image:width" content="1080" />
-<meta property="og:image:height" content="1919" />
+<meta property="og:image:width" content="1092" />
+<meta property="og:image:height" content="1440" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="th_TH" />
 
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Old School &amp; Chill · Vol. 03 · Bangkok · 5 September 2026" />
+<meta name="twitter:title" content="Old School &amp; Chill · Bangkok · 3 October 2026" />
 <meta name="twitter:description" content="The '90s & '00s R&B and hip hop night Bangkok has been missing. Aces Nightclub · Sukhumvit Soi 11." />
 <meta name="twitter:image" content="https://oscbkk.com/assets/poster.png" />
 
@@ -59,10 +59,7 @@ src="https://www.facebook.com/tr?id=1342318294454589&ev=PageView&noscript=1"
 alt="" /></noscript>
 <!-- End Meta Pixel -->
 
-<!-- Megatix checkout widget: intercepts clicks on white-label links and opens checkout in an on-site overlay -->
-<script defer async src="https://megatix.in.th/build/js/widgets/megatix.js"></script>
-
-<!-- Site-side funnel tracking. The Megatix checkout runs in an iframe, so our
+<!-- Site-side funnel tracking. The checkout runs off-site, so our
      pixel cannot see events inside it. This fires InitiateCheckout on our own
      pixel whenever a visitor opens the checkout from any CTA on this page, and
      a ViewContent when the tickets section is first scrolled into view. Optimise
@@ -77,7 +74,7 @@ alt="" /></noscript>
     return (name ? name.textContent : a.textContent).trim().replace(/\s*↗$/,'');
   }
   document.addEventListener('click', function(e){
-    var a = e.target.closest('a[href*="megatix.in.th"]');
+    var a = e.target.closest('a[href*="tickets.alpha11.co"]');
     if (!a) return;
     fbq('track', 'InitiateCheckout', {
       content_name: label(a),
@@ -109,6 +106,8 @@ alt="" /></noscript>
 <div id="root"></div>
 
 <script type="text/babel" src="tweaks-panel.jsx"></script>
+<script src="editions.js"></script>
+<script type="text/babel" src="lightbox.jsx"></script>
 <script type="text/babel" src="app.jsx"></script>
 </body>
 </html>

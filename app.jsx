@@ -1,15 +1,10 @@
 /* global React, ReactDOM, TweaksPanel, TweakSection, TweakRadio, TweakColor, TweakSlider, useTweaks */
 
 // ─── TICKETING ──────────────────────────────────────────────
-// Live Megatix white-label URL. Pasted into every "Get Tickets" / "Reserve"
-// button on the page. Same URL for all tiers — Megatix lets the buyer
-// pick their tier on its checkout page.
-//
-// The Megatix widget script (loaded in index.html) intercepts clicks on any
-// /white-label/ link and opens the checkout in a full-screen overlay on top of
-// this page, so buyers never leave oscbkk.com. If the script fails to load the
-// link still works as a normal navigation to Megatix.
-const MEGATIX_URL = "https://megatix.in.th/white-label/old-school-chill-bangkok-september-2026";
+// Live Alpha Eleven ticketing URL. Pasted into every "Get Tickets" /
+// "Reserve" / "Book Now" button on the page. One URL for all tiers and
+// packages — the buyer picks what they want on the checkout page.
+const MEGATIX_URL = "https://tickets.alpha11.co/events/alphaeleven/2414867";
 
 // ─── WAITLIST (Brevo) ──────────────────────────────────────
 // The door-ticket waitlist feeds a Brevo contact list ("OSCBKK Waitlist").
@@ -26,21 +21,20 @@ const MEGATIX_URL = "https://megatix.in.th/white-label/old-school-chill-bangkok-
 // If it doesn't, fall back to pasting Brevo's raw HTML embed and we'll
 // match the exact field names. Set to "" to run in offline DEMO mode.
 const WAITLIST_ENDPOINT = "https://5b489cb7.sibforms.com/serve/MUIFADb7ygpzNtT0RfeJOE5eLLUNy35Ijw0CJOdMYyIfBNzhVGsazqNnYklI5sYlvmU0tHaybERBFVO82RtuGfd4uzBKdymMVFHZJwU_B4xR1ehV10yFxRU7S8tDFIfKkmA6MppHkjrRYy9FEoyd6mcSQV4TbLE3INhDDvN4d9LBpG5bP1cItXTiwoLvpvWqqb5rSdy_52QAw7jz";
+// The checkout is one shared page with a quantity stepper per tier and
+// package, so every CTA routes to the same URL.
 const MEGATIX_URLS = {
-  early: MEGATIX_URL + "?aid=EARLYBIRD",
-  ga:    MEGATIX_URL + "?aid=GA",
-  final: MEGATIX_URL + "?aid=FINAL",
+  early: MEGATIX_URL,
+  ga:    MEGATIX_URL,
+  final: MEGATIX_URL,
   door:  MEGATIX_URL,
   table: MEGATIX_URL,
-  // Lounge packages — pre-paid via Megatix as a "minimum spend reservation".
-  // The amount paid here goes onto the customer's tab on the night.
-  newjack:  MEGATIX_URL + "?aid=NEWJACK",
-  sosodef:  MEGATIX_URL + "?aid=SOSODEF",
+  newjack:  MEGATIX_URL,
+  sosodef:  MEGATIX_URL,
 };
 
-// Table & bottle packages are now sold through Megatix (previously booked
-// direct with the venue). Full inclusions are shown on our own page; the
-// CTA hands off to Megatix checkout.
+// Table & booth packages are sold through the same ticketing platform.
+// Full inclusions are shown on our own page; the CTA hands off to checkout.
 const VENUE_PACKAGES_URL = MEGATIX_URL;
 
 // ─── DIRECT MESSAGING ──────────────────────────────────────
@@ -93,14 +87,13 @@ function App() {
       <Hero />
       <Marquee />
       <TheNight />
-      <Lineup motion={t.motion} />
-      <Poster />
       <Tickets />
       <Lounges />
+      <Gallery />
+      <Jams />
       <VenuePhotos />
       <Rules />
       <Contact />
-      <PastEvents />
       <Foot />
 
       <ChatFloats />
@@ -205,21 +198,47 @@ function ChatFloats() {
 }
 
 /* ===================== NAV ===================== */
+const NAV_LINKS = [
+  ["#night", "Next Event"],
+  ["#lounges", "Bookings"],
+  ["gallery.html", "Gallery"],
+  ["#jams", "OSC Radio"],
+  ["#venue", "Venue"],
+  ["#rules", "Rules"],
+  ["#contact", "Contact"],
+];
 function Nav() {
+  const [open, setOpen] = React.useState(false);
+  const wrapRef = React.useRef(null);
+  React.useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => { if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false); };
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
+  }, [open]);
   return (
     <nav className="nav">
-      <div className="nav__brand">
-        <span className="mark">Old School &amp; Chill</span>
-        <span className="sub">BKK · Vol. 03</span>
-      </div>
+      <a className="nav__brand" href="#top">
+        <img className="nav__logo" src="assets/OSC-logo-nav.png" alt="Old School &amp; Chill" />
+        <span className="sub">First Saturday Monthly</span>
+      </a>
       <div className="nav__links">
-        <a href="#night">Event</a>
-        <a href="#lineup">Lineup</a>
-        <a href="#tickets">Tickets</a>
-        <a href="#lounges">Bookings</a>
-        <a href="#rules">Rules</a>
-        <a href="#past">Past</a>
-        <a href="#contact">Contact</a>
+        {NAV_LINKS.map(([href, label]) => (
+          <a key={href} href={href}>{label}</a>
+        ))}
+      </div>
+      <div className="nav__end">
+      <div className={"nav__burger" + (open ? " is-open" : "")} ref={wrapRef}>
+        <button type="button" className="nav__burger-btn" aria-expanded={open} aria-label="Menu" onClick={() => setOpen(v => !v)}>
+          <span className="nav__menu-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+        <div className="nav__panel" role="menu" hidden={!open}>
+          {NAV_LINKS.map(([href, label]) => (
+            <a key={href} href={href} role="menuitem" onClick={() => setOpen(false)}>{label}</a>
+          ))}
+        </div>
       </div>
       <div className="nav__socials" aria-label="Follow us">
         <a className="nav__social" href="https://instagram.com/oscbkk" target="_blank" rel="noopener" aria-label="Instagram">
@@ -234,6 +253,11 @@ function Nav() {
             <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.6-1.5H16.5V4.3a22 22 0 0 0-2.4-.1c-2.4 0-4 1.4-4 4v2.3H7.5v3h2.6V21h3.4z" />
           </svg>
         </a>
+        <a className="nav__social" href="https://youtube.com/@alpha11co" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M21.6 7.2a2.5 2.5 0 0 0-1.75-1.77C18.28 5 12 5 12 5s-6.28 0-7.85.43A2.5 2.5 0 0 0 2.4 7.2C2 8.78 2 12 2 12s0 3.22.4 4.8a2.5 2.5 0 0 0 1.75 1.77C5.72 19 12 19 12 19s6.28 0 7.85-.43a2.5 2.5 0 0 0 1.75-1.77C22 15.22 22 12 22 12s0-3.22-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z" />
+          </svg>
+        </a>
         <a className="nav__social" href="https://tiktok.com/@oscbkk" target="_blank" rel="noopener" aria-label="TikTok">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M16.5 3h-2.6v12.1c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5c.3 0 .5 0 .8.1V10c-.3 0-.5-.1-.8-.1-2.8 0-5.1 2.3-5.1 5.1S8.6 20.1 11.4 20.1s5.1-2.3 5.1-5.1V9.4c1 .7 2.2 1.1 3.5 1.1V7.9c-1.9 0-3.5-1.6-3.5-3.5V3z" />
@@ -241,6 +265,7 @@ function Nav() {
         </a>
       </div>
       <a className="nav__cta" href={MEGATIX_URL} target="_blank" rel="noopener">Tickets</a>
+      </div>
     </nav>
   );
 }
@@ -250,13 +275,13 @@ function Hero() {
   return (
     <header className="hero hero--art">
       <div className="hero__frame">
-        <img className="hero__photo" src="assets/hero-photo.png" alt="Old School & Chill Bangkok — Vol. 03 · Saturday 5 September" />
+        <img className="hero__photo" src="assets/hero-header-oct.jpg" alt="Old School & Chill Bangkok — Saturday 3 October" />
         <div className="hero__scrim" aria-hidden="true"></div>
       </div>
 
       <div className="hero__cta">
         <a className="hero__btn hero__btn--primary" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
-        <a className="hero__btn hero__btn--ghost" href="#lineup">See the Lineup</a>
+        <a className="hero__btn hero__btn--ghost" href="#night">Next Event</a>
       </div>
     </header>
   );
@@ -295,222 +320,142 @@ function TheNight() {
     <section className="section" id="night">
       <div className="container">
         <div className="section__head">
-          <div className="num">01</div>
           <div className="titles">
-            <div className="title">The <em>Event</em></div>
-            <div className="thai">เกี่ยวกับงาน · สิ่งที่กรุงเทพฯ รอมานาน</div>
+            <div className="title">Next <em>Event</em></div>
+            <div className="thai">งานต่อไป · รายละเอียดคืนนี้</div>
           </div>
         </div>
 
-        <div className="intro">
-          <div className="intro__body">
-            <p className="intro__lede">
+        <div className="ne">
+          <div className="ne__main">
+            <p className="ne__lede">
               Another dose of '90s &amp; 2000s R&amp;B and Hip Hop in Bangkok.
             </p>
-            <p>
-              After two sold-out nights, Bangkok's old-school night returns on <strong>Saturday 5 September</strong>. Both previous editions sold out in
-              advance — no influencer push, no gimmicks, just a room full of people singing
-              every word to records they grew up on.
+            <p className="ne__body">
+              Bangkok's old-school night returns on <strong>Saturday 3 October</strong>.
+              The focus stays on timeless R&amp;B — the singalong records everyone knows by heart —
+              with Hip Hop in the mix as the party starter between the big moments.
+              Strictly '90s and '00s, nothing after 2010.
             </p>
-            <p>
-              September brings more of exactly that. The focus tightens onto timeless R&amp;B,
-              the singalong records everyone knows by heart, with Hip Hop staying in the mix
-              as the party starter between the big moments. Strictly '90s and '00s — nothing
-              after 2010.
-            </p>
-            <p>
-              Joining the residents this time is special guest <strong>Sebi D</strong> (Australia).
-              The rest of the night comes courtesy of Australia's <strong>DJ Jordan Adam</strong>,
-              and <strong>DJ Young G</strong> (Philippines), both of whom boast decades
-              of experience playing this exact genre with a
-              fan-first approach that'll have you buzzing and singing along from the moment
-              you arrive. Our host will once again be <strong>El Rafa</strong>, one of
-              Australia's most experienced and in-demand party starters.
-            </p>
-            <p>
-              This event isn't built for people chasing social-media moments or VIP culture.
-              It's for a mature crowd after real music, real nostalgia and a room that sings
-              along rather than just watches.
+            <p className="ne__thai">
+              คืนเพลงเก่าที่จริงจังเรื่องเพลง · เพลงยุค 90s–2000s ตลอดคืน ที่ Aces Nightclub สุขุมวิท ซอย 11
             </p>
 
-            <p className="thai">
-              คืนเพลงเก่าที่จริงจังเรื่องเพลง · บรรยากาศดี ผู้ใหญ่ดี ๆ ที่รักดนตรียุค 90s–2000s
-              จัดที่ Aces Nightclub สุขุมวิท ซอย 11
-            </p>
-
-            <p className="intro__book">Buy your tickets early. Contact us for party, table and booth bookings.</p>
-            <div className="intro__actions">
-              <a className="intro__btn" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets ↗</a>
-            </div>
-
-            <div className="intro__pull">Real music. Real nostalgia.</div>
-          </div>
-
-          <div className="intro__card">
-            <div className="row">
-              <span className="k">Vol.</span>
-              <span className="v">03 / 2026</span>
-            </div>
-            <div className="row">
-              <span className="k">Curated by</span>
-              <span className="v">
-                Alpha Eleven Asia
-                <small>events &amp; music curation</small>
-              </span>
-            </div>
-            <div className="row">
-              <span className="k">For</span>
-              <span className="v">
-                Grown music heads
-                <small>real music · real nostalgia · genuine atmosphere</small>
-              </span>
-            </div>
-            <div className="row">
-              <span className="k">Frequency</span>
-              <span className="v">Monthly</span>
-            </div>
-            <div className="row">
-              <span className="k">Age</span>
-              <span className="v">
-                20+ · ID at door
-                <small>อายุ 20 ปีขึ้นไป · กรุณาแสดงบัตรประชาชน</small>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ===================== LINEUP ===================== */
-function Lineup({ motion }) {
-  return (
-    <section className="section" id="lineup">
-      <div className="container">
-        <div className="section__head">
-          <div className="num">02</div>
-          <div className="titles">
-            <div className="title">The <em>Lineup</em></div>
-            <div className="thai">รายชื่อดีเจ · ประกาศเร็ว ๆ นี้</div>
-          </div>
-        </div>
-
-        <div className="lineup">
-          <div className="lineup__tease">
-            <div className="lineup__stamp">
-              <span className="lineup__stamp-row">Vol.</span>
-              <span className="lineup__stamp-row lineup__stamp-row--accent">03</span>
-            </div>
-
-            <div className="lineup__copy">
-              <p className="lineup__kicker">The Selectors &amp; Host</p>
-              <h3 className="lineup__hero">
-                The Selectors <em>&amp;</em> Your Host.
-              </h3>
-              <p className="lineup__body">
-                All night on pre-2010. Set times drop closer to the date.
-              </p>
-              <p className="lineup__thai">
-แขกรับเชิญพิเศษ Sebi D พร้อมดีเจประจำและโฮสต์ MC · เปิดเพลงยุค 90s–2000s ตลอดคืน
-              </p>
-
-              <ul className="lineup__roster">
-                <li className="lineup__roster-item lineup__roster-item--guest">
-                  <span className="lineup__roster-n">GUEST</span>
-                  <span className="lineup__roster-name">Sebi D</span>
-                  <span className="lineup__roster-flag" title="Australia" aria-label="Australia">🇦🇺</span>
-                </li>
-                <li className="lineup__roster-item">
-                  <span className="lineup__roster-n">01</span>
-                  <span className="lineup__roster-name">Jordan Adam</span>
-                  <span className="lineup__roster-flag" title="Australia" aria-label="Australia">🇦🇺</span>
-                </li>
-                <li className="lineup__roster-item">
-                  <span className="lineup__roster-n">02</span>
-                  <span className="lineup__roster-name">Young G</span>
-                  <span className="lineup__roster-flag" title="Philippines" aria-label="Philippines">🇵🇭</span>
-                </li>
-                <li className="lineup__roster-item lineup__roster-item--mc">
-                  <span className="lineup__roster-n">MC</span>
-                  <span className="lineup__roster-name">Hosted by El Rafa</span>
-                  <span className="lineup__roster-flag" title="Australia" aria-label="Australia">🇦🇺</span>
-                </li>
-              </ul>
-
-              <div className="lineup__actions">
-                <a className="lineup__btn lineup__btn--primary" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
+            <div className="ne__table">
+              <div className="row">
+                <span className="k">When</span>
+                <span className="v">Sat 3 October · 22:00 — 03:00</span>
+              </div>
+              <div className="row">
+                <span className="k">Where</span>
+                <span className="v">
+                  Aces Nightclub
+                  <small>ดิ แอมบาสเดอร์ · สุขุมวิท ซอย 11</small>
+                </span>
+              </div>
+              <div className="row">
+                <span className="k">Music</span>
+                <span className="v">
+                  Strictly pre-2010
+                  <small>'90s &amp; '00s R&amp;B and Hip Hop · nothing after 2010</small>
+                </span>
+              </div>
+              <div className="row">
+                <span className="k">Guests</span>
+                <span className="v">
+                  DJ Tara · MC Timmy
+                  <small>แขกรับเชิญพิเศษ</small>
+                </span>
+              </div>
+              <div className="row">
+                <span className="k">Residents</span>
+                <span className="v">
+                  Jordan Adam · Young G
+                  <small>เปิดเพลงยุค 90s–2000s ตลอดคืน</small>
+                </span>
+              </div>
+              <div className="row">
+                <span className="k">Host</span>
+                <span className="v">MC Timmy</span>
+              </div>
+              <div className="row">
+                <span className="k">Age</span>
+                <span className="v">
+                  20+ · ID at door
+                  <small>อายุ 20 ปีขึ้นไป · กรุณาแสดงบัตรประชาชน</small>
+                </span>
+              </div>
+              <div className="row">
+                <span className="k">Curated by</span>
+                <span className="v">Alpha Eleven Asia<small>events &amp; music curation</small></span>
               </div>
             </div>
+
+            <div className="ne__actions">
+              <a className="intro__btn" href={MEGATIX_URL} target="_blank" rel="noopener">Book Now ↗</a>
+              <a className="ne__link" href="#lounges">Table &amp; booth bookings</a>
+            </div>
           </div>
 
-          <div className="mixtape" aria-label="Old School &amp; Chill — Spotify playlist">
-            <div className="mixtape__header">
-              <span className="mixtape__kicker">▶ The Mixtape</span>
-              <span className="mixtape__meta">Side A · '90s &amp; '00s</span>
+          <aside className="ne__art">
+            <div className="ne__frame">
+              <img className="ne__poster" src="assets/poster.png" alt="Old School & Chill — Bangkok · 3 October 2026 — official poster" />
             </div>
-            <div className="mixtape__embed">
-              <iframe
-                title="Old School &amp; Chill — Spotify playlist"
-                src="https://open.spotify.com/embed/playlist/7hv2tt8L8e32X6FyRGLZwd?utm_source=generator"
-                width="100%"
-                height="352"
-                frameBorder="0"
-                allowFullScreen=""
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              ></iframe>
+            <div className="ne__share">
+              <span className="ne__share-k">Share</span>
+              <div className="ne__share-row">
+                <a className="poster-section__share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Foscbkk.com" target="_blank" rel="noopener">Facebook</a>
+                <button className="poster-section__share-btn poster-section__share-btn--copy" onClick={(e) => {
+                  navigator.clipboard?.writeText('https://oscbkk.com').then(() => {
+                    const b = e.currentTarget;
+                    const orig = b.textContent;
+                    b.textContent = 'Copied ✓';
+                    setTimeout(() => { b.textContent = orig; }, 1600);
+                  });
+                }}>Copy link</button>
+              </div>
+              <a className="ne__rsvp" href="https://www.facebook.com/events/2473054509847949" target="_blank" rel="noopener">RSVP on Facebook ↗</a>
             </div>
-            <p className="mixtape__caption">A taste of what's coming. Press play.</p>
-          </div>
+          </aside>
         </div>
       </div>
     </section>
   );
 }
 
-/* ===================== POSTER ===================== */
-function Poster() {
+/* ===================== OUR FAVE JAMS ===================== */
+function Jams() {
   return (
-    <section className="poster-section" id="poster">
-      <div className="container poster-section__wrap">
-        <aside className="poster-section__copy">
-          <p className="poster-section__kicker">The Artwork</p>
-          <h3 className="poster-section__title">
-            The <em>Poster</em>.
-          </h3>
-          <p className="poster-section__body">
-            Vol. 03 · Saturday 5 September. The official flyer — screenshot it,
-            share it, send it to every friend you've ever made a mixtape for.
-          </p>
-          <p className="poster-section__thai">
-            แชร์ให้เพื่อนที่รักเพลงเก่าเหมือนกัน · เจอกันวันที่ 5 กันยายน
-          </p>
-
-          <div className="poster-section__share">
-            <span className="poster-section__share-k">Share</span>
-            <div className="poster-section__share-row">
-              <a className="poster-section__share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Foscbkk.com" target="_blank" rel="noopener" aria-label="Share on Facebook">Facebook</a>
-              <a className="poster-section__share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Foscbkk.com&text=Old%20School%20%26%20Chill%20BKK%20%E2%80%94%20Vol.%2003%20%E2%80%94%205%20September%202026" target="_blank" rel="noopener" aria-label="Share on X">X / Twitter</a>
-              <button className="poster-section__share-btn poster-section__share-btn--copy" onClick={(e) => {
-                navigator.clipboard?.writeText('https://oscbkk.com').then(() => {
-                  const b = e.currentTarget;
-                  const orig = b.textContent;
-                  b.textContent = 'Copied ✓';
-                  setTimeout(() => { b.textContent = orig; }, 1600);
-                });
-              }}>Copy link</button>
-            </div>
-            <p className="poster-section__share-tag">Tag us <a href="https://instagram.com/oscbkk" target="_blank" rel="noopener">@oscbkk</a> · #oscbkk</p>
+    <section className="section jams" id="jams">
+      <div className="container">
+        <div className="section__head">
+          <div className="titles">
+            <div className="title">OSC Radio · <em>Our Flavour</em></div>
+            <div className="thai">เพลย์ลิสต์ของเรา · เพลงที่เราเปิดจริง</div>
           </div>
-        </aside>
+        </div>
 
-        <div className="poster-section__frame">
-          <img className="poster-section__img" src="assets/poster.png" alt="Old School & Chill Vol. 03 — Bangkok · 5 September 2026 — official poster" />
-          <span className="poster-section__corner poster-section__corner--tl" />
-          <span className="poster-section__corner poster-section__corner--tr" />
-          <span className="poster-section__corner poster-section__corner--bl" />
-          <span className="poster-section__corner poster-section__corner--br" />
+        <div className="jams__body">
+          <div className="jams__copy">
+            <p className="jams__lede">
+              Want a taste of what you will hear at Old School &amp; Chill — here is a selection
+              of some of our flavour.
+            </p>
+            <p className="jams__thai">ฟังก่อนมางาน · เพลงยุค 90s–2000s ที่เราเปิดในคืนนั้น</p>
+            <a className="jams__link" href="https://open.spotify.com/playlist/7hv2tt8L8e32X6FyRGLZwd" target="_blank" rel="noopener">Open in Spotify ↗</a>
+          </div>
+          <div className="jams__embed">
+            <iframe
+              title="Old School &amp; Chill — Spotify playlist"
+              src="https://open.spotify.com/embed/playlist/7hv2tt8L8e32X6FyRGLZwd?utm_source=generator"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              allowFullScreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            ></iframe>
+          </div>
         </div>
       </div>
     </section>
@@ -526,7 +471,6 @@ function Tickets() {
       bar: "TIER 01 / LIMITED",
       price: "500",
       light: true,
-      soldOut: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -539,7 +483,7 @@ function Tickets() {
       name: "General Admission", thai: "บัตรทั่วไป",
       bar: "TIER 02 / GENERAL",
       price: "600",
-      soldOut: true,
+      dark: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -553,6 +497,7 @@ function Tickets() {
       bar: "TIER 03 / FINAL",
       price: "700",
       featured: true,
+      dark: true,
       perks: [
         "General Admission entry",
         "Guaranteed entry · pre-sale only",
@@ -566,16 +511,15 @@ function Tickets() {
     <section className="section" id="tickets">
       <div className="container">
         <div className="section__head">
-          <div className="num">03</div>
           <div className="titles">
-            <div className="title">The <em>Tickets</em></div>
+            <div className="title"><em>Tickets</em></div>
             <div className="thai">บัตรเข้างาน · 3 ระดับ</div>
           </div>
         </div>
 
         <div className="tickets">
           {tiers.map((tk, i) => (
-            <article key={i} className={`ticket ${tk.featured ? "ticket--featured" : ""} ${tk.light ? "ticket--light" : ""} ${tk.soldOut ? "ticket--soldout" : ""} ${tk.locked ? "ticket--locked" : ""}`}>
+            <article key={i} className={`ticket ${tk.featured ? "ticket--featured" : ""} ${tk.light ? "ticket--light" : ""} ${tk.dark ? "ticket--dark" : ""} ${tk.soldOut ? "ticket--soldout" : ""} ${tk.locked ? "ticket--locked" : ""}`}>
               {tk.soldOut && (
                 <div className="ticket__soldout-ribbon" aria-hidden="true">
                   <span>Sold Out</span>
@@ -727,51 +671,39 @@ function Lounges() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [termsOpen, setTermsOpen] = React.useState(false);
 
-  // Table & bottle packages — OSC label names over the venue's tiers.
-  // Now sold via Megatix. Full inclusions shown here on our own page;
-  // bottle packages let the buyer pick Option A or B at the venue.
+  // Table & booth packages — OSC label names over the venue's tiers.
+  // Every one is a minimum spend on the Aces menu and includes VIP entry
+  // for the whole group. Sold through the ticketing platform, same as tickets.
   const packages = [
     {
-      key: "newjack", label: "New Jack", sub: "Table Upgrade", venue: "Standing Table",
-      pax: "2–4", price: "3,000", priceLabel: "Min Spend",
-      accent: "#ff3d8b", entry: false, soldOut: true,
-      note: "Reserved standing table with a dedicated server. The ฿3,000 is a minimum spend — order anything off the Aces menu and your tab is tracked on the night.",
+      key: "newjack", label: "New Jack", sub: "Standing Table", venue: "Standing Table",
+      pax: "Max 4", price: "5,000", priceLabel: "THB / min spend",
+      accent: "#ff3d8b", entry: true,
+      incl: ["฿5,000 menu spend", "Reserved standing table", "VIP entry × 4"],
     },
     {
-      key: "sosodef", label: "So So Def", sub: "Silver", venue: "Silver Package",
-      pax: "2–4", price: "11,000", priceLabel: "Package",
+      key: "sosodef", label: "So So Def", sub: "Reserved Booth", venue: "Reserved Booth",
+      pax: "Max 6", price: "10,000", priceLabel: "THB / min spend",
       accent: "#4cc3ff", entry: true,
-      options: [
-        ["Johnnie Walker Black Label × 1", "Chandon Brut × 1", "Mixer set × 6"],
-        ["Tanqueray × 1", "Chandon Brut × 1", "Mixer set × 6"],
-      ],
+      incl: ["฿10,000 menu spend", "Reserved area all night", "VIP entry × 6", "VIP host"],
     },
     {
-      key: "badboy", label: "Bad Boy", sub: "Gold", venue: "Gold Package",
-      pax: "6–8", price: "15,000", priceLabel: "Package",
+      key: "badboy", label: "Bad Boy", sub: "Reserved Booth", venue: "Reserved Booth",
+      pax: "Max 8", price: "15,000", priceLabel: "THB / min spend",
       accent: "#f3b53b", entry: true,
-      options: [
-        ["Chivas Regal 12 × 1", "Absolut Vodka × 1", "Chandon Rosé × 1", "Mixer set × 6"],
-        ["Bombay Sapphire × 1", "Absolut Vodka × 1", "Chandon Rosé × 1", "Mixer set × 6"],
-      ],
+      incl: ["฿15,000 menu spend", "Reserved area", "VIP entry × 8", "VIP host"],
     },
     {
-      key: "rocafella", label: "Roc-A-Fella", sub: "Platinum", venue: "Platinum Package",
-      pax: "8–10", price: "23,000", priceLabel: "Package",
+      key: "rocafella", label: "Roc-A-Fella", sub: "VVIP Booth", venue: "VVIP Reserved Booth",
+      pax: "Max 12", price: "20,000", priceLabel: "THB / min spend",
       accent: "#f3b53b", entry: true, featured: true,
-      options: [
-        ["Johnnie Walker Gold Label × 1", "Belvedere Vodka × 1", "Chandon Rosé × 1", "Patrón Silver × 1", "Mixer set × 8"],
-        ["Belvedere Vodka × 1", "Chandon Brut × 1", "Tanqueray No. Ten × 1", "Mixer set × 8"],
-      ],
+      incl: ["฿20,000 menu spend", "VVIP reserved area", "VIP entry × 12", "VIP host"],
     },
     {
-      key: "defjam", label: "Def Jam", sub: "Diamond", venue: "Diamond Package",
-      pax: "10–15", price: "45,000", priceLabel: "Package",
+      key: "defjam", label: "Def Jam", sub: "VVIP Booth", venue: "VVIP Reserved Booth",
+      pax: "Max 20", price: "45,000", priceLabel: "THB / min spend",
       accent: "#4cc3ff", entry: true, featured: true,
-      options: [
-        ["Glenlivet 15 × 1", "Grey Goose × 1", "Don Julio Reposado × 2", "Moët & Chandon Brut × 1", "Mixer set × 8"],
-        ["Glenfiddich 15 × 1", "Grey Goose × 1", "Patrón Reposado × 1", "Moët & Chandon Rosé × 1", "Mixer set × 8"],
-      ],
+      incl: ["฿45,000 menu spend", "VVIP reserved area", "VIP entry × 20", "VIP host", "Catwalk dance floor", "LED screen"],
     },
   ];
 
@@ -779,7 +711,6 @@ function Lounges() {
     <section className="section" id="lounges">
       <div className="container">
         <div className="section__head">
-          <div className="num">04</div>
           <div className="titles">
             <div className="title">Table &amp; Booth <em>Bookings</em></div>
             <div className="thai">จองโต๊ะ · บูธ · งานปาร์ตี้</div>
@@ -788,12 +719,24 @@ function Lounges() {
 
         <div className="pkgs__intro">
           <p className="pkgs__lede">
-            Tables and bottle packages are booked through <strong>Megatix</strong>, same as tickets.
-            Bottle packages are a <strong>set price and include entry</strong> for your whole group —
-            choose Option A or Option B at the venue. New Jack is a <strong>minimum spend</strong> only.
+            Reserve your own area for the night. Each package is held exclusively for your group
+            and includes VIP priority entry for everyone on the booking.
           </p>
-          <p className="pkgs__warn">New Jack does not include entry tickets</p>
-          <p className="pkgs__thai">แพ็กเกจขวดรวมบัตรเข้างานแล้ว · เลือกเซ็ต A หรือ B ที่หน้างาน</p>
+          <p className="pkgs__lede">
+            All packages carry a minimum spend, redeemable against food and drinks from our venue menu.
+          </p>
+          <p className="pkgs__lede">
+            Each package has a maximum guest capacity, shown on the package. Guests beyond that
+            number are subject to standard entry.
+          </p>
+          <p className="pkgs__lede">
+            Custom packages available on request. Book via our ticketing platform.
+          </p>
+          <p className="pkgs__thai">จองพื้นที่ส่วนตัวสำหรับกลุ่มของคุณ · รวมบัตรเข้างาน VIP สำหรับทุกคนในกลุ่ม · ทุกแพ็กเกจมียอดใช้จ่ายขั้นต่ำที่ใช้กับอาหารและเครื่องดื่มจากเมนูของเรา</p>
+          <div className="pkgs__intro-links">
+            <button type="button" className="pkgs__link" onClick={() => setMenuOpen(true)}>View the menu</button>
+            <button type="button" className="pkgs__link" onClick={() => setTermsOpen(true)}>Terms &amp; conditions</button>
+          </div>
         </div>
 
         <div className="pkgs">
@@ -810,9 +753,9 @@ function Lounges() {
                     {p.label} <span className="pkg__sub">{p.sub}</span>
                   </h3>
                   <div className="pkg__tags">
-                    <span className="pkg__tag">{p.pax} pax</span>
+                    <span className="pkg__tag">{p.pax} guests</span>
                     <span className={`pkg__tag ${p.entry ? "is-yes" : "is-no"}`}>
-                      {p.entry ? "Entry included" : "No entry tickets"}
+                      {p.entry ? "VIP entry included" : "No entry tickets"}
                     </span>
                   </div>
                 </div>
@@ -823,6 +766,12 @@ function Lounges() {
               </div>
 
               {p.note && <p className="pkg__note">{p.note}</p>}
+
+              {p.incl && (
+                <ul className="pkg__incl">
+                  {p.incl.map((line, li) => <li key={li}>{line}</li>)}
+                </ul>
+              )}
 
               {p.options && (
                 <div className="pkg__opts">
@@ -854,14 +803,13 @@ function Lounges() {
         <div className="bookings" id="lounges-contact">
           <div className="bookings__copy">
             <p className="bookings__kicker">Reserve ahead</p>
-            <h3 className="bookings__title">Table &amp; Booth <em>Bookings</em></h3>
+            <h3 className="bookings__title">Customise Your <em>Party Package</em></h3>
             <p className="bookings__body">
-              Want a table, a booth, or the whole crew sorted for the night? Private parties,
-              birthdays and group bookings all welcome. Message us and we'll build the night
-              around you — packages, availability and pricing confirmed within the day.
+              Whatever your group size or budget, tell us what you need and we'll build a package
+              around it. Birthdays, work functions, bucks and hens, or a big night out with mates.
             </p>
-            <p className="bookings__thai">สนใจจองโต๊ะ บูธ หรือจัดงานปาร์ตี้ · ทักหาเราได้เลย</p>
-            <p className="bookings__contactline">Contact us — we'll sort you out.</p>
+            <p className="bookings__thai">จัดแพ็กเกจปาร์ตี้ตามที่คุณต้องการ · ไม่ว่างบเท่าไหร่หรือกลุ่มใหญ่แค่ไหน</p>
+            <p className="bookings__contactline">Get in touch and we'll put something together.</p>
           </div>
 
           <div className="bookings__grid">
@@ -884,10 +832,12 @@ function Lounges() {
           </div>
         </div>
       </div>
+
+      {menuOpen && <MenuModal onClose={() => setMenuOpen(false)} />}
+      {termsOpen && <TermsModal onClose={() => setTermsOpen(false)} />}
     </section>
   );
 }
-
 /* Reusable modal shell (Menu / Terms) */
 function Modal({ kicker, title, sub, onClose, children, footer }) {
   React.useEffect(() => {
@@ -974,7 +924,7 @@ function TermsModal({ onClose }) {
     <Modal
       kicker="Lounge &amp; Table Reservations"
       title={<>Terms &amp; <em>Conditions</em></>}
-      sub="Old School &amp; Chill · Vol. 03 · 5 September 2026"
+      sub="Old School &amp; Chill · 3 October 2026"
       onClose={onClose}
       footer={<>
         <a className="modal__btn modal__btn--ghost" href="mailto:info@oscbkk.com?subject=Lounge%20Booking%20%E2%80%94%20Question">Question? Email us</a>
@@ -986,6 +936,8 @@ function TermsModal({ onClose }) {
         <li>Reservations are confirmed upon receipt of the full minimum spend, paid in advance via bank transfer or QR.</li>
         <li>Your minimum spend covers anything from the Aces drinks &amp; food menu — bottles, cocktails, champagne, beer, bar bites.</li>
         <li>Your server keeps a running tab on the night and will let you know once you've reached your minimum. Beyond that, standard menu pricing applies.</li>
+        <li>Minimum spend is not a deposit or a cover charge and is not refundable if unspent.</li>
+        <li>Each package has a maximum guest capacity, shown on the package. Guests beyond that number are subject to standard entry.</li>
       </ul>
 
       <h3 className="modal__h">Service Charge &amp; Tax</h3>
@@ -998,12 +950,12 @@ function TermsModal({ onClose }) {
         <li>Full refund or credit transfer up to <strong>14 days</strong> before the event.</li>
         <li><strong>50% refund</strong> or full credit transfer between 7 and 14 days before.</li>
         <li>No refunds within 7 days of the event. Credit transfer to a future Old School &amp; Chill event possible, subject to availability.</li>
-        <li>Applies to all pre-paid reservations, including those purchased via Megatix and enquiry-confirmed packages.</li>
+        <li>Applies to all pre-paid reservations, including those purchased online and enquiry-confirmed packages.</li>
       </ul>
 
       <h3 className="modal__h">Arrival</h3>
       <ul className="modal__ul">
-        <li>Lounges and tables held for 30 minutes past your reservation time, after which the spot may be released.</li>
+        <li>Lounges and tables are held for 60 minutes past our opening time only, which is 10pm. After that the spot may be released.</li>
         <li>Running late? Drop us a message — we'll do our best to hold it for you.</li>
       </ul>
 
@@ -1037,9 +989,8 @@ function VenuePhotos() {
     <section className="section venue" id="venue">
       <div className="container">
         <div className="section__head">
-          <div className="num">05</div>
           <div className="titles">
-            <div className="title">The <em>Venue</em></div>
+            <div className="title">Our <em>Venue</em></div>
             <div className="thai">บรรยากาศในร้าน · เอซ ไนต์คลับ</div>
           </div>
         </div>
@@ -1063,6 +1014,80 @@ function VenuePhotos() {
   );
 }
 
+/* ===================== RECAP =====================
+   Front-page teaser for the MOST RECENT edition only: a handful of photos, the
+   recap video, and a link through to the full archive on gallery.html.
+   Everything comes from window.OSC_EDITIONS (editions.js) — the newest entry is
+   first, so this section updates itself when a new edition is added there. */
+const TEASER_COUNT = 6;
+
+function Gallery() {
+  const eds = window.OSC_EDITIONS || [];
+  const ed = eds[0];
+  const [open, setOpen] = React.useState(null);
+  if (!ed) return null;
+  const shots = editionShots(ed);
+  const teaser = shots.slice(0, TEASER_COUNT);
+
+  return (
+    <section className="section recap" id="gallery">
+      <div className="container">
+        <div className="section__head">
+          <div className="titles">
+            <div className="title">Last Month · <em>5 September 2026</em></div>
+            <div className="thai">ภาพและวิดีโอจากคืนที่ผ่านมา</div>
+          </div>
+        </div>
+
+        <div className="recap__body">
+          <div className="recap__left">
+            <span className="recap__eyebrow">{ed.date}</span>
+            {ed.blurb && <p className="recap__blurb">{ed.blurb}</p>}
+            {ed.blurbTh && <p className="recap__blurb-th">{ed.blurbTh}</p>}
+
+            <div className="recap__grid">
+              {teaser.map((s, i) => (
+                <button key={s.n} type="button" className="recap__cell" onClick={() => setOpen(i)} aria-label={`Open photo ${s.n}`}>
+                  <img className="recap__img" src={s.src} alt={s.alt} loading="lazy" />
+                </button>
+              ))}
+            </div>
+
+            <div className="recap__actions">
+              <a className="recap__all" href={`gallery.html#${ed.slug}`}>See More ↗</a>
+              <a className="recap__all recap__all--alt" href="gallery.html">Other Galleries ↗</a>
+            </div>
+          </div>
+
+          <div className="recap__right">
+            {ed.video ? (
+              <div className="recap__video">
+                <iframe
+                  src={ed.video}
+                  title={`${ed.label} recap video`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+            ) : (
+              <div className="recap__video recap__video--empty">
+                <span className="recap__play" aria-hidden="true">▶</span>
+                <span className="recap__video-k">Recap Video</span>
+                <p className="recap__video-note">Dropping soon · เร็ว ๆ นี้</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {open !== null && (
+        <Lightbox shots={shots} index={open} onClose={() => setOpen(null)} onIndex={setOpen} />
+      )}
+    </section>
+  );
+}
+
 /* ===================== RULES ===================== */
 function Rules() {
   const rules = [
@@ -1076,7 +1101,6 @@ function Rules() {
     <section className="section" id="rules">
       <div className="container">
         <div className="section__head">
-          <div className="num">06</div>
           <div className="titles">
             <div className="title">House <em>Rules</em></div>
             <div className="thai">กฎของบ้าน · แต่งตัวยังไงดี</div>
@@ -1108,12 +1132,14 @@ function Rules() {
                   <li>Smart casual, vintage tees</li>
                   <li>Sneakers (clean ones)</li>
                   <li>Throwback fits — Jordans, jerseys, denim</li>
+                  <li>Dress shorts</li>
                   <li>Dress to be remembered</li>
                 </ul>
               </div>
               <div className="dresscode__col">
                 <h4 className="no">✕ No / ห้าม</h4>
                 <ul>
+                  <li>No beach wear</li>
                   <li>Flip-flops, slides, beach shorts</li>
                   <li>Tank tops on the boys</li>
                   <li>Sports shorts &amp; gym wear</li>
@@ -1164,7 +1190,6 @@ function Contact() {
     <section className="section section--contact" id="contact">
       <div className="container">
         <div className="section__head">
-          <div className="num">07</div>
           <div className="titles">
             <div className="title">Talk <em>to us</em></div>
             <div className="thai">ติดต่อทีมงาน · กดเลือกช่องทางที่สะดวก</div>
@@ -1206,105 +1231,6 @@ function Contact() {
 }
 
 /* ===================== PAST EVENTS ===================== */
-/* Archive of previous editions. Vol. 01 (20 June 2026) preserved here with
-   its original poster art. Add newer entries to the top of `editions`. */
-function PastEvents() {
-  const editions = [
-    {
-      vol: "Vol. 02",
-      date: "Saturday 1 August 2026",
-      dateTh: "วันเสาร์ที่ 1 สิงหาคม 2569",
-      venue: "Aces Nightclub · Sukhumvit Soi 11",
-      poster: "assets/poster-vol02.png",
-      status: "Sold Out",
-      djs: ["Jordan Adam", "Young G", "Junior"],
-      host: "El Rafa",
-      note: "The second edition. Timeless R&B up front, Hip Hop as the party starter — sold out again in advance.",
-      noteTh: "คืนที่สองของ Old School & Chill · บัตรหมดล่วงหน้าอีกครั้ง",
-      photos: ["assets/venue-2.jpg", "assets/venue-3.jpg"],
-    },
-    {
-      vol: "Vol. 01",
-      date: "Saturday 20 June 2026",
-      dateTh: "วันเสาร์ที่ 20 มิถุนายน 2569",
-      venue: "Aces Nightclub · Sukhumvit Soi 11",
-      poster: "assets/poster-vol01.png",
-      status: "Sold Out",
-      djs: ["K9", "Young G", "Travellin' Matt", "Jordan Adam", "Junior"],
-      host: "El Rafa",
-      note: "The inaugural night. Strictly pre-2010 R&B and Hip Hop — sold out in advance across every tier.",
-      noteTh: "คืนแรกของ Old School & Chill · บัตรหมดทุกระดับก่อนวันงาน",
-      photos: ["assets/venue-1.jpg", "assets/venue-4.jpg"],
-    },
-  ];
-
-  return (
-    <section className="section past" id="past">
-      <div className="container">
-        <div className="section__head">
-          <div className="num">08</div>
-          <div className="titles">
-            <div className="title">Previous <em>Events</em></div>
-            <div className="thai">อีเวนต์ที่ผ่านมา</div>
-          </div>
-        </div>
-
-        <div className="past__list">
-          {editions.map((e, i) => (
-            <article key={i} className="past-card">
-              <div className="past-card__frame">
-                <img className="past-card__img" src={e.poster} alt={`Old School & Chill ${e.vol} — official poster`} />
-                {e.status && <span className="past-card__stamp" aria-hidden="true">{e.status}</span>}
-                <span className="past-card__corner past-card__corner--tl" />
-                <span className="past-card__corner past-card__corner--tr" />
-                <span className="past-card__corner past-card__corner--bl" />
-                <span className="past-card__corner past-card__corner--br" />
-              </div>
-
-              <div className="past-card__body">
-                <div className="past-card__vol">{e.vol}</div>
-                <div className="past-card__meta">
-                  <div className="past-card__row">
-                    <span className="k">When</span>
-                    <span className="v">{e.date}<small>{e.dateTh}</small></span>
-                  </div>
-                  <div className="past-card__row">
-                    <span className="k">Where</span>
-                    <span className="v">{e.venue}</span>
-                  </div>
-                  <div className="past-card__row">
-                    <span className="k">Status</span>
-                    <span className="v past-card__soldout">{e.status} · บัตรหมด</span>
-                  </div>
-                </div>
-
-                <p className="past-card__note">{e.note}</p>
-                <p className="past-card__note thai">{e.noteTh}</p>
-
-                <div className="past-card__lineup">
-                  <span className="past-card__lineup-k">On the decks</span>
-                  <div className="past-card__djs">
-                    {e.djs.map((d, j) => <span key={j} className="past-card__dj">{d}</span>)}
-                  </div>
-                  <span className="past-card__host">Hosted by {e.host}</span>
-                </div>
-
-                <div className="past-card__photos">
-                  {e.photos.map((src, j) => (
-                    <figure key={j} className="past-card__photo">
-                      <img src={src} alt={`${e.vol} — venue`} />
-                    </figure>
-                  ))}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ===================== FOOTER ===================== */
 function Foot() {
   return (
@@ -1320,6 +1246,7 @@ function Foot() {
             <li><a href="https://instagram.com/oscbkk" target="_blank" rel="noopener">Instagram ↗</a></li>
             <li><a href="https://facebook.com/oscbkk" target="_blank" rel="noopener">Facebook ↗</a></li>
             <li><a href="https://tiktok.com/@oscbkk" target="_blank" rel="noopener">TikTok ↗</a></li>
+            <li><a href="https://youtube.com/@alpha11co" target="_blank" rel="noopener">YouTube ↗</a></li>
             <li><a href={CONTACT.line} target="_blank" rel="noopener">LINE ↗</a></li>
             <li><a href="https://open.spotify.com/user/31qnnw4ys3tpcc7eltq3dhosqcsq" target="_blank" rel="noopener">Spotify ↗</a></li>
           </ul>
