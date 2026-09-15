@@ -4,7 +4,7 @@
 // Live Alpha Eleven ticketing URL. Pasted into every "Get Tickets" /
 // "Reserve" / "Book Now" button on the page. One URL for all tiers and
 // packages — the buyer picks what they want on the checkout page.
-const MEGATIX_URL = "https://tickets.alpha11.co/events/alphaeleven/2414867";
+const MEGATIX_URL = "https://megatix.in.th/events/old-school-chill-bangkok-october-2026";
 
 // ─── WAITLIST (Brevo) ──────────────────────────────────────
 // The door-ticket waitlist feeds a Brevo contact list ("OSCBKK Waitlist").
@@ -45,7 +45,7 @@ const CONTACT = {
   // LINE: official BUSINESS account add-friend link (Aug 2026). Use the lin.ee
   // short form — it works in-browser and deep-links into the app. Do NOT swap
   // back to line.me/R/ti/p/@id or page.line.me, both 404 for this account.
-  line:      "https://lin.ee/qjkaN1d",
+  line:      "https://lin.ee/PEnL9QG",
   whatsapp:  "https://wa.me/61427155999",
   messenger: "https://m.me/oscbkk",
   instagram: "https://instagram.com/oscbkk",

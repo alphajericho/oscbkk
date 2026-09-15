@@ -74,7 +74,7 @@ alt="" /></noscript>
     return (name ? name.textContent : a.textContent).trim().replace(/\s*↗$/,'');
   }
   document.addEventListener('click', function(e){
-    var a = e.target.closest('a[href*="tickets.alpha11.co"]');
+    var a = e.target.closest('a[href*="megatix.in.th"]');
     if (!a) return;
     fbq('track', 'InitiateCheckout', {
       content_name: label(a),

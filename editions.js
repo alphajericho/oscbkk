@@ -29,7 +29,7 @@ window.OSC_EDITIONS = [
     art: "assets/poster-5-september-2026.jpg",
     count: 51,
     portrait: [1,2,6,7,8,9,10,11,12,13,14,19,21,22,23,24,25,26,29,32,33,36,37,38,39,40,41,42,44,45,46,50,51],
-    video: null,
+    video: "https://www.youtube.com/embed/m7qHEFgU9IY?autoplay=1&mute=1&loop=1&playlist=m7qHEFgU9IY&playsinline=1&rel=0&modestbranding=1",
     videoVertical: true,
   },
   {
