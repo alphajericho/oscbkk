@@ -74,7 +74,7 @@ alt="" /></noscript>
     return (name ? name.textContent : a.textContent).trim().replace(/\s*↗$/,'');
   }
   document.addEventListener('click', function(e){
-    var a = e.target.closest('a[href*="megatix.in.th"]');
+    var a = e.target.closest('a[href*="megatix"]');
     if (!a) return;
     fbq('track', 'InitiateCheckout', {
       content_name: label(a),
@@ -109,5 +109,6 @@ alt="" /></noscript>
 <script src="editions.js"></script>
 <script type="text/babel" src="lightbox.jsx"></script>
 <script type="text/babel" src="app.jsx"></script>
+<script defer async src="https://megatix.com.au/build/js/widgets/megatix.js"></script>
 </body>
 </html>

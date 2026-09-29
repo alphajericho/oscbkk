@@ -4,7 +4,7 @@
 // Live Alpha Eleven ticketing URL. Pasted into every "Get Tickets" /
 // "Reserve" / "Book Now" button on the page. One URL for all tiers and
 // packages — the buyer picks what they want on the checkout page.
-const MEGATIX_URL = "https://megatix.in.th/events/old-school-chill-bangkok-october-2026";
+const MEGATIX_URL = "https://megatix.com.au/white-label/old-school-chill-bangkok-october-2026";
 
 // ─── WAITLIST (Brevo) ──────────────────────────────────────
 // The door-ticket waitlist feeds a Brevo contact list ("OSCBKK Waitlist").
@@ -264,7 +264,7 @@ function Nav() {
           </svg>
         </a>
       </div>
-      <a className="nav__cta" href={MEGATIX_URL} target="_blank" rel="noopener">Tickets</a>
+      <a className="nav__cta" href={MEGATIX_URL}>Tickets</a>
       </div>
     </nav>
   );
@@ -280,7 +280,7 @@ function Hero() {
       </div>
 
       <div className="hero__cta">
-        <a className="hero__btn hero__btn--primary" href={MEGATIX_URL} target="_blank" rel="noopener">Get Tickets</a>
+        <a className="hero__btn hero__btn--primary" href={MEGATIX_URL}>Get Tickets</a>
         <a className="hero__btn hero__btn--ghost" href="#night">Next Event</a>
       </div>
     </header>
@@ -392,7 +392,7 @@ function TheNight() {
             </div>
 
             <div className="ne__actions">
-              <a className="intro__btn" href={MEGATIX_URL} target="_blank" rel="noopener">Book Now ↗</a>
+              <a className="intro__btn" href={MEGATIX_URL}>Book Now ↗</a>
               <a className="ne__link" href="#lounges">Table &amp; booth bookings</a>
             </div>
           </div>
@@ -551,7 +551,7 @@ function Tickets() {
               ) : tk.locked ? (
                 <span className="ticket__cta ticket__cta--disabled" aria-disabled="true">Not on sale yet · ยังไม่เปิดขาย</span>
               ) : (
-                <a className="ticket__cta" href={MEGATIX_URLS[tk.key] || MEGATIX_URL} target="_blank" rel="noopener">Book Now</a>
+                <a className="ticket__cta" href={MEGATIX_URLS[tk.key] || MEGATIX_URL}>Book Now</a>
               )}
             </article>
           ))}
@@ -787,7 +787,7 @@ function Lounges() {
               {p.soldOut ? (
                 <span className="pkg__cta pkg__cta--disabled" aria-disabled="true">Sold Out · บัตรหมดแล้ว</span>
               ) : (
-                <a className="pkg__cta" href={VENUE_PACKAGES_URL} target="_blank" rel="noopener">
+                <a className="pkg__cta" href={VENUE_PACKAGES_URL}>
                   Book Now
                 </a>
               )}
@@ -796,7 +796,7 @@ function Lounges() {
         </div>
 
         <div className="pkgs__foot">
-          <a className="pkgs__all" href={VENUE_PACKAGES_URL} target="_blank" rel="noopener">See all packages &amp; book ↗</a>
+          <a className="pkgs__all" href={VENUE_PACKAGES_URL}>See all packages &amp; book ↗</a>
           <button className="pkgs__menu" onClick={() => setMenuOpen(true)}>View the menu</button>
         </div>
 
